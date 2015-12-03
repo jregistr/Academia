@@ -17,6 +17,7 @@ class Main extends Application {
     private static int tileSize;
 
     private static double lct,rct
+    private Tile[][] grid;
 
     public static void main(String[] args) {
         width = Integer.parseInt(args[0])
@@ -27,7 +28,7 @@ class Main extends Application {
         launch(Main, args)
     }
 
-    private static Parent makeUI(){
+    private Parent makeUI(){
         Pane root = new Pane()
         root.setPrefSize(width, height)
 
@@ -43,6 +44,7 @@ class Main extends Application {
                 root.getChildren().add(tile)
             }
         }
+        this.grid = grid
 
         root
     }
@@ -52,6 +54,8 @@ class Main extends Application {
         primaryStage.with {
             setScene(new Scene(makeUI()));
             show()
+            new Anvil(grid, lct, rct)
         }
     }
+
 }
