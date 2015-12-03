@@ -28,6 +28,15 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: _usr_lib_jvm_java_7_openjdk_amd64_lib_ext_jfxrt_jar">
+        <CLASSES>
+          <root url="jar:///usr/lib/jvm/java-7-openjdk-amd64/lib/ext/jfxrt.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.spockframework:spock-core:1.0-groovy-2.4">
         <CLASSES>
