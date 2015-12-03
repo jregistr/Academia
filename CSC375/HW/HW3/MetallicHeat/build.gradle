@@ -14,7 +14,6 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 //def jdkHome = System.getenv('JAVA_HOME')
-def l = 200, r = 300, c1 = null, c2 = null, c3 = null
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -70,14 +69,14 @@ task run(type: JavaExec) {//set grid values and run program
     main = 'com.jeff.heatingmetals.application.Main'
     classpath sourceSets.main.runtimeClasspath
 
-    String p = (String) p
+    /*String p = (String) p
     String[] a = p.split(",")
     List<String> list = []
     for (String s : a) {
         list.push(s)
     }
-
-    args = list
+*/
+    args = [1600,1000,10,1000,500]
 
 }
 

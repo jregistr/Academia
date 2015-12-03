@@ -15,9 +15,7 @@ class Anvil {
         this.display = display
         int xLen = display.length
         int yLen = display[0].length
-        0.upto(xLen -1){i->
-            0.upto(yLen - 1)
-        }
+
     }
 
     void execute(){
