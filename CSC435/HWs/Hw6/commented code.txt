@@ -1,0 +1,43 @@
+
+       /* User user = new User(username: "fizz",displayName: "the mechanized menace", password: "xxx")
+        user.save()
+        User user2 = new User(username: "jack",displayName: "some jackle", password: "xxx")
+        user2.save()
+
+        Comment comment = new Comment(target: user,poster: user2,msg: "This is my message",timePosted: new Date())
+        user.addToComments(comment)
+        user2.addToPosted(comment)
+        render "Hello there:<br>" + user.comments + "<br>" + user2.posted*/
+
+       /* User user = new User(username: "fizz",displayName: "the mechanized menace", password: "xxx")
+        user.save(flush:true)
+        user.customization = new Customization(user:user)
+        User get = User.findByUsername('fizz')
+
+
+        render ("Hello there:"  + get.customization)*/
+
+        /*User user = new User(username: "fizz",displayName: "the mechanized menace", password: "xxx")
+        user.save(flush:true)
+
+        User user2 = new User(username: "jack",displayName: "some jackle", password: "xxx")
+        user2.save()
+
+        user.addToFriends(user2)
+        user2.addToFriends(user)
+
+        render ("Hello there:" + User.findByUsername("fizz").friends + "<br>" + User.findByUsername("jack").friends)*/
+
+
+
+        User user = new User(username: "fizz",displayName: "the mechanized menace", password: "xxx")
+        user.save()
+        User user2 = new User(username: "jack",displayName: "some jackle", password: "xxx")
+        user2.save()
+
+        Battle battle = new Battle(dateStarted: new Date(),dateEnded: new Date(),blueWin: true,turns: 200,knockedByBlue:5,lostByBlue:2,knockedByRed:2,lostByRed:5,firedByBlue: 20,hitsByBlue: 20,firedByRed: 40,hitsByRed: 8,blue: user,red: user2)
+        user.addToBlueBattles(battle)
+        user2.addToRedBattles(battle)
+
+
+        render ("Hello there:<br>" + user.blueBattles + "<br> <h1>Full Hist</h1>" + Battle.summary(user))

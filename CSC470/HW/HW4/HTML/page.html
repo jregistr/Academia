@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../Images/others/Height.jpg">
+
+    <title>Rotating Sierpenski</title>
+
+    <!-- load CSS files -->
+    <link href="../CSS/Libs/bootstrap.min.css" rel="stylesheet">
+    <link href="../CSS/Libs/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../CSS/Application/main.css" rel="stylesheet">
+    
+    <!-- Load Javascripts -->
+    <script src="../Script/Engine/loader.js" type="application/javascript"></script>
+    <script src="../Script/Application/app.js" type="application/javascript"></script>
+    <script src="../Script/Application/carpet.js" type="application/javascript"></script>
+
+</head>
+
+<body class="container">
+
+    <div class="row">
+        
+        <div class="col-lg-6 topRowColumn">
+            <canvas id="canvas" width="620" height="620"></canvas>
+        </div>
+        
+        <div class="col-lg-1">
+        
+        </div>
+        
+        <div class="col-lg-5 topRowColumn">
+            <div class="form-group">
+                <label for="subSlider">Subdivision Slider. (1, 5)</label>
+                <input id="subSlider" type="range" class="form-control" min="0" max="5" step="1" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="speedSlider" class="text-primary">Rotation Speed Slider. (0, 1800)</label>
+                <input id="speedSlider" type="range" class="form-control" min="0" max="1800" step="1" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="camYaw" class="text-success">YAW(0, 360)</label>
+                <input id="camYaw" type="range" class="form-control" min="0" max="360" step="1" value="0">
+            </div>
+            
+             <div class="form-group">
+                <label for="camPitch" class="text-success">Pitch(0, 360)</label>
+                <input id="camPitch" type="range" class="form-control" min="0" max="360" step="1" value="0">
+            </div>
+            
+            <div>
+            
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-5">
+                    <button id="dirLeft" class="form-control btn"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                </div>
+                <div class="col-lg-2"></div>
+                <div class="col-lg-5">
+                    <button id="dirRight" class="form-control btn active"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                </div>
+            </div>
+            
+            <button id="applyBtn" class="form-control btn btn-primary">Apply Changes</button>
+   
+        </div>
+        
+    </div>
+    
+    <div class="row"><h1>A very nice rotating Carpet</h1></div>
+    
+    <script id="shader-vs" type="x-shader/x-vertex">
+         
+    </script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+          
+    </script>
+    
+    <script>
+        /*$( document ).ready(function(){
+           $('[data-toggle="tooltip"]').tooltip().
+            
+        })*/
+    </script>
+
+</body>
+
+</html>

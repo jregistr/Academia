@@ -1,0 +1,69 @@
+RHO:------------------------------------------------------------------------------------------------------------------------
+
+Result "testMyTree":
+  873194.614 ±(99.9%) 6997.572 us/op [Average]
+  (min, avg, max) = (803389.730, 873194.614, 918558.883), stdev = 29628.160
+  CI (99.9%): [866197.042, 880192.187] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:23:06
+
+Benchmark                       Mode  Cnt       Score      Error   Units
+CSC375.MyBenchmark.testMyTree  thrpt  200      ≈ 10⁻⁶             ops/us
+CSC375.MyBenchmark.testMyTree   avgt  200  873194.614 ± 6997.572   us/op
+
+
+
+Result "testHashy":
+  725725.959 ±(99.9%) 8100.331 us/op [Average]
+  (min, avg, max) = (676599.926, 725725.959, 777818.053), stdev = 34297.307
+  CI (99.9%): [717625.628, 733826.290] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:20:18
+
+Benchmark                      Mode  Cnt       Score      Error   Units
+CSC375.MyBenchmark.testHashy  thrpt  200      ≈ 10⁻⁶             ops/us
+CSC375.MyBenchmark.testHashy   avgt  200  725725.959 ± 8100.331   us/op
+RHO:------------------------------------------------------------------------------------------------------------------------
+
+alias java8="opt/jdk1.8.0/bin/java"
+
+alias java8="jdk1.8.0/bin/java"
+
+ ~/Documents/Jeffy/benchmarks.jar
+ 
+ java8 -jar ~/Documents/Jeffy/benchmarks.jar
+ 
+ 
+ 
+ 
+ Result "testMyTree":
+  657208.499 ±(99.9%) 7887.816 us/op [Average]
+  (min, avg, max) = (597168.921, 657208.499, 708846.601), stdev = 33397.505
+  CI (99.9%): [649320.684, 665096.315] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:18:24
+
+Benchmark                       Mode  Cnt       Score      Error   Units
+CSC375.MyBenchmark.testMyTree  thrpt  200      ≈ 10⁻⁶             ops/us
+CSC375.MyBenchmark.testMyTree   avgt  200  657208.499 ± 7887.816   us/op
+
+
+
+
+
+
+
+Result "testHashy":
+  577543.084 ±(99.9%) 7300.906 us/op [Average]
+  (min, avg, max) = (509859.448, 577543.084, 614071.012), stdev = 30912.494
+  CI (99.9%): [570242.178, 584843.990] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:16:05
+
+Benchmark                      Mode  Cnt       Score      Error   Units
+CSC375.MyBenchmark.testHashy  thrpt  200      ≈ 10⁻⁶             ops/us
+CSC375.MyBenchmark.testHashy   avgt  200  577543.084 ± 7300.906   us/op

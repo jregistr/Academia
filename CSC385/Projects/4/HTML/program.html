@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../Images/others/Height.jpg">
+
+    <title>Rotating Sierpenski</title>
+
+    <!-- load CSS files -->
+    <link href="../CSS/Libs/bootstrap.min.css" rel="stylesheet">
+    <link href="../CSS/Libs/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../CSS/Application/main.css" rel="stylesheet">
+    <link href="../node_modules/qunitjs/qunit/qunit.css">
+    
+    <!-- Load Javascripts -->
+    <script src="../Script/Engine/loader.js" type="application/javascript"></script>
+    <script src="../Script/Application/app.js" type="application/javascript"></script>
+    <script src="../Script/Application/carpet.js" type="application/javascript"></script>
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
+    <script src="../Script/Application/test.js"></script>
+</head>
+
+<body class="container">
+
+    <div class="row">
+        
+        <div class="col-lg-6 topRowColumn">
+            <canvas id="canvas" width="620" height="620"></canvas>
+        </div>
+        
+        <div class="col-lg-1">
+        
+        </div>
+        
+        <div class="col-lg-5 topRowColumn">
+            <div class="form-group">
+                <label for="subSlider">Subdivision Slider. (1, 5)</label>
+                <input id="subSlider" type="range" class="form-control" min="0" max="5" step="1" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="speedSlider" class="text-primary">Rotation Speed Slider. (0, 1800)</label>
+                <input id="speedSlider" type="range" class="form-control" min="0" max="1800" step="1" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="camYaw" class="text-success">YAW(0, 360)</label>
+                <input id="camYaw" type="range" class="form-control" min="0" max="360" step="1" value="0">
+            </div>
+            
+             <div class="form-group">
+                <label for="camPitch" class="text-success">Pitch(0, 360)</label>
+                <input id="camPitch" type="range" class="form-control" min="0" max="360" step="1" value="0">
+            </div>
+            
+            <div>
+            
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-5">
+                    <button id="dirLeft" class="form-control btn"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                </div>
+                <div class="col-lg-2"></div>
+                <div class="col-lg-5">
+                    <button id="dirRight" class="form-control btn active"><span class="glyphicon glyphicon-arrow-right"></span></button>
+                </div>
+            </div>
+            
+            <button id="applyBtn" class="form-control btn btn-primary">Apply Changes</button>
+   
+        </div>
+        
+    </div>
+    
+    <div class="row"><h1>A very nice rotating Carpet</h1></div>
+    
+    <div id="qunit">
+    
+    </div>
+    <div id="qunit-fixture"></div>
+    
+    <script id="shader-vs" type="x-shader/x-vertex">
+
+attribute vec2 aPosition;
+attribute vec4 aColor;
+attribute vec2 aCenter;
+
+uniform float uTheta;
+uniform mat4 uView;
+uniform mat4 uProj;
+
+varying vec4 vColor;
+
+void main() {
+
+    mat3 toCenter = mat3(vec3(1,0,0),vec3(0,1,0),vec3(-aCenter.x, -aCenter.y, 1));
+    mat3 rot = mat3(vec3(cos(uTheta), sin(uTheta), 0),vec3(-sin(uTheta), cos(uTheta), 0),vec3(0,0,1));
+    mat3 back = mat3(vec3(1,0,0),vec3(0,1,0),vec3(aCenter.x, aCenter.y, 1));
+    
+    mat3 netMat = back * rot * toCenter;
+    
+    vec4 pos = vec4((netMat * vec3(aPosition, 1)).xy, 0.8, 1);
+
+    
+    
+    
+    
+    gl_Position = uProj * uView * vec4(vec2(pos), 1.5, 1);
+    vColor = aColor;
+}
+         
+    </script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+
+precision highp float;
+
+varying vec4 vColor;
+
+void main() {
+    gl_FragColor = vColor;
+}          
+    </script>
+    
+   
+
+</body>
+
+</html>

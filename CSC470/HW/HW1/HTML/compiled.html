@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>WebGL HW1:Attempt</title>
+        
+        <link rel="shortcut icon" type="image/png" href="../images/icon.jpg">
+        <!-- Bootstrap -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/bootstrap-theme.min.css" rel="stylesheet">
+
+        <!-- Javascript -->
+        <script src="../js/jquery-1.11.3.min.js" type="application/javascript"></script>
+        <script src="../js/bootstrap.min.js" type="application/javascript"></script>
+		<script src="../js/common.js" type="application/javascript"></script>
+		<script src="../js/utils.js" type="application/javascript"></script>
+		<script src="../js/square.js" type="application/javascript"></script>
+        <script src="../js/engine.js" type="application/javascript"></script>
+
+    </head>
+    <body class="container">
+        
+		<div class="row" id="preOp">
+			<label for="select">Subdivisions</label>
+			<select id="select" class="form-control">
+				<option value=0>0</option>
+				<option value=1>1</option>
+				<option value=2>2</option>
+				<option value=3>3</option>
+				<option value=4>4</option>
+                <option value=5>5</option>
+                <option value=6>6</option>
+                <option value=10>10</option>
+			</select>
+			<button id="process" type="button" class="btn-lg btn-primary">Process</button>
+		</div>
+		
+		<div id="canR" class="row" style="display:none">
+			 <canvas id="sheet" style="border: dashed 1px;" width="800" height="800">
+
+			</canvas>
+		</div>
+		
+       
+		
+		
+
+        <script id="shader-vs" type="x-shader/x-vertex">
+
+attribute vec2 aPosition;
+attribute vec4 aColor;
+
+varying vec4 vColor;
+
+void main() {
+	gl_Position = vec4(aPosition, 0.0, 1.0);
+	vColor = aColor;
+}
+         
+        </script>
+
+
+        <script id="shader-fs" type="x-shader/x-fragment">
+
+precision highp float;
+
+varying vec4 vColor;
+
+void main() {
+    gl_FragColor = vColor;
+}          
+        </script>
+
+    </body>
+</html>

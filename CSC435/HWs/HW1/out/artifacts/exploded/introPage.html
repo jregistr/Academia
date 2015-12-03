@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Home</title>
+
+        <meta name="description" content="Interact, socialize, compete and do battle with other players online">
+        <meta name="keyword" content="battleship,cruiser,submarine,destroyer,carrier,log,social,battle,fight,sink,sink you,compete">
+        <meta name="robots" content="index,follow">
+
+        <link rel="shortcut icon" type="imgage/png" href="/images/favicon.png">
+        <!--bootstrap css-->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <!--custom css--->
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="navbar-brand" style="font-family:Algerian; font-size: 1.2em;float: left;display: table"> <div class="navbar-brand" style="display: table-cell; vertical-align: middle">Commander Log</div></div>
+            <form class="navbar-form navbar-right" style="margin-right: 20px" method="post" action="Intro">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="userName" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="passWord" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+
+        <div class="container-fluid" style="margin-top: 120px">
+            <div class="row" style="width: 80% margin:auto">
+                <div class="col-lg-6" style="padding: 20px;">
+                    <div class="caption" style="width: 500px; height: 700px; border: 5px groove rgb(108,205,235); float: right;padding: 15px">
+                        <h4 class="text-center">So what is this?</h4>
+                        <p style="overflow: auto">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Suspendisse aliquam, augue vitae pulvinar feugiat, magna ipsum varius tellus, quis lobortis est nulla nec ligula.
+                            Aenean cursus enim sit amet tortor rutrum lobortis. Aenean cursus enim sit amet tortor rutrum lobortis.
+                            Vestibulum mattis  ut orci sit amet tellus posuere convallis.
+                            Cras rhoncus tincidunt ultrices.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Suspendisse aliquam, augue vitae pulvinar feugiat, magna ipsum varius tellus, quis lobortis est nulla nec ligula.
+                            Vestibulum mattis mauris fringilla mauris volutpat, in euismod arcu ultricies.
+                            Nunc eget hendrerit lectus. Proin rutrum elit ut orci fringilla, sit amet ornare turpis molestie.
+                            Proin nec neque eget nulla scelerisque mauris fringilla mauris volutpat, in euismod arcu ultricies.
+                            Nunc eget hendrerit lectus. Proin rutrum elit ut orci fringilla, sit amet ornare turpis molestie.
+                            Proin nec neque eget nulla scelerisque rhoncus sit amet vitae augue.
+                            Vivamus ipsum eros, sodales sed enim ac, malesuada iaculis mi.
+                            Morbi rhoncus sit amet vitae augue.
+                            Vivamus ipsum eros, sodales sed enim ac, malesuada iaculis mi.
+                            Morbi ut orci sit amet tellus posuere convallis.Cras rhoncus tincidunt ultrices.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6" style="padding: 20px">
+                    <div class="caption" style="width: 700px; height: 700px; border: 5px groove rgb(108,205,235); float: right;padding: 15px">
+                        <div style="width: 80%;height: 5%;background-color: grey;margin: 5%;">
+                            <h3 class="text-center">Join the league</h3>
+                        </div>
+                        <form method="post" action="Intro">
+                            <div class="form-group">
+                                <label for="regFull">Full Name</label>
+                                <input id="regFull" type="text" class="form-control input-lg" name="fullName" placeholder="Enter Full Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="regID">Username</label>
+                                <input id="regID" type="text" class="form-control input-lg" name="userName" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="regPass">Password</label>
+                                <input id="regPass" type="password" class="form-control input-lg" name="passWord" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confRegPass">Confirm Password</label>
+                                <input id="confRegPass" type="password" class="form-control input-lg" name="confirmPass" placeholder="Password">
+                            </div>
+                            <div class="hidden">
+                                <label for="reg">registration form</label>
+                                <input id="reg" type="text" name="regisForm" value="Yes">
+                            </div>
+                            <button type="submit" class="btn btn-lg btn-primary">Join for Free</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!--Javascript files linked at the bottom of the body-->
+    <!-------------------------------------------------------------------------->
+    <script src="/javascripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/javascripts/main.js" type="text/javascript"></script>
+    </body>
+</html>

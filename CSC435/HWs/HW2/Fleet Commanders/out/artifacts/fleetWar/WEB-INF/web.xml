@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <servlet>
+        <servlet-name>Welcome</servlet-name>
+        <servlet-class>Controllers.Navigation.Welcome</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Profile</servlet-name>
+        <servlet-class>Controllers.Navigation.Profile</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>Controllers.Navigation.Login</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>Controllers.Navigation.Register</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>Controllers.Navigation.Logout</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>PostComment</servlet-name>
+        <servlet-class>Controllers.Services.PostComment</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AddFriend</servlet-name>
+        <servlet-class>Controllers.Services.AddFriend</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>GetUsers</servlet-name>
+        <servlet-class>Controllers.Services.GetUsers</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>RandomBattle</servlet-name>
+        <servlet-class>Controllers.Services.RandomBattle</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>Flikr</servlet-name>
+        <servlet-class>Controllers.Services.Flikr</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SetUsers</servlet-name>
+        <servlet-class>Controllers.Services.SetUsers</servlet-class>
+    </servlet>
+
+
+
+    <servlet-mapping>
+        <servlet-name>Welcome</servlet-name>
+        <url-pattern>/Welcome</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Profile</servlet-name>
+        <url-pattern>/Profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/Register</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>PostComment</servlet-name>
+        <url-pattern>/Services/Postcomment</url-pattern>
+    </servlet-mapping>
+
+ <!--   <servlet-mapping>
+        <servlet-name>PostComment</servlet-name>
+        <url-pattern>/Profile/Postcomment</url-pattern>
+    </servlet-mapping>-->
+
+    <servlet-mapping>
+        <servlet-name>AddFriend</servlet-name>
+        <url-pattern>/Services/Addfriend</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>GetUsers</servlet-name>
+        <url-pattern>/Services/UserInf</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>RandomBattle</servlet-name>
+        <url-pattern>/Services/Randombattle</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>Flikr</servlet-name>
+        <url-pattern>/Services/Flikr</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SetUsers</servlet-name>
+        <url-pattern>/Services/Setusers</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>Controller</welcome-file>
+    </welcome-file-list>
+</web-app>

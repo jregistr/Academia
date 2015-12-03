@@ -1,0 +1,13 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                    controllers.Application.welcome()
+POST        /Login               controllers.Application.Login()
+POST        /Register            controllers.Application.Register()
+GET         /Profile             controllers.Application.Profile()
+GET         /Logout              controllers.Application.Logout()
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file        controllers.Assets.at(path="/public", file)

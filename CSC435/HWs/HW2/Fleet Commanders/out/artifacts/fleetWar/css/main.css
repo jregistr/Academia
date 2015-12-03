@@ -1,0 +1,181 @@
+/*.container{
+   min-width: 700px;
+   min-height: 900px;
+}*/
+/*.body{
+    background-image: url("../images/introBack.png");
+}*/
+#welcome{
+    background-image: url("../images/introBack.png");
+    background-size: 100% auto;
+}
+
+#profileBody{
+    /*background-image: url("../images/introBack.png");
+    background-size: 100% auto;*/
+}
+/*****************************INTRO PAGE**********************************/
+
+
+
+
+
+
+/*****************************Profile paGE**********************************/
+header{
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    color: #ffffff;
+    background: #101823;
+    display:block;
+    overflow: hidden;
+}
+
+ul{
+    list-style: none;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 30px;
+
+}
+
+li{
+    display: inline-block;
+}
+
+.logo{
+    font-size: 30px;
+    vertical-align: middle;
+    /*margin: auto 40px;
+    padding: 20px 0;*/
+}
+
+.nav-left{
+    font-size: 30px;
+    float: left;
+}
+.nav-right{
+    font-size: 20px;
+    float: right;
+}
+
+#underNav{
+    height: 30px;
+    width: 100%;
+    background-color: lightcyan;
+}
+
+#mainDisplay{
+    width: 80%;
+    margin: 5px auto;
+    background-color: #ffffff;
+}
+
+.imgFit{
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.imgFitScale{
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.mainDisplayRow{
+    display: block;
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+}
+
+#tabs{
+    width: 100%;
+}
+
+#tabs li{
+    width: 20%;
+    /*margin: 1.25%;*/
+    word-wrap: break-word;
+    height: 30px;
+}
+
+#tabs li a{
+    /*display: table-cell;;*/
+    /*margin: auto;*/
+    /*height: 100%;*/
+    /*vertical-align: middle;*/
+    text-decoration: none;
+    text-align: center;
+    color: #000000;
+    font-family: Algerian;
+    font-size: 1.3em;
+}
+
+#tabs li a:hover{
+    background-color:lightcyan;
+    color: #000000;
+}
+
+#tabs li.active > a{
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.myTabBody{
+    min-height: 800px;
+    width: 100%;
+    padding: 30px;
+}
+
+.myTabBodyCol{
+   height: 800px;
+    padding: 5px;
+}
+
+.comment{
+    width: 95%;
+    margin: auto;
+    min-height: 60px;
+    border: 1px dashed darkgrey;
+    /*background-color: rgba(224,224,224,0.1);*/
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.msg{
+    background-color: rgba(224,224,224,0.1);
+    border: 1px solid #ffffff;
+}
+
+.imgActice{
+    border: 2px inset blue;
+}
+
+.imageSelectorNotReady{
+    background-image: url(http://i.imgur.com/PH9Iul9.gif);
+    background-size: 100%;
+}
+
+.imageSelectorReady{
+    background-image: url(http://4.bp.blogspot.com/-nL5KS3nQEF0/T2bSjWkJ2cI/AAAAAAAAAKM/VfYcgIHhh6I/s1600/white+background6.png);
+    background-size: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

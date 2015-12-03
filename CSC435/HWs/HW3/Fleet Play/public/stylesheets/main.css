@@ -1,0 +1,85 @@
+.mainBody{
+    min-width: 1100px;
+}
+
+.imgFitScale{
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.imgFit{
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.mainDisplayRow{
+    display: block;
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+}
+
+#tabs{
+    width: 100%;
+}
+
+#tabs li{
+    width: 20%;
+    /*margin: 1.25%;*/
+    word-wrap: break-word;
+    height: 30px;
+}
+
+#tabs li a{
+    /*display: table-cell;;*/
+    /*margin: auto;*/
+    /*height: 100%;*/
+    /*vertical-align: middle;*/
+    text-decoration: none;
+    text-align: center;
+    color: #000000;
+    font-family: Algerian;
+    font-size: 1.3em;
+}
+
+#tabs li a:hover{
+    background-color:lightcyan;
+    color: #000000;
+}
+
+#tabs li.active > a{
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.myTabBody{
+    min-height: 800px;
+    width: 100%;
+    padding: 30px;
+}
+
+.myTabBodyCol{
+    height: 800px;
+    padding: 5px;
+}
+
+.comment{
+    width: 95%;
+    margin: auto;
+    min-height: 60px;
+    border: 1px dashed darkgrey;
+    /*background-color: rgba(224,224,224,0.1);*/
+    color: #000000;
+    word-wrap: break-word;
+}
+
+.msg{
+    background-color: rgba(224,224,224,0.1);
+    border: 1px solid #ffffff;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>chart created with amCharts | amCharts</title>
+<meta name="description" content="chart created using amCharts live editor" />
+
+<!-- amCharts javascript sources -->
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/black.js"></script>
+
+<!-- amCharts javascript code -->
+<script type="text/javascript">
+AmCharts.makeChart("chartdiv",
+{
+"type": "serial",
+"categoryField": "category",
+"startDuration": 1,
+"theme": "black",
+"categoryAxis": {
+"gridPosition": "start",
+"title": "Servers"
+},
+"trendLines": [],
+"graphs": [
+{
+"balloonText": "[[title]] of [[category]]:[[value]]",
+"fillAlphas": 1,
+"id": "AmGraph-1",
+"title": "Rho",
+"type": "column",
+"valueField": "column-1"
+},
+{
+"balloonText": "[[title]] of [[category]]:[[value]]",
+"fillAlphas": 1,
+"id": "AmGraph-2",
+"title": "Pi",
+"type": "column",
+"valueField": "column-2"
+}
+],
+"guides": [],
+"valueAxes": [
+{
+"id": "ValueAxis-1",
+"title": "Executions(per micro s)"
+}
+],
+"allLabels": [],
+"balloon": {},
+"legend": {
+"useGraphSettings": true
+},
+"titles": [
+{
+"id": "Title-1",
+"size": 15,
+"text": "Concurrent Data Structures throughput"
+}
+],
+"dataProvider": [
+{
+"category": "Tree",
+"column-2": "7887.816",
+"column-1": "6997.572"
+},
+{
+"category": "Hash",
+"column-2": "7300.906",
+"column-1": "8100.331"
+}
+]
+}
+);
+</script>
+</head>
+<body>
+<div id="chartdiv" style="width: 100%; height: 400px; background-color: #222222;" ></div>
+</body>
+</html>
