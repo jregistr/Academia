@@ -1,5 +1,0 @@
-€[2016-02-24 01:00:31,083] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - Griffon 2.5.0
-–[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - Build: 2015-12-01T08:16:56.483+0100
-¥[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - Revision: bf3eccd04dc550561edaf6221bc19659ec877ef2
-Ÿ[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - JVM: 1.8.0_71 (Oracle Corporation 25.71-b15)
-Œ[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - OS: Windows 10 10.0 amd64
