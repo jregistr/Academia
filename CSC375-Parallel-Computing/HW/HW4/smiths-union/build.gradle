@@ -1,0 +1,49 @@
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName='thewatchers.Main'
+//systemProperty 'java.library.path', 'libs/native'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    mavenCentral()
+   // jcenter()
+}
+
+sourceSets{
+    main{
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:latest.release'
+    compile 'org.codehaus.gpars:gpars:1.2.1'
+    compile 'com.google.code.gson:gson:2.5'
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '2.9'
+}
+
+task run2(type: JavaExec) {
+//    systemProperty 'java.library.path', 'libs/native'
+    main = 'thewatchers.Main'
+    classpath sourceSets.main.runtimeClasspath
+}
+
+/*
+run{
+
+}*/

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.jeff.miniflix.MiniFlixControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2016-02-24T06:00:30" hostname="DESKTOP-AIDONE8" time="1.573">
+  <properties/>
+  <testcase name="executeClickAction" classname="com.jeff.miniflix.MiniFlixControllerTest" time="1.573"/>
+  <system-out><![CDATA[[2016-02-24 01:00:31,083] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - Griffon 2.5.0
+[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - Build: 2015-12-01T08:16:56.483+0100
+[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - Revision: bf3eccd04dc550561edaf6221bc19659ec877ef2
+[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - JVM: 1.8.0_71 (Oracle Corporation 25.71-b15)
+[2016-02-24 01:00:31,085] [Test worker] INFO  org.codehaus.griffon.runtime.core.DefaultApplicationBootstrapper - OS: Windows 10 10.0 amd64
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

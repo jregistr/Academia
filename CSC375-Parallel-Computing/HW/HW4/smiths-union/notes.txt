@@ -1,0 +1,41 @@
+Ideas for how this'll work
+
+	you shall send to each server their x start position and end x position. 
+	The servers will use this information to generate their heat maps
+		The servers are the ones that hold objects such as alloy and metal
+		The client just requests and consumes
+		 Using the info about their x start and end, the servers can make their grid one cell
+		 longer to the right or to the left or both. That depends ofc on if that server has a 
+		 grid that in the grand scheme of things is surrounded on both sides. Perhaps that's
+	 	 another set of information for the meta data in the data that is initially send to
+		 the server. Matter of fact, it is. Remember to keep the extra edge(s) out of the
+		 calculations. They're there just for reference purpose.
+
+
+	The following is a collection of data in the set that is initially sent to servers.
+		-id(unique per server)
+		-start x, end x, extra on left, extra on right
+		-thermal constants
+		
+
+	The following is a collection of data in the set that is send back to the client from servers
+		-start x, end x, an id.
+		-collection of temperatures from calculations in a bytebuffer stream.
+		-the highest temperature change during calculations
+
+
+	You shall use an actor in the client side. This actor will keep state. In front of the actor is 
+	a class that manages to communication with the servers, the stuff it receives from the server,
+	it passes through some translation and sends it as a message to the actor. This actor's 
+	behavious then is based on its current state. So for example, if the actor expects 
+	10 completed set of tasks from servers and it receives it's 8th item back. it shall take,
+	call render and then nothing more. Alternatively, mr actor can simply store all feedback
+	until all the expected data has been received and only then will it render. After this actor
+	get's back all of its expected data back. it's next move is based on it's state.
+	Based on result received, are the conditions for convergence met? Have we hit max 
+	iterations? If so, we end. Otherwise, use the full grid to gather edge information for the
+	servers and send it all back to the communication manager to send back to the server. 
+	Note that we're not in a loop in this actor, we're simply reacting to messages based on our
+	state.
+
+	Well, that's the plan! 

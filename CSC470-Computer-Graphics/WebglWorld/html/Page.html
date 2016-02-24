@@ -1,0 +1,213 @@
+<!--<script data-main="../config.js" src="../src/js/libs/require/require.js"></script>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="A very nice world of WebGl">
+    <meta name="author" content="Jeff Registre">
+    <link rel="icon" href="../images/misc/pencil.png">
+
+    <title>Webgl World</title>
+
+    <!-- Bootstrap -->
+    <link href="../style/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="../style/libs/bootstrap/bootstrap-theme.min.css" rel="stylesheet">
+
+</head>
+
+<body class="container">
+
+    <div class="row">
+
+        <div class="col-lg-10">
+            <canvas style="border: 2px dashed black" id="canvas" width="960" height="540"></canvas>
+        </div>
+
+        <div class="col-lg-2">
+
+            <div class="form-group">
+                <label for="subDivs" class="text-primary">Subs</label>
+                <input id="subDivs" type="range" class="form-control" min="0" max="6" step="1" value="1">
+                <button id="appBtn" type="button" class="btn btn-primary">Apply</button>
+                <label for="rotSpeed" class="text-primary">Rotation Speed</label>
+                <input id="rotSpeed" type="range" class="form-control" min="0" max="1000" step="10" value="0">
+                <button id="togDir" type="button" class="btn btn-sm btn-warning">Toggle Dir</button>
+            </div>
+
+            <div class="form-group">
+                <label for="fovSlider">FOV</label>
+                <input id="fovSlider" name="fov" type="range" class="form-control" min="1" max="180" step="1" value="60">
+            </div>
+
+            <div class="form-group">
+                <label for="xSlider" class="text-primary">X</label>
+                <input id="xSlider" type="range" class="form-control" min="-2" max="2" step="0.01" value="0">
+                <!--<input id="xSlider" type="range" class="form-control" min="-200" max="200" step="0.01" value="50">-->
+            </div>
+
+            <div class="form-group">
+                <label for="ySlider" class="text-primary">Y</label>
+                <input id="ySlider" type="range" class="form-control" min="-2" max="2" step="0.01" value="0">
+                <!--<input id="ySlider" type="range" class="form-control" min="-200" max="200" step="1" value="0">-->
+                <!--<input id="ySlider" type="range" class="form-control" min="-200" max="200" step="0.01" value="100">-->
+            </div>
+
+            <div class="form-group">
+                <label for="zSlider" class="text-primary">Z</label>
+                <input id="zSlider" type="range" class="form-control" min="-10" max="10" step="0.01" value="4">
+                <!--<input id="zSlider" type="range" class="form-control" min="-100" max="100" step="0.01" value="25">-->
+            </div>
+
+            <div class="form-group">
+                <label for="xRotate" class="text-primary">x rotation</label>
+                <input id="xRotate" type="range" class="form-control" min="-90" max="90" step="0.01" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="yRotate" class="text-primary">y rotation</label>
+                <input id="yRotate" type="range" class="form-control" min="-90" max="90" step="0.01" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="zRotate" class="text-primary">z rotation</label>
+                <input id="zRotate" type="range" class="form-control" min="-90" max="90" step="0.01" value="0">
+            </div>
+
+        </div>
+
+    </div>
+
+    <script id="shader-vs" type="x-shader/x-vertex">
+        //Attribute declarations
+        attribute vec3 aPosition;
+        attribute vec3 aNormal;
+        attribute vec4 aColor;
+        attribute vec3 aCenter;
+        attribute vec2 aTexCord;
+
+        //uniform declarations
+        uniform float uTheta;
+
+        uniform mat4 uModelViewMatrix;
+        uniform mat4 uProjectionMatrix;
+        uniform mat4 uNormalMatrix;
+
+        //Varying declaration
+        varying vec4 vColor;
+        varying vec3 vNormal;
+        varying vec3 vEyeVector;
+        varying vec2 vTexCord;
+
+        void main() {
+
+            vec2 bbbb = aTexCord;
+
+           //Do carpet rotation stuff here
+            vec3 cc = aCenter;
+            float c = cos(uTheta);
+            float s = sin(uTheta);
+
+            mat4 toCenter = mat4(
+                1,       0,      0,      0,
+
+                0,       1,      0,      0,
+
+                0,       0,      1,      0,
+
+            -cc.x,   -cc.y,  -cc.z,      1
+            );
+
+            mat4 back = mat4(
+                1,       0,      0,      0,
+
+                0,       1,      0,      0,
+
+                0,       0,      1,      0,
+
+             cc.x,    cc.y,  cc.z,      1
+            );
+
+            mat4 rot = mat4(
+                c, s, 0, 0,
+               -s, c, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            );
+
+            mat4 netmat = back * rot * toCenter;
+            vec4 pos = netmat * vec4(aPosition, 1);
+
+            vec4 norm = netmat * vec4(aNormal, 0);
+            //End carpet rotation stuff
+
+            /*Lighting stuff here*/
+            vec4 tVert = uProjectionMatrix * uModelViewMatrix * vec4(pos.xyz, 1.0);
+            vNormal = (uNormalMatrix * norm).xyz;
+            vEyeVector = -vec3(tVert.xyz);
+            /*End lighting stuff here*/
+
+            gl_Position = uProjectionMatrix * uModelViewMatrix * pos;
+            vColor = aColor;
+            vTexCord = aTexCord;
+        }
+    </script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+        precision highp float;
+
+        //Uniform declarations
+        uniform float uShininess;
+        uniform vec3  uLightDir; //light source direction
+        uniform vec4  uLightDiffuse; //light diffuse color
+        uniform vec4  uLightAmbient;//ambient color
+        uniform vec4  uLightSpecular;//light specularity
+
+        uniform vec4 uMaterialAmbient;
+        uniform vec4 uMaterialSpecular;
+
+        uniform sampler2D uSampler;
+
+        varying vec4 vColor;
+        varying vec3 vNormal;
+        varying vec3 vEyeVector;
+        varying vec2 vTexCord;
+
+        void main() {
+
+            vec3 L = normalize(uLightDir);
+            vec3 N = normalize(vNormal);
+
+            //Lambert's cosine law
+            float Lambert = dot(N,-L);
+            //Ambient Term
+            vec4 Ia = uLightAmbient * uMaterialAmbient;
+            //Diffuse term
+            vec4 Id = vec4(0.0,0.0,0.0,1.0);
+            //Specular term
+            vec4 Is = vec4(0.0,0.0,0.0,1.0);
+
+            if(Lambert > 0.0){
+                Id = uLightDiffuse * vColor * Lambert;
+
+                vec3 E = normalize(vEyeVector);
+                vec3 R = reflect(L, N);
+                float spec = pow(max(dot(R,E), 0.0), uShininess);
+
+                Is = uLightSpecular * uMaterialSpecular * spec;
+            }
+
+            vec4 endColor = vec4((Ia + Id + Is).xyz, 1.0);
+            vec4 finalColor = endColor * texture2D(uSampler, vTexCord);
+            gl_FragColor = finalColor;
+
+        }
+    </script>
+
+<!--<script data-main="../config.js" src="../src/js/libs/require/require.js"></script>-->
+<script data-main="../config.js" src="../node_modules/requirejs/require.js"></script>
+</body>
+
+</html>

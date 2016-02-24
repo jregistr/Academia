@@ -1,0 +1,53 @@
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName='blacksmith.Main'
+//systemProperty 'java.library.path', 'libs/native'
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use 'jcenter' for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenCentral()
+   // jcenter()
+}
+
+sourceSets{
+    main{
+        groovy {
+            srcDir 'src/main/groovy'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    // We use the latest groovy 2.x version for building this library
+   // compile files('libs/native')
+    compile 'org.codehaus.groovy:groovy-all:latest.release'
+//    compile 'org.codehaus.groovy:groovy-all:2.4.5'
+    compile 'org.codehaus.gpars:gpars:1.2.1'
+
+    // compile 'org.codehaus.groovy:groovy-all:2.4.4'
+  //  compile 'org.codehaus.gpars:gpars:1.2.1'
+  //  compile 'org.lwjgl:lwjgl:3.0.0b'
+
+}
+
+/*task run2(type: JavaExec){
+    systemProperty 'java.library.path', 'libs/native'
+    main = 'blacksmith.Main'
+    classpath sourceSets.main.runtimeClasspath
+}*/
+
+task wrapper(type: Wrapper){
+    gradleVersion = '2.9'
+}

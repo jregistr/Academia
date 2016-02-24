@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<JDepend>
+    <Packages>
+
+        <Package name="Default">
+            <Stats>
+                <TotalClasses>2</TotalClasses>
+                <ConcreteClasses>2</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>0</Ca>
+                <Ce>5</Ce>
+                <A>0</A>
+                <I>1</I>
+                <D>0</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="Config.java">
+                    Config
+                </Class>
+                <Class sourceFile="Initialize.java">
+                    Initialize
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>griffon.core</Package>
+                <Package>griffon.util</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>org.codehaus.griffon.runtime.core</Package>
+            </DependsUpon>
+
+            <UsedBy>
+            </UsedBy>
+        </Package>
+
+        <Package name="com.jeff.miniflix">
+            <Stats>
+                <TotalClasses>6</TotalClasses>
+                <ConcreteClasses>6</ConcreteClasses>
+                <AbstractClasses>0</AbstractClasses>
+                <Ca>0</Ca>
+                <Ce>16</Ce>
+                <A>0</A>
+                <I>1</I>
+                <D>0</D>
+                <V>1</V>
+            </Stats>
+
+            <AbstractClasses>
+            </AbstractClasses>
+
+            <ConcreteClasses>
+                <Class sourceFile="ApplicationEventHandler.java">
+                    com.jeff.miniflix.ApplicationEventHandler
+                </Class>
+                <Class sourceFile="ApplicationModule.java">
+                    com.jeff.miniflix.ApplicationModule
+                </Class>
+                <Class sourceFile="Launcher.java">
+                    com.jeff.miniflix.Launcher
+                </Class>
+                <Class sourceFile="MiniFlixController.java">
+                    com.jeff.miniflix.MiniFlixController
+                </Class>
+                <Class sourceFile="MiniFlixModel.java">
+                    com.jeff.miniflix.MiniFlixModel
+                </Class>
+                <Class sourceFile="MiniFlixView.java">
+                    com.jeff.miniflix.MiniFlixView
+                </Class>
+            </ConcreteClasses>
+
+            <DependsUpon>
+                <Package>griffon.core</Package>
+                <Package>griffon.core.event</Package>
+                <Package>griffon.core.view</Package>
+                <Package>griffon.javafx</Package>
+                <Package>griffon.transform</Package>
+                <Package>java.lang</Package>
+                <Package>java.util</Package>
+                <Package>javafx.beans.property</Package>
+                <Package>javafx.collections</Package>
+                <Package>javafx.scene</Package>
+                <Package>javafx.scene.control</Package>
+                <Package>javafx.scene.paint</Package>
+                <Package>javafx.stage</Package>
+                <Package>org.codehaus.griffon.runtime.core.artifact</Package>
+                <Package>org.codehaus.griffon.runtime.core.injection</Package>
+                <Package>org.codehaus.griffon.runtime.javafx.artifact</Package>
+            </DependsUpon>
+
+            <UsedBy>
+            </UsedBy>
+        </Package>
+
+        <Package name="griffon.core">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="griffon.core.event">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="griffon.core.view">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="griffon.javafx">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="griffon.transform">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="griffon.util">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="java.lang">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="java.util">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javafx.beans.property">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javafx.collections">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javafx.scene">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javafx.scene.control">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javafx.scene.paint">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="javafx.stage">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="org.codehaus.griffon.runtime.core">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="org.codehaus.griffon.runtime.core.artifact">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="org.codehaus.griffon.runtime.core.injection">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+
+        <Package name="org.codehaus.griffon.runtime.javafx.artifact">
+            <error>No stats available: package referenced, but not analyzed.</error>
+        </Package>
+    </Packages>
+
+    <Cycles>
+    </Cycles>
+</JDepend>
