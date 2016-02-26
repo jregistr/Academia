@@ -1,0 +1,28 @@
+group 'Networking'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+mainClassName = "metermen.ClientMain"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+sourceSets{
+    main{
+        scala{
+            srcDir 'src/main/scala'
+        }
+        resources{
+            srcDir 'src/main/resources'
+        }
+    }
+}
