@@ -1,6 +1,6 @@
 package metermen.server
 
-import metermen.server.tcp.{TCPEchoServer, TCPThroughServer}
+import metermen.server.tcp.{TCPMessagesServer, TCPEchoServer, TCPThroughServer}
 
 import scala.io.StdIn.{readLine => getInput}
 /**
@@ -15,11 +15,12 @@ object ServerMain {
 
     println("Choose which server to start up!!!")
     println("Choices are: {TCP-RTT[0], TCP-Throughput[1]")
-    val server = 1
+    val server = 2
 
     server match {
       case 0 => TCPEchoServer(port).connectionWait()
       case 1 => TCPThroughServer(port).connectionWait()
+      case 2 => TCPMessagesServer(port).connectionWait()
       case _ => throw new IllegalArgumentException
     }
 

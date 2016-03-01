@@ -1,6 +1,6 @@
 package metermen.client
 
-import metermen.client.tcp.{TCPThroughClient, TCPEchoClient}
+import metermen.client.tcp.{TCPMessagesClient, TCPThroughClient, TCPEchoClient}
 
 import scala.io.StdIn.{readLine => getInput}
 
@@ -18,11 +18,12 @@ object ClientMain {
 
     println("Now which client do you want to start??")
     println("Choices are: TCP-RTT[0], TCP-Throughput[1]")
-    val client = 1
+    val client = 2
 
     client match {
       case 0 => new TCPEchoClient(add, port, "TCP-RTT").process()
       case 1 => new TCPThroughClient(add, port, "TCP-Though").process()
+      case 2 => new TCPMessagesClient(add, port, "TCP-Message").process()
       case _ => throw new IllegalArgumentException
     }
   }

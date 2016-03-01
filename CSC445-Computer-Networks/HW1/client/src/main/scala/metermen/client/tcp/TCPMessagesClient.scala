@@ -6,38 +6,45 @@ import metermen.constants.Constants.NANOS_TO_MILIS
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 /**
-  * tcp echo client
+  * Class to make message client.
   */
-class TCPEchoClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
+class TCPMessagesClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
   private val testCount = 100000
+  private val read = new Array[Byte](1)
 
   override def process(): ListBuffer[(String, List[Double])] = {
     val results = new ListBuffer[(String, List[Double])]()
     output.writeInt(testCount * 3)
     output.flush()
-    results += (("1B", runTest(1)))
-    results += (("32B", runTest(32)))
-    results += (("1024B", runTest(1024)))
-    socket.close()
 
+    results += (("4 x 256KB", runTest(4, 256000)))
+    results += (("2 x 512KB", runTest(2, 512000)))
+    results += (("1 x 1024KB", runTest(1, 1024000)))
+
+    socket.close()
     results
   }
 
-  def runTest(size: Int): List[Double] = {
+  def runTest(tests: Int, size: Int): List[Double] = {
     val buffer: ArrayBuffer[Double] = ArrayBuffer()
     val write = new Array[Byte](size)
-    val read = new Array[Byte](size)
+
     loop(testCount, () => {
+      output.writeInt(tests)
       output.writeInt(size)
+
       val b4 = System.nanoTime()
-      output.write(write)
+      loop(tests, () => {
+        output.write(write)
+      })
       output.flush()
+
       input.readFully(read)
       buffer += ((System.nanoTime() - b4) * NANOS_TO_MILIS)
     })
+    println(buffer.toList)
     buffer.toList
   }
 
 }
-
