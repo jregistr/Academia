@@ -11,7 +11,7 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   */
 class TCPEchoClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
-  private val testCount = 10
+  private val testCount = 10000
 
   override def process(): Unit = {
     val results = new ListBuffer[(Int, List[Double])]()

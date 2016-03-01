@@ -1,5 +1,7 @@
 package metermen.client.tcp
 
+import java.util
+
 import com.jeff.dsl.util.Util._
 import metermen.client.util.CSVMan
 import metermen.constants.Constants.NANO_TO_MILIS
@@ -11,7 +13,7 @@ import scala.collection.mutable.{ListBuffer, ArrayBuffer}
   */
 class TCPThroughClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
-  private val tc = 2
+  private val tc = 100
   private var oneByteAv: Long = _
 
   override def process(): Unit = {
@@ -22,7 +24,7 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
       loop(tc, () => {
         val b4 = System.nanoTime()
         output.write(buffer)
-        output.flush()
+       // output.flush()
         input.read(buffer)
         total += (System.nanoTime() - b4) / 2
       })
@@ -34,13 +36,13 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
     {
 
       output.writeInt(tc * 5)
-      results += ((1000, runTests(1000)))
-      results += ((16000, runTests(16000)))
-      results += ((64000, runTests(64000)))
-     // results += ((64000, runTests(64000)))
-    //  results += ((64000, runTests(64000)))
-      results += ((256000, runTests(256000)))
-      results += ((1000000, runTests(1000000)))
+      results += ((100, runTests(64000)))
+      results += ((100, runTests(64000)))
+      results += ((100, runTests(64000)))
+      results += ((100, runTests(64000)))
+      results += ((100, runTests(64000)))
+
+
     }
     socket.close()
   }
@@ -48,13 +50,19 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
   private def runTests(size: Int): List[Double] = {
     val buffer: ArrayBuffer[Double] = ArrayBuffer()
     val write = new Array[Byte](size)
+    util.Arrays.fill(write, 1.toByte)
     val read = new Array[Byte](1)
-    loop(tc, () => {
+    loop(tc, (iteration) => {
+      println(size)
+      println("Iter:" + iteration)
       output.writeInt(size)
+     // output.flush()
       val b4 = System.nanoTime()
-      output.write(write)
+
+      output.write(write, 0, size)
       output.flush()
-      input.read(read)
+      //input.read(new Array[Byte](1))
+      input.readByte()
       buffer += Math.abs(((System.nanoTime() - b4) - oneByteAv) * NANO_TO_MILIS)
     })
     println(buffer.toList)
