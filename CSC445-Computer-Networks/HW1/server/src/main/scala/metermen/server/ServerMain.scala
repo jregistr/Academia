@@ -23,6 +23,6 @@ object ServerMain {
       case _ => throw new IllegalArgumentException
     }
 
-    TCPEchoServer(port).connectionWait()
+   // TCPEchoServer(port).connectionWait()
   }
 }

@@ -14,10 +14,7 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
   private var oneByteAv: Long = _
 
   override def process(): Unit = {
-    output.writeInt(100)
-    output.flush()
-
-    /*{
+    {
       val buffer = new Array[Byte](1)
       var total: Long = 0
       output.writeInt(tc)
@@ -31,14 +28,17 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
       oneByteAv = total / tc
     }
 
+    val results = new ListBuffer[(Int, List[Long])]()
+
     {
-      val results = new ListBuffer[(Int, List[Long])]()
+
       output.writeInt(tc * 3)
       results += ((1000, runTests(1000)))
       results += ((16000, runTests(16000)))
       results += ((64000, runTests(64000)))
-      CSVMan.write(fileName(), results)
-    }*/
+    }
+    socket.close()
+    CSVMan.write(fileName(), results)
 
   }
 

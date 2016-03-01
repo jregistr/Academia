@@ -9,9 +9,7 @@ import com.jeff.dsl.util.Util._
 class TCPThroughServer(server: ServerSocket) extends TCPServer(server) {
 
   override protected def process(): Unit = {
-    val bla = input.readInt()
-    println("BLA:" + bla)
-    /*{
+    {
       val spTest = new Array[Byte](1)
       val loopCount = input.readInt()
       loop(loopCount, () => {
@@ -29,7 +27,7 @@ class TCPThroughServer(server: ServerSocket) extends TCPServer(server) {
         output.write(oneByte)
         output.flush()
       })
-    }*/
+    }
   }
 
 }

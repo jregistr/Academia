@@ -16,7 +16,7 @@ abstract class TCPClient(address: String, port: Int, val name:String) {
   protected val format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
 
   final def fileName():String = {
-    s".\\$name-${format.format(new Date())}.csv"
+    s"./$name-${format.format(new Date())}.csv"
   }
 
   def process():Unit
