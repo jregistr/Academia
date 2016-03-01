@@ -11,7 +11,7 @@ object ServerMain {
     println ("Welcome to server creator.")
 
     println("What port is this running on???")
-    val port = 65000
+    val port = 7000
 
     println("Choose which server to start up!!!")
     println("Choices are: {TCP-RTT[0], TCP-Throughput[1]")

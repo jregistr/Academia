@@ -14,7 +14,7 @@ object ClientMain {
     val add = "localhost"
 
     println("What port to use for connection??")
-    val port = 65000
+    val port = 7000
 
     println("Now which client do you want to start??")
     println("Choices are: TCP-RTT[0], TCP-Throughput[1]")

@@ -5,6 +5,8 @@ package metermen.constants
   */
 object Constants {
 
+  val NANO_TO_MILIS = 0.000001f
+
   object TCPEchoSize extends Enumeration{
     val ONE = Value(1)
     val THIRTY_TWO = Value(32)

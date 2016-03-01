@@ -23,6 +23,7 @@ class TCPThroughServer(server: ServerSocket) extends TCPServer(server) {
       val oneByte = new Array[Byte](1)
       loop(input.readInt(), () => {
         val size = input.readInt()
+        println("Size:" + size)
         input.read(new Array[Byte](size))
         output.write(oneByte)
         output.flush()
