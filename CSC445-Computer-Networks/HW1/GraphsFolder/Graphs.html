@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Graphs</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :focus {
@@ -378,50 +378,40 @@
 <body onload="launchProgram()">
 <div class="row">
     <!-- <nav class="navbar navbar-default navbar-static-top" style="margin-bottom:0!important;">
-         <div class="container">
-             <div class="navbar-header">
-                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                         aria-expanded="false" aria-controls="navbar">
-                     <span class="sr-only">Toggle navigation</span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                 </button>
-                 <a class="navbar-brand" href="http://cs.oswego.edu/~jregistr/">Jeff Registre</a>
-             </div>
-             <div id="navbar" class="navbar-collapse collapse navbar-right">
-                 <ul id="linksToOtherPages" class="nav navbar-nav">
-                     &lt;!&ndash; <li class="active"><a href="#">Home</a></li>
-                      <li><a href="#about">About</a></li>
-                      <li><a href="#contact">Contact</a></li>&ndash;&gt;
+          <div class="container">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                          aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="http://cs.oswego.edu/~jregistr/">Jeff Registre</a>
+              </div>
+              <div id="navbar" class="navbar-collapse collapse navbar-right">
+                  <ul id="linksToOtherPages" class="nav navbar-nav">
+                      &lt;!&ndash; <li class="active"><a href="#">Home</a></li>
+                       <li><a href="#about">About</a></li>
+                       <li><a href="#contact">Contact</a></li>&ndash;&gt;
 
-                 </ul>
-             </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;
-         </div>
-     </nav>-->
-
+                  </ul>
+              </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;
+          </div>
+      </nav>-->
     <div class="side-menu">
-
-
         <nav class="navbar navbar-default" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <div class="brand-wrapper">
                     <!-- Hamburger -->
-                    <button type="button" class="navbar-toggle">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                    <button type="button" class="navbar-toggle"><span class="sr-only">Toggle navigation</span> <span
+                            class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                     </button>
-
                     <!-- Brand -->
                     <div class="brand-name-wrapper">
-                        <a class="navbar-brand" href="#">
-                            Graphs
-                        </a>
+                        <a class="navbar-brand" href="#"> Graphs </a>
                     </div>
-
                     <!-- Search body -->
                     <div id="search" class="panel-collapse collapse">
                         <div class="panel-body">
@@ -435,29 +425,47 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <!-- Main Menu -->
             <div class="side-menu-container">
                 <ul id="group-links" class="nav navbar-nav">
-
+                    <li><a href="#"><span class="glyphicon glyphicon-plane"></span>Group_1</a></li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
+            </div>
+            <!-- /.navbar-collapse -->
         </nav>
-
     </div>
-
     <!-- Main Content -->
     <div class="container-fluid">
         <div class="side-body" style="">
             <!--<div id="description" class="alert alert-success" role="alert">
-                You successfully read this important alert message.
-            </div>-->
+                       You successfully read this important alert message.
+                   </div>-->
             <div class="row" style="margin-top: 50px">
                 <div class="col-lg-12">
                     <div id="groups" class="row">
-
+                        <div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Graph_1
+                                    </div>
+                                    <div class="panel-body">
+                                        <canvas id="Group_1Graph_1" width="300" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Graph_2
+                                    </div>
+                                    <div class="panel-body">
+                                        <canvas id="Group_1Graph_2" width="300" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -534,7 +542,6 @@
     });
 
 </script>
-
 <script>
     var options = {
         //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
@@ -570,7 +577,45 @@
 
     }
 </script>
+<script>
+    var Graph_1 = {
+        labels: ["A", "B", "C", "D"],
+        datasets: [
+            {
+                label: "Something",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [10.0, 12.0, 30.0, 17.0]
+            }
+        ]
+    }
+
+    var Graph_2 = {
+        labels: ["E", "F", "G", "H"],
+        datasets: [
+            {
+                label: "Something",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [7.0, 2.0, 40.0, 10.0]
+            }
+        ]
+    }
 
 
+</script>
+<script>
+    var GraphMaker = (function () {
+        var Group_1Graph_1 = document.getElementById("Group_1Graph_1").getContext("2d");
+        var Group_1Graph_1Chart = new Chart(Group_1Graph_1).Bar(Graph_1, options);
+        var Group_1Graph_2 = document.getElementById("Group_1Graph_2").getContext("2d");
+        var Group_1Graph_2Chart = new Chart(Group_1Graph_2).Bar(Graph_2, options);
+    })
+
+</script>
 </body>
 </html>
