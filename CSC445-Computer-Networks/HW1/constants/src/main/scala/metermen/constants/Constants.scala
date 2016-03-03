@@ -6,6 +6,7 @@ package metermen.constants
 object Constants {
 
   val NANOS_TO_MILIS = 0.000001f
+  val MAX_UDP_PACKET_SIZE = 32000
 
   object TCPEchoSize extends Enumeration{
     val ONE = Value(1)
