@@ -2,6 +2,7 @@ package metermen.client.udp
 
 import java.net.SocketTimeoutException
 
+import metermen.constants.Constants
 import metermen.constants.Constants.NANOS_TO_MILIS
 
 import scala.collection.mutable.ListBuffer
@@ -9,8 +10,8 @@ import scala.collection.mutable.ListBuffer
 /**
   * Class to make rtt client
   */
-class UDPClientRTT(size: Int, localPort: Int, destUri: String, destPort: Int, name: String)
-  extends UDPClient(size, localPort, destUri, destPort, name) {
+class UDPClientRTT(size: Int, localPort: Int, destUri: String, destPort: Int)
+  extends UDPClient(size, localPort, destUri, destPort) {
 
   override def process(): (String, List[Double]) = {
     val buffer = new ListBuffer[Double]
@@ -34,7 +35,8 @@ class UDPClientRTT(size: Int, localPort: Int, destUri: String, destPort: Int, na
       }
     }
 
-    (name, buffer.toList)
+    (Constants.bytesToSize(size), buffer.toList)
   }
+
 
 }

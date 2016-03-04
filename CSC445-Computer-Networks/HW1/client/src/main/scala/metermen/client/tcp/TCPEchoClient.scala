@@ -12,7 +12,7 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 class TCPEchoClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
 
-  override def process(): ListBuffer[(String, List[Double])] = {
+  override def process(): List[(String, List[Double])] = {
     val results = new ListBuffer[(String, List[Double])]()
     output.writeInt(TEST_COUNT * 3)
     output.flush()
@@ -20,8 +20,7 @@ class TCPEchoClient(address: String, port: Int, name: String) extends TCPClient(
     results += (("32B", runTest(32)))
     results += (("1024B", runTest(1024)))
     socket.close()
-
-    results
+    results.toList
   }
 
   def runTest(size: Int): List[Double] = {

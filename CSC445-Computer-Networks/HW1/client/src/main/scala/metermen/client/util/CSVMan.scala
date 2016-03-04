@@ -12,13 +12,13 @@ import scala.collection.mutable.ListBuffer
   */
 object CSVMan {
 
-  def write(name: String, results: ListBuffer[(Int, List[Long])]): Unit = {
+  def write(name: String, results: List[(String, List[Double])]): Unit = {
     val file = Paths.get(name).toFile
     file.createNewFile()
     file.setWritable(true)
 
     val writer = new PrintWriter(file)
-    val iters = new ListBuffer[List[Long]]()
+    val iters = new ListBuffer[List[Double]]()
     var count: Int = 0
     results.foreach((x) => {
       writer.write(if (count != 0) s",${x._1}" else s"${x._1}")

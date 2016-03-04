@@ -1,9 +1,8 @@
 package metermen.server
 
-import metermen.constants.Constants.availablePort
-import metermen.server.tcp.{TCPMessagesServer, TCPEchoServer, TCPThroughServer}
-import metermen.server.udp.UDPEchoServer
 import com.jeff.dsl.util.Util._
+import metermen.server.tcp.{TCPEchoServer, TCPMessagesServer, TCPThroughServer}
+import metermen.server.udp.UDPEchoServer
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn.{readLine => getInput}
@@ -14,78 +13,50 @@ import scala.io.StdIn.{readLine => getInput}
 object ServerMain {
   def main(args: Array[String]) {
 
-    //Simplify this. do tests one by one. including each piece of the udp ones
+    println("Server creator program start")
+    println("What type of server to start? [0]:TCP, [1]:UDP")
+    val sType = getInput().toInt
 
-    println("Welcome to server creator.")
+    if (sType == 0) {
 
-    println("What port to run Echo Server on??")
-    val echoServerPort = getInput().toInt
+      println("TCP!!")
+      println("What port to run server on??")
+      val port = getInput().toInt
+      println("Select which server to start:")
+      println("[0]:RTT, [1]:Throughput, [2]:MessageSize")
+      val si = getInput().toInt
 
-    println("What port to run Throughput Server on??")
-    val throughputServerPort = getInput().toInt
+      si match {
+        case 0 =>
+          println("ECHO")
+          TCPEchoServer(port).connectionWait()
+        case 1 => TCPThroughServer(port).connectionWait()
+        case 2 => TCPMessagesServer(port).connectionWait()
+        case _ => throw new IllegalArgumentException
+      }
 
-    println("What port to run Messages Server on??")
-    val messagesServerPort = getInput().toInt
+    } else {
 
-    val udpTups = new ListBuffer[(Int, Int, String, Int)]
+      println("UDP!!")
+      println("How many sets of tests to run??")
+      val tests = getInput().toInt
+      println(s"Okay. ($tests) tuples of the form: Size(Int),localPort(Int),destAddress(String),destPort(Int) are required.")
+      println("Enter them now")
 
-    println("8 Tuple(3) of the form below must be entered:")
-    println("Size(Int),ServerPort(Int),ClientAddress(String),ClientPort(Int)")
-    println("Insert them now")
-
-    loop(8, () => {
-      val input = getInput()
-      val split = input.split(",")
-      udpTups += ((split(0).toInt, split(1).toInt, split(2), split(3).toInt))
-    })
-
-    //Check that all provided local ports are available.
-    {
-      val checkBuffer = new ListBuffer[(Int, Boolean)]
-      checkBuffer += ((echoServerPort, availablePort(echoServerPort)))
-      checkBuffer += ((throughputServerPort, availablePort(throughputServerPort)))
-      checkBuffer += ((messagesServerPort, availablePort(messagesServerPort)))
-      udpTups.foreach(x => {
-        checkBuffer += ((x._2, availablePort(x._2)))
-      })
-      var allGood = true
-      checkBuffer.foreach(x => {
-        if (!x._2) {
-          allGood = false
-          println(s"PORT NUMBER:${x._1} is not available")
+      // val tuples = new ListBuffer[(Int, Int, String, Int)]
+      val threads = new ListBuffer[Thread]
+      loop(tests, () => {
+        val split = getInput().split(",")
+        threads += new Thread() {
+          new UDPEchoServer(split(0).toInt, split(1).toInt, split(2), split(3).toInt).process()
         }
       })
 
-      allGood match {
-        case false => throw new IllegalArgumentException()
-        case true =>
-      }
+      threads.foreach(_.start())
+      threads.foreach(_.join())
+
     }
 
-    val threads = new ListBuffer[Thread]
-
-    threads += new Thread {
-      override def run(): Unit = {
-        TCPEchoServer(echoServerPort)
-      }
-    }
-
-    threads += new Thread() {
-      TCPThroughServer(throughputServerPort)
-    }
-
-    threads += new Thread() {
-      TCPMessagesServer(messagesServerPort)
-    }
-
-    udpTups.foreach(udpTup => {
-      threads += new Thread(){
-        new UDPEchoServer(udpTup._1, udpTup._2, udpTup._3, udpTup._4)
-      }
-    })
-
-    threads.foreach(x=>x.start())
-    threads.foreach(x=>x.join())
   }
 
 

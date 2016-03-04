@@ -12,7 +12,7 @@ class TCPEchoServer(server: ServerSocket) extends TCPServer(server) {
     loop(loopCount, () => {
       val nextType = input.readInt()
       val bytes = new Array[Byte](nextType)
-      input.read(bytes)
+      input.readFully(bytes)
       output.write(bytes)
       output.flush()
     })

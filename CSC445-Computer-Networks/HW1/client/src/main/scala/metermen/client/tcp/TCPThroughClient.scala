@@ -1,8 +1,7 @@
 package metermen.client.tcp
 
 import com.jeff.dsl.util.Util._
-import metermen.constants.Constants
-import metermen.constants.Constants.NANOS_TO_MILIS
+import metermen.constants.Constants.NANOS_TO_SECONDS
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
@@ -13,7 +12,7 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
 
   private var oneByteAv: Long = _
 
-  override def process(): ListBuffer[(String, List[Double])] = {
+  override def process(): List[(String, List[Double])] = {
     {
       val buffer = new Array[Byte](1)
       var total: Long = 0
@@ -40,7 +39,7 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
     }
     socket.close()
 
-    results
+    results.toList
   }
 
   private def runTests(size: Int): List[Double] = {
@@ -53,7 +52,7 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
       output.write(write)
       output.flush()
       input.read(read)
-      buffer += ((System.nanoTime() - b4) - oneByteAv) * NANOS_TO_MILIS
+      buffer += size / (((System.nanoTime() - b4) - oneByteAv) * NANOS_TO_SECONDS)
     })
     buffer.toList
   }

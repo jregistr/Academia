@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 /**
   * Class to describe abstract tcp client.
   */
-abstract class TCPClient(address: String, port: Int, val name:String) {
+abstract class TCPClient(address: String, port: Int, val name: String) {
 
   protected final val TEST_COUNT = 10000
 
@@ -18,12 +18,11 @@ abstract class TCPClient(address: String, port: Int, val name:String) {
   socket.setTcpNoDelay(true)
   protected val input = new DataInputStream(socket getInputStream())
   protected val output = new DataOutputStream(socket getOutputStream())
-  protected val format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss")
 
-  final def fileName():String = {
-    s"./$name-${format.format(new Date())}.csv"
+  final def fileName(): String = {
+    s"./$name.csv"
   }
 
-  def process():ListBuffer[(String, List[Double])]
+  def process(): List[(String, List[Double])]
 
 }

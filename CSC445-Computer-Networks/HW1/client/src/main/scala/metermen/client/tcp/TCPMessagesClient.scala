@@ -13,7 +13,7 @@ class TCPMessagesClient(address: String, port: Int, name: String) extends TCPCli
 
   private val read = new Array[Byte](1)
 
-  override def process(): ListBuffer[(String, List[Double])] = {
+  override def process(): List[(String, List[Double])] = {
     val results = new ListBuffer[(String, List[Double])]()
     output.writeInt(TEST_COUNT * 3)
     output.flush()
@@ -23,7 +23,7 @@ class TCPMessagesClient(address: String, port: Int, name: String) extends TCPCli
     results += (("1 x 1024KB", runTest(1, 1024000)))
 
     socket.close()
-    results
+    results.toList
   }
 
   def runTest(tests: Int, size: Int): List[Double] = {
