@@ -1,6 +1,7 @@
 package metermen.client.tcp
 
 import com.jeff.dsl.util.Util._
+import metermen.constants.Constants
 import metermen.constants.Constants.NANOS_TO_MILIS
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -10,12 +11,11 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   */
 class TCPMessagesClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
-  private val testCount = 100000
   private val read = new Array[Byte](1)
 
   override def process(): ListBuffer[(String, List[Double])] = {
     val results = new ListBuffer[(String, List[Double])]()
-    output.writeInt(testCount * 3)
+    output.writeInt(TEST_COUNT * 3)
     output.flush()
 
     results += (("4 x 256KB", runTest(4, 256000)))
@@ -30,7 +30,7 @@ class TCPMessagesClient(address: String, port: Int, name: String) extends TCPCli
     val buffer: ArrayBuffer[Double] = ArrayBuffer()
     val write = new Array[Byte](size)
 
-    loop(testCount, () => {
+    loop(TEST_COUNT, () => {
       output.writeInt(tests)
       output.writeInt(size)
 

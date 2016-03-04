@@ -1,6 +1,7 @@
 package metermen.client.tcp
 
 import com.jeff.dsl.util.Util._
+import metermen.constants.Constants
 import metermen.constants.Constants.NANOS_TO_MILIS
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -10,28 +11,27 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   */
 class TCPThroughClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
-  private val tc = 100000
   private var oneByteAv: Long = _
 
   override def process(): ListBuffer[(String, List[Double])] = {
     {
       val buffer = new Array[Byte](1)
       var total: Long = 0
-      output.writeInt(tc)
-      loop(tc, () => {
+      output.writeInt(TEST_COUNT)
+      loop(TEST_COUNT, () => {
         val b4 = System.nanoTime()
         output.write(buffer)
         output.flush()
         input.read(buffer)
         total += (System.nanoTime() - b4) / 2
       })
-      oneByteAv = total / tc
+      oneByteAv = total / TEST_COUNT
     }
 
     val results = new ListBuffer[(String, List[Double])]()
 
     {
-      output.writeInt(tc * 5)
+      output.writeInt(TEST_COUNT * 5)
       results += (("1K", runTests(1000)))
       results += (("16K", runTests(16000)))
       results += (("64K", runTests(64000)))
@@ -47,7 +47,7 @@ class TCPThroughClient(address: String, port: Int, name: String) extends TCPClie
     val buffer: ArrayBuffer[Double] = ArrayBuffer()
     val write = new Array[Byte](size)
     val read = new Array[Byte](1)
-    loop(tc, (iteration) => {
+    loop(TEST_COUNT, (iteration) => {
       output.writeInt(size)
       val b4 = System.nanoTime()
       output.write(write)

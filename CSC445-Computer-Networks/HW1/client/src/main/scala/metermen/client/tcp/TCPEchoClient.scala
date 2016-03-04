@@ -1,6 +1,7 @@
 package metermen.client.tcp
 
 import com.jeff.dsl.util.Util._
+import metermen.constants.Constants
 import metermen.constants.Constants.NANOS_TO_MILIS
 
 import scala.collection.mutable.{ArrayBuffer, ListBuffer}
@@ -10,11 +11,10 @@ import scala.collection.mutable.{ArrayBuffer, ListBuffer}
   */
 class TCPEchoClient(address: String, port: Int, name: String) extends TCPClient(address, port, name) {
 
-  private val testCount = 100000
 
   override def process(): ListBuffer[(String, List[Double])] = {
     val results = new ListBuffer[(String, List[Double])]()
-    output.writeInt(testCount * 3)
+    output.writeInt(TEST_COUNT * 3)
     output.flush()
     results += (("1B", runTest(1)))
     results += (("32B", runTest(32)))
@@ -28,7 +28,7 @@ class TCPEchoClient(address: String, port: Int, name: String) extends TCPClient(
     val buffer: ArrayBuffer[Double] = ArrayBuffer()
     val write = new Array[Byte](size)
     val read = new Array[Byte](size)
-    loop(testCount, () => {
+    loop(TEST_COUNT, () => {
       output.writeInt(size)
       val b4 = System.nanoTime()
       output.write(write)

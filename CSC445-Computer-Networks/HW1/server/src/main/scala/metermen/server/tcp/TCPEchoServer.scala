@@ -7,7 +7,7 @@ import com.jeff.dsl.util.Util._
 
 class TCPEchoServer(server: ServerSocket) extends TCPServer(server) {
 
-  override def process(): Unit = {
+  override protected def process(): Unit = {
     val loopCount = input.readInt()
     loop(loopCount, () => {
       val nextType = input.readInt()

@@ -9,7 +9,8 @@ import scala.collection.mutable.ListBuffer
 /**
   * Class to make rtt client
   */
-class UDPClientRTT(size: Int, uri: String, port: Int, name: String) extends UDPClient(size, uri, port, name) {
+class UDPClientRTT(size: Int, localPort: Int, destUri: String, destPort: Int, name: String)
+  extends UDPClient(size, localPort, destUri, destPort, name) {
 
   override def process(): (String, List[Double]) = {
     val buffer = new ListBuffer[Double]

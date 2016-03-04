@@ -8,9 +8,9 @@ import metermen.constants.Constants.MAX_UDP_PACKET_SIZE
 import scala.collection.mutable.ListBuffer
 
 
-abstract class UDPClient(size: Int, localPort: Int, destAddress: String, destPort: Int, val name: String) {
+abstract class UDPClient(size: Int, localPort: Int, destUri: String, destPort: Int, val name: String) {
 
-  final val TEST_COUNT = 10000
+  final val TEST_COUNT = 100
   final val TIME_OUT = 5000
 
   private val loopCount = Math.ceil(size / MAX_UDP_PACKET_SIZE).toInt
@@ -20,7 +20,7 @@ abstract class UDPClient(size: Int, localPort: Int, destAddress: String, destPor
 
   protected val writePackets = {
     val buffer = new ListBuffer[DatagramPacket]
-    val endInetAddress = InetAddress.getByName(destAddress)
+    val endInetAddress = InetAddress.getByName(destUri)
     loop(loopCount, () => {
       buffer += new DatagramPacket(new Array[Byte](packetSize), 0, packetSize, endInetAddress, destPort)
     })
