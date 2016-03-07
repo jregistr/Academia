@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
   */
 abstract class TCPClient(address: String, port: Int, val name: String) {
 
-  protected final val TEST_COUNT = 10000
+  protected final val TEST_COUNT = 1000
 
   protected val socket = new Socket(InetAddress.getByName(address), port)
   socket.setTcpNoDelay(true)

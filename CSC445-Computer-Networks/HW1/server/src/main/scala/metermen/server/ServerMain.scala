@@ -40,15 +40,16 @@ object ServerMain {
       println("UDP!!")
       println("How many sets of tests to run??")
       val tests = getInput().toInt
-      println(s"Okay. ($tests) tuples of the form: Size(Int),localPort(Int),destAddress(String),destPort(Int) are required.")
+      println(s"Okay. ($tests) tuples of the form: Size(Int),localPort(Int)")
       println("Enter them now")
 
-      // val tuples = new ListBuffer[(Int, Int, String, Int)]
       val threads = new ListBuffer[Thread]
       loop(tests, () => {
         val split = getInput().split(",")
         threads += new Thread() {
-          new UDPEchoServer(split(0).toInt, split(1).toInt, split(2), split(3).toInt).process()
+          override def run() {
+            new UDPEchoServer(split(0).toInt, split(1).toInt).process()
+          }
         }
       })
 

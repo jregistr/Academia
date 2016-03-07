@@ -6,8 +6,6 @@ import metermen.client.udp.UDPClientRTT
 import metermen.client.util.CSVMan
 
 import scala.collection.mutable.ListBuffer
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{ExecutionContext, Future}
 import scala.io.StdIn.{readLine => getInput}
 
 /**
@@ -38,37 +36,28 @@ object ClientMain {
       }
     } else {
       println("UDP")
+      println("Half Time or no half time??")
+      val half = getInput().toBoolean
       println("Enter the name of the test suite")
       val name = s"./${getInput()}.csv"
+      println("Name:" + name)
       println("How many sets of tests to run??")
       val tests = getInput().toInt
 
       val results = new ListBuffer[(String, List[Double])]
+      println(s"Enter $tests Tuples of form Size(Int), localPort(Int), destAddress(String), destPort(Int)")
 
-      println(s"$tests tuples of the form Size(Int), localPort(Int), destAddress(String), destPort(Int)")
-      println("Enter them now")
+      loop(tests, (index) => {
 
-      loop(tests, () => {
+        println(s"Running ${index + 1}/$tests Tests")
+        println("Enter Tuple of form Size(Int), localPort(Int), destAddress(String), destPort(Int)")
 
         val line = getInput().split(",")
-
-        Future {
-          new UDPClientRTT(line(0).toInt, line(1).toInt, line(2), line(3).toInt).process()
-        }.onComplete(value => {
-          value.isSuccess match {
-            case true =>
-              results.synchronized {
-                results += value.get
-                if (results.size == tests) {
-                  println("I am true")
-                  sendToCSVMan(name, results.toList)
-                }
-              }
-            case _ => throw new NullPointerException("Value not available")
-          }
-        })
+        results += new UDPClientRTT(line(0).toInt, line(1).toInt, line(2), line(3).toInt, half).process()
+        println("Done!!")
       })
 
+      sendToCSVMan(name, results.toList)
     }
   }
 
