@@ -418,11 +418,11 @@
                     <!-- Brand -->
                     <div class="brand-name-wrapper">
                         <a class="navbar-brand" href="tcpresults.html">
-                            TCP Results
+                            Computer Sets
                         </a>
-                        <a class="navbar-brand" href="udpresults.html">
+                       <!-- <a class="navbar-brand" href="udpresults.html">
                             UDP Results
-                        </a>
+                        </a>-->
                     </div>
 
                     <!-- Search body -->
@@ -464,55 +464,107 @@
                     <div id="groups" class="row">
                         <div><!-- PC to PI -->
                             <div class="col-lg-6">
-                                <div id="pc-to-pi-chart-1">
-                                    pc to pi
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        RTT
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="pc-to-pi-chart-1" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div id="pc-to-pi-chart-2">
-                                    pc to pi
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Throughput
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="pc-to-pi-chart-2" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="col-lg-6">
-                                <div id="pc-to-pi-chart-3">
-                                    pc to pi
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Speed and Message sizes
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="pc-to-pi-chart-3" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
 
                         <div><!-- Wolf to Pi -->
                             <div class="col-lg-6">
-                                <div id="wolf-to-pi-chart-1">
-                                    wolf to pi
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        RTT
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="wolf-to-pi-chart-1" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <div id="wolf-to-pi-chart-2">
-                                    wolf to pi
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Throughput
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="wolf-to-pi-chart-2" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="col-lg-6">
-                                <div id="wolf-to-pi-chart-3">
-                                    wolf to pi
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Speed and Message sizes
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="wolf-to-pi-chart-3" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
 
                         <div><!-- Rho to Wolf -->
                             <div class="col-lg-6">
-                                <div id="rho-to-wolf-chart-1">
-                                    rho to wolf
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        RTT
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="rho-to-wolf-chart-1" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="col-lg-6">
-                                <div id="rho-to-wolf-chart-2">
-                                    rho to wolf
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Throughput
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="rho-to-wolf-chart-2" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="col-lg-6">
-                                <div id="rho-to-wolf-chart-3">
-                                    rho to wolf
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        Speed and Message sizes
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="rho-to-wolf-chart-3" style="width: 100%; height: 400px; background-color: #FFFFFF;"></div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -524,7 +576,9 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>-->
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
 <script>
     //group-links, //groups
 
@@ -547,7 +601,7 @@
         for (var j = 0; j < groups.length; j++) {
             (function (f) {
                 var ggg = groups.item(f);
-                if(ggg.parentElement == groupsOuter){
+                if (ggg.parentElement == groupsOuter) {
                     filterGroup.push(ggg)
                 }
             })(j)
@@ -589,6 +643,660 @@
         }
 
     });
+
+</script>
+
+<script><!-- PC to PI -->
+
+//RTT
+AmCharts.makeChart("pc-to-pi-chart-1",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 2,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "TCP",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "UDP",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "title": "Time(milliseconds)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "1B",
+                    "column-1": "2.49793829",
+                    "column-2": "2.455687464"
+                },
+                {
+                    "category": "32B",
+                    "column-1": "2.124447355",
+                    "column-2": "1.634418656"
+                },
+                {
+                    "category": "1024B",
+                    "column-1": "2.554108404",
+                    "column-2": "3.314648242"
+                }
+            ]
+        }
+);
+
+    //Throughput
+
+AmCharts.makeChart("pc-to-pi-chart-2",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "TCP",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "UDP",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "offset": -2,
+                    "title": "Rate(KB/s)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "1K",
+                    "column-1": "7409.417158",
+                    "column-2": "8338.803983"
+                },
+                {
+                    "category": "16K",
+                    "column-1": "34263.51844",
+                    "column-2": "30925.09589"
+                },
+                {
+                    "category": "64K",
+                    "column-1": "43990.0356",
+                    "column-2": "37355.66558"
+                },
+                {
+                    "category": "256K",
+                    "column-1": "50160.09062",
+                    "column-2": "49058.56842"
+                },
+                {
+                    "category": "1000K",
+                    "column-1": "43692.36209",
+                    "column-2": "5134.221223"
+                }
+            ]
+        }
+);
+
+    //Message
+AmCharts.makeChart("pc-to-pi-chart-3",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "graph 1",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "title": "Time(milliseconds)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": false,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "4x256",
+                    "column-1": "242.2178643"
+                },
+                {
+                    "category": "2x512",
+                    "column-1": "234.7013767"
+                },
+                {
+                    "category": "1x1024",
+                    "column-1": "223.6028391"
+                }
+            ]
+        }
+);
+
+</script>
+
+<script><!-- Wolf To Pi -->
+
+//RTT
+AmCharts.makeChart("wolf-to-pi-chart-1",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 2,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "TCP",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "UDP",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "title": "Time(milliseconds)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "1B",
+                    "column-1": "0.1410792247",
+                    "column-2": "0.3355687645"
+                },
+                {
+                    "category": "32B",
+                    "column-1": "0.1391814497",
+                    "column-2": "0.1824781995"
+                },
+                {
+                    "category": "1024B",
+                    "column-1": "0.1445382617",
+                    "column-2": "0.2597079104"
+                }
+            ]
+        }
+);
+
+//Throughput
+
+AmCharts.makeChart("wolf-to-pi-chart-2",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "TCP",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "UDP",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "offset": -2,
+                    "title": "Rate(KB/s)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "1K",
+                    "column-1": "113457.1744",
+                    "column-2": "59949.02886"
+                },
+                {
+                    "category": "16K",
+                    "column-1": "435840.3628",
+                    "column-2": "400602.5283"
+                },
+                {
+                    "category": "64K",
+                    "column-1": "861688.0405",
+                    "column-2": "906065.1453"
+                },
+                {
+                    "category": "256K",
+                    "column-1": "1048909.954",
+                    "column-2": "1445116.768"
+                },
+                {
+                    "category": "1000K",
+                    "column-1": "1136708.337",
+                    "column-2": "22210.25625"
+                }
+            ]
+        }
+);
+
+//Message
+AmCharts.makeChart("wolf-to-pi-chart-3",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "graph 1",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "title": "Time(milliseconds)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": false,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "4x256",
+                    "column-1": "8.993070051"
+                },
+                {
+                    "category": "2x512",
+                    "column-1": "8.98482763"
+                },
+                {
+                    "category": "1x1024",
+                    "column-1": "8.989803187"
+                }
+            ]
+        }
+);
+
+</script>
+
+<script><!-- RHO To Wolf -->
+
+//RTT
+AmCharts.makeChart("rho-to-wolf-chart-1",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 2,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "TCP",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "UDP",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "title": "Time(milliseconds)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "1B",
+                    "column-1": "0.1350120538",
+                    "column-2": "0.4426945774"
+                },
+                {
+                    "category": "32B",
+                    "column-1": "0.1176520867",
+                    "column-2": "0.223950939"
+                },
+                {
+                    "category": "1024B",
+                    "column-1": "0.2175220556",
+                    "column-2": "0.3627825686"
+                }
+            ]
+        }
+);
+
+//Throughput
+
+AmCharts.makeChart("rho-to-wolf-chart-2",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "TCP",
+                    "type": "column",
+                    "valueField": "column-1"
+                },
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-2",
+                    "title": "UDP",
+                    "type": "column",
+                    "valueField": "column-2"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "offset": -2,
+                    "title": "Rate(KB/s)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": true,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "1K",
+                    "column-1": "103237.7439",
+                    "column-2": "64508.21296"
+                },
+                {
+                    "category": "16K",
+                    "column-1": "574360.8368",
+                    "column-2": "360328.2856"
+                },
+                {
+                    "category": "64K",
+                    "column-1": "741050.9756",
+                    "column-2": "787255.0022"
+                },
+                {
+                    "category": "256K",
+                    "column-1": "1045117.19",
+                    "column-2": "1613287.118"
+                },
+                {
+                    "category": "1000K",
+                    "column-1": "1136934.846",
+                    "column-2": "22311.173159"
+                }
+            ]
+        }
+);
+
+//Message
+AmCharts.makeChart("rho-to-wolf-chart-3",
+        {
+            "type": "serial",
+            "categoryField": "category",
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "title": "Sizes"
+            },
+            "trendLines": [],
+            "graphs": [
+                {
+                    "balloonText": "[[title]] of [[category]]:[[value]]",
+                    "fillAlphas": 1,
+                    "id": "AmGraph-1",
+                    "title": "graph 1",
+                    "type": "column",
+                    "valueField": "column-1"
+                }
+            ],
+            "guides": [],
+            "valueAxes": [
+                {
+                    "id": "ValueAxis-1",
+                    "maximum": 0,
+                    "minMaxMultiplier": 0,
+                    "title": "Time(milliseconds)"
+                }
+            ],
+            "allLabels": [],
+            "balloon": {},
+            "legend": {
+                "enabled": false,
+                "useGraphSettings": true
+            },
+            "titles": [
+                {
+                    "id": "Title-1",
+                    "size": 15,
+                    "text": ""
+                }
+            ],
+            "dataProvider": [
+                {
+                    "category": "4x256",
+                    "column-1": "9.158518929"
+                },
+                {
+                    "category": "2x512",
+                    "column-1": "9.127296704"
+                },
+                {
+                    "category": "1x1024",
+                    "column-1": "9.136696915"
+                }
+            ]
+        }
+);
 
 </script>
 
