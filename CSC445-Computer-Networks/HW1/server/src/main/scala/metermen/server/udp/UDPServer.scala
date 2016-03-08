@@ -7,7 +7,7 @@ import metermen.constants.Constants.MAX_UDP_PACKET_SIZE
 abstract class UDPServer(size: Int, localPort: Int) {
   private val packetSize = (size.toDouble / Math.ceil(size / MAX_UDP_PACKET_SIZE).toInt).toInt
 
-  protected val socket = new DatagramSocket(localPort, InetAddress.getByName("localhost"))
+  protected val socket = new DatagramSocket(localPort, InetAddress.getByName("wolf.cs.oswego.edu"))
 
   protected val writePacket =
     if (size > MAX_UDP_PACKET_SIZE)

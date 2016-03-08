@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>TCP Results</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :focus {
@@ -417,8 +417,11 @@
 
                     <!-- Brand -->
                     <div class="brand-name-wrapper">
-                        <a class="navbar-brand" href="#">
-                            Graphs
+                        <a class="navbar-brand" href="tcpresults.html">
+                            TCP Results
+                        </a>
+                        <a class="navbar-brand" href="udpresults.html">
+                            UDP Results
                         </a>
                     </div>
 
@@ -441,7 +444,9 @@
             <!-- Main Menu -->
             <div class="side-menu-container">
                 <ul id="group-links" class="nav navbar-nav">
-
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>PC to PI</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Wolf to PI</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Rho To Wolf</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -457,6 +462,59 @@
             <div class="row" style="margin-top: 50px">
                 <div class="col-lg-12">
                     <div id="groups" class="row">
+                        <div><!-- PC to PI -->
+                            <div class="col-lg-6">
+                                <div id="pc-to-pi-chart-1">
+                                    pc to pi
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="pc-to-pi-chart-2">
+                                    pc to pi
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="pc-to-pi-chart-3">
+                                    pc to pi
+                                </div>
+                            </div>
+                        </div>
+
+                        <div><!-- Wolf to Pi -->
+                            <div class="col-lg-6">
+                                <div id="wolf-to-pi-chart-1">
+                                    wolf to pi
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="wolf-to-pi-chart-2">
+                                    wolf to pi
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="wolf-to-pi-chart-3">
+                                    wolf to pi
+                                </div>
+                            </div>
+                        </div>
+
+                        <div><!-- Rho to Wolf -->
+                            <div class="col-lg-6">
+                                <div id="rho-to-wolf-chart-1">
+                                    rho to wolf
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="rho-to-wolf-chart-2">
+                                    rho to wolf
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="rho-to-wolf-chart-3">
+                                    rho to wolf
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -473,7 +531,6 @@
     var pageProgram = null;
 
     var launchProgram = (function () {
-        new GraphMaker();
         pageProgram = new program();
     });
 
@@ -534,43 +591,6 @@
     });
 
 </script>
-
-<script>
-    var options = {
-        //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-        scaleBeginAtZero: true,
-
-        //Boolean - Whether grid lines are shown across the chart
-        scaleShowGridLines: true,
-
-        //String - Colour of the grid lines
-        scaleGridLineColor: "rgba(0,0,0,.05)",
-
-        //Number - Width of the grid lines
-        scaleGridLineWidth: 1,
-
-        //Boolean - Whether to show horizontal lines (except X axis)
-        scaleShowHorizontalLines: true,
-
-        //Boolean - Whether to show vertical lines (except Y axis)
-        scaleShowVerticalLines: true,
-
-        //Boolean - If there is a stroke on each bar
-        barShowStroke: true,
-
-        //Number - Pixel width of the bar stroke
-        barStrokeWidth: 2,
-
-        //Number - Spacing between each of the X value sets
-        barValueSpacing: 5,
-
-        //Number - Spacing between data sets within X values
-        barDatasetSpacing: 1
-
-
-    }
-</script>
-
 
 </body>
 </html>

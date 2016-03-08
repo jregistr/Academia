@@ -8,10 +8,10 @@ import metermen.constants.Constants
 
 abstract class UDPClient(size: Int, localPort: Int, destUri: String, destPort: Int) {
 
-  final val TEST_COUNT = 1000
+  final val TEST_COUNT = 100
   final val TIME_OUT = 3000
 
-  protected val socket = new DatagramSocket(localPort, InetAddress.getByName("localhost"))
+  protected val socket = new DatagramSocket(localPort, InetAddress.getByName("rho.cs.oswego.edu"))
 
   private val config = Constants.udpPacketSizeConfig(size)
 
