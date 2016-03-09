@@ -7,7 +7,10 @@ abstract class Option<T>() {
 
     protected var value: T? = null
 
-    protected  constructor(value: T) : this() {
+    /**
+    * Secondary constructor that takes a value.
+     */
+    internal constructor(value: T) : this() {
         this.value = value
     }
 

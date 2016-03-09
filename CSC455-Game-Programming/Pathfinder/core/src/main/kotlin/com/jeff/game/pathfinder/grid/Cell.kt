@@ -3,23 +3,29 @@ package com.jeff.game.pathfinder.grid
 import com.jeff.game.pathfinder.util.option.*
 import java.util.ArrayList
 
-data class Cell(val x: Int, val y: Int, val cost: Int = -1, val teleTo: Option<Cell>) {
+/**
+ * Class to represent a cell in a grid.
+ */
+class Cell(val y: Int, val x: Int, val cost: Int = -1) {
 
-    fun neighbors(maxX: Int, maxY: Int): List<Pair<Int, Int>> {
-        val buffer = ArrayList<Pair<Int, Int>>()
-        if (x + 1 < maxX) {
-            buffer.add(Pair(x + 1, y))
+    var teleTo: Option<Cell> = None()
+    set(value) {
+        if(!teleTo.defined()){
+            teleTo = value
+        }else{
+            throw IllegalStateException()
         }
-        if (x - 1 >= 0) {
-            buffer.add(Pair(x - 1, y))
-        }
-        if (y + 1 < maxY) {
-            buffer.add(Pair(x, y + 1))
-        }
-        if (y - 1 >= 0) {
-            buffer.add(Pair(x, y - 1))
-        }
-        return buffer
     }
 
+    override fun toString(): String {
+        return "[$y,$x, ${
+            if(teleTo.defined()){
+                "(${teleTo.get().y}, ${teleTo.get().x})"
+            }else if(cost == -1){
+                "F"
+            }else{
+                cost.toString()
+            }
+        }]"
+    }
 }

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.jeff.game.pathfinder.grid.Grid
+import java.util.*
 
 
 class PathFinder : ApplicationAdapter() {
@@ -15,6 +17,8 @@ class PathFinder : ApplicationAdapter() {
     override fun create():Unit {
         batch = SpriteBatch()
         img = Texture("badlogic.jpg")
+        val handle = Gdx.files.internal("input.txt")
+        Grid.of(handle.file()).print()
     }
 
     override fun render():Unit {
