@@ -9,7 +9,8 @@ enum class MarkerType{
     SOURCE,
     DEST,
     PATH,
-    REGULAR
+    REGULAR,
+    VISITED
 }
 /**
  * Class to represent a marker for the graph algorithm calculations.

@@ -9,7 +9,7 @@ import java.util.*
  * Class to represent a node.
  * @constructor Default constructor
  */
-class Node(val y: Int, val x: Int, val cost: Int) {
+class Node(val cost: Int) {
 
     var marker: Option<Marker> = None()
     var edges: Option<List<Edge>> = None()

@@ -8,8 +8,8 @@ fun main(args: Array<String>) {
     val config = LwjglApplicationConfiguration()
     config.apply {
         title = "PathFinder"
-        width = 960
-        height = 540
+        width = 1500
+        height = 648
         resizable = false
     }
     LwjglApplication(PathFinder(), config)

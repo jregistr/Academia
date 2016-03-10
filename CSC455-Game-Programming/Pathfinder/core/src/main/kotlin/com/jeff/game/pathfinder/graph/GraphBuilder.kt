@@ -16,7 +16,7 @@ object GraphBuilder {
         grid.forEach { line ->
             line.forEach { cell ->
                 if (cell.cost != -1)
-                    map.put(Pair(cell.y, cell.x), Node(cell.y, cell.x, cell.cost))
+                    map.put(Pair(cell.y, cell.x), Node(cell.cost))
             }
         }
 

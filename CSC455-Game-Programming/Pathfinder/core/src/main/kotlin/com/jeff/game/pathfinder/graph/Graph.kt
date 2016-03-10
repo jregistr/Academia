@@ -14,22 +14,11 @@ class Graph internal constructor(val graph: Map<Pair<Int, Int>, Node>) {
         }
     }
 
-    fun print() {
-        graph.forEach {
-            val pos = it.key
-            val node = it.value
-            print("Node(${pos.first},${pos.second}) -> [")
-            node.connectedCells().get().forEach { connected -> print("(${connected.y}, ${connected.x}),") }
-            print("]")
-            println("")
-        }
-    }
-
     fun findPath(from: Pair<Int, Int>, to: Pair<Int, Int>) {
         val minKeep = ArrayList<Node>()
         val origin = graph[from]!!
         val destination = graph[to]!!
-        destination.marker = Some(Marker(MarkerType.DEST, Double.MAX_VALUE, None(), false))
+        //destination.marker = Some(Marker(MarkerType.DEST, Double.MAX_VALUE, None(), false))
         if (origin.edges.defined() && origin.edges.get().size > 0) {
             origin.marker = Some(Marker(MarkerType.SOURCE, 0.0, None(), true))
             val neighs = origin.connectedCells().get()
@@ -56,18 +45,20 @@ class Graph internal constructor(val graph: Map<Pair<Int, Int>, Node>) {
         while (minKeep.size > 0 && !found) {
             curNodeOpt = pop()
             if (curNodeOpt.defined()) {
-                curNodeOpt.get().marker.get().visited = true
                 if (curNodeOpt.get() == destination) {
                     found = true
+                }else{
+                    curNodeOpt.get().marker.get().visited = true
+                    curNodeOpt.get().marker.get().type = MarkerType.VISITED
+                    addConnectedCells(curNodeOpt.get(), minKeep)
                 }
-                addConnectedCells(curNodeOpt.get(), minKeep)
             } else {
                 println("Nothing to pop")
                 break
             }
         }
 
-        backTrace(destination)
+        backTrace(origin, destination)
     }
 
     private fun addConnectedCells(it:Node, minKeep:ArrayList<Node>){
@@ -93,11 +84,14 @@ class Graph internal constructor(val graph: Map<Pair<Int, Int>, Node>) {
         }
     }
 
-    private fun backTrace(end: Node) {
+    private fun backTrace(start:Node, end: Node) {
         if (end.marker.defined() && end.marker.get().from.defined()) {
+            end.marker.get().type = MarkerType.DEST
             var part = end.marker.get().from
             while (part.defined()) {
-                part.get().marker.get().type = MarkerType.PATH
+                if(part.get() != start){
+                    part.get().marker.get().type = MarkerType.PATH
+                }
                 part =  part.get().marker.get().from
             }
         }

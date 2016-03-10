@@ -36,12 +36,12 @@ class Grid private constructor(val grid: List<List<Cell>>) {
                 var x = 0
                 split.forEach { part ->
                     if (part.matches(regexDigit)) {//regular cell
-                        curList.add(Cell(y, x, part.toInt()))
+                        curList.add(Cell("bla", y, x, part.toInt()))
                     } else if (part.matches(regexTele)) {//teleport cell
                         if(teles.containsKey(part)){//Already encountered otherside of teleport
                             val prev = teles[part]!!
-                            var f = Cell(prev.first, prev.second, 0)
-                            var s = Cell(y, x, 0)
+                            var f = Cell(part, prev.first, prev.second, 0)
+                            var s = Cell(part, y, x, 0)
                             f.teleTo = Some(s)
                             s.teleTo = Some(f)
                             teles.remove(part)
@@ -49,10 +49,10 @@ class Grid private constructor(val grid: List<List<Cell>>) {
                             curList.add(s)
                         }else{//haven't encountered teleport endpoint
                             teles.put(part, Pair(y, x))
-                            curList.add(Cell(y, x, 0))
+                            curList.add(Cell("bla", y, x, 0))
                         }
                     } else if (part.matches(regexNonPass)) {
-                        curList.add(Cell(y, x,-1))
+                        curList.add(Cell("bla", y, x,-1))
                     } else {
                         throw IllegalArgumentException("Unexpected cell type")
                     }
