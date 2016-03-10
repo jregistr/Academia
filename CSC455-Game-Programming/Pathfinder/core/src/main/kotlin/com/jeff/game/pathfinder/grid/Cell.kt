@@ -10,8 +10,8 @@ class Cell(val y: Int, val x: Int, val cost: Int = -1) {
 
     var teleTo: Option<Cell> = None()
     set(value) {
-        if(!teleTo.defined()){
-            teleTo = value
+        if(!field.defined()){
+            field = value
         }else{
             throw IllegalStateException()
         }
@@ -20,7 +20,8 @@ class Cell(val y: Int, val x: Int, val cost: Int = -1) {
     override fun toString(): String {
         return "[$y,$x, ${
             if(teleTo.defined()){
-                "(${teleTo.get().y}, ${teleTo.get().x})"
+                "T"
+//                "(${teleTo.get().y}, ${teleTo.get().x})"
             }else if(cost == -1){
                 "F"
             }else{

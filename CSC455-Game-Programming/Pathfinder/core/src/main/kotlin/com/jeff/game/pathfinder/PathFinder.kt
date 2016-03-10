@@ -1,31 +1,55 @@
 package com.jeff.game.pathfinder
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.jeff.game.pathfinder.grid.Grid
-import java.util.*
+import com.badlogic.gdx.Game
+import com.badlogic.gdx.InputProcessor
+import com.jeff.game.pathfinder.scenes.GraphScene
+import com.jeff.game.pathfinder.util.option.None
+import com.jeff.game.pathfinder.util.option.Option
+import com.jeff.game.pathfinder.util.option.Some
 
 
-class PathFinder : ApplicationAdapter() {
+class PathFinder : Game(), InputProcessor {
 
-    private lateinit var batch:SpriteBatch
-    var img:Texture? = null
+    private var optScene: Option<GraphScene> = None()
 
-    override fun create():Unit {
-        batch = SpriteBatch()
-        img = Texture("badlogic.jpg")
-        val handle = Gdx.files.internal("input.txt")
-        Grid.of(handle.file()).print()
+    override fun create() {
+        optScene = Some(GraphScene("input.txt"))
+        setScreen(optScene.get())
     }
 
-    override fun render():Unit {
-        Gdx.gl.glClearColor(1f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        batch.begin()
-        batch.draw(img, 0f, 0f)
-        batch.end()
+    override fun touchUp(p0: Int, p1: Int, p2: Int, p3: Int): Boolean {
+        return true
     }
+
+    override fun mouseMoved(p0: Int, p1: Int): Boolean {
+        return true
+    }
+
+    override fun keyTyped(p0: Char): Boolean {
+        return true
+    }
+
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (optScene.defined()) {
+            optScene.get().clicked(screenX, screenY)
+        }
+        return true
+    }
+
+    override fun scrolled(p0: Int): Boolean {
+        return true
+    }
+
+    override fun keyUp(p0: Int): Boolean {
+        return true
+    }
+
+    override fun touchDragged(p0: Int, p1: Int, p2: Int): Boolean {
+        return true
+    }
+
+    override fun keyDown(p0: Int): Boolean {
+        return true
+    }
+
 }

@@ -25,6 +25,7 @@ class Grid private constructor(val grid: List<List<Cell>>) {
             val regexTele = Regex("T[0-9]*")
             val regexDigit = Regex("[1-9]{1,1}")
             val regexNonPass = Regex("[F]")
+           // println("File:" + file)
             val lines = file.readLines()
             val list = ArrayList<ArrayList<Cell>>()
 
