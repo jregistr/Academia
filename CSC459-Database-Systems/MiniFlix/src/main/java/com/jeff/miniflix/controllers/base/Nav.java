@@ -7,9 +7,9 @@ import spark.Response;
 public abstract class Nav extends Controller{
 
     @Override
-    protected abstract ModelAndView get(Request request, Response response);
+    public abstract ModelAndView get(Request request, Response response);
 
     @Override
-    protected abstract ModelAndView post(Request request, Response response);
+    public abstract ModelAndView post(Request request, Response response);
 
 }

@@ -5,11 +5,11 @@ import spark.Response;
 
 abstract class Controller {
 
-    protected Object get(Request request, Response response) {
+    public Object get(Request request, Response response) {
         throw new UnsupportedOperationException();
     }
 
-    protected Object post(Request request, Response response) {
+    public Object post(Request request, Response response) {
         throw new UnsupportedOperationException();
     }
 

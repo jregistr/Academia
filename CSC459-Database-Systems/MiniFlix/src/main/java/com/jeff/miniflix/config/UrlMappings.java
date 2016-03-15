@@ -1,6 +1,7 @@
 package com.jeff.miniflix.config;
 
 import com.google.gson.JsonObject;
+import com.jeff.miniflix.controllers.Welcome;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 
@@ -13,7 +14,7 @@ public class UrlMappings {
             object.addProperty("Cool", "Jeff");
             response.body(object.toString());*/
 
-            return new ModelAndView("", "cool");
+            return new Welcome().get(request, response);
         }, new FreeMarkerEngine());
 
     }

@@ -8,13 +8,13 @@ import spark.Response;
 public abstract class Rest extends Controller {
 
     @Override
-    protected final Object get(Request request, Response response) {
+    public final Object get(Request request, Response response) {
         response.type("application/json");
         return process(request).toString();
     }
 
     @Override
-    protected final Object post(Request request, Response response) {
+    public final Object post(Request request, Response response) {
         response.type("application/json");
         return process(request).toString();
     }
