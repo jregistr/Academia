@@ -16,7 +16,8 @@ public class User extends Model {
         Optional<User> userOptional = Optional.empty();
         try {
             Connection connection = connect();
-            PreparedStatement statement = connection.prepareStatement("SELECT UserName, Password, Email  FROM Users WHERE UserName == " + userName);
+            PreparedStatement statement = connection.prepareStatement("SELECT UserName, Password, Email  FROM Users WHERE UserName = ?");
+            statement.setString(1, userName);
             ResultSet r = statement.executeQuery();
             if (r.next()) {
                 userOptional = Optional.of(new User(r.getString(ID_USER_NAME), r.getString(ID_PASSWORD),
@@ -40,6 +41,10 @@ public class User extends Model {
 
     @Override
     public JsonObject toJson() {
-        return null;
+        JsonObject object = new JsonObject();
+        object.addProperty(ID_USER_NAME, userName);
+        object.addProperty(ID_PASSWORD, password);
+        object.addProperty(ID_EMAIL, email);
+        return object;
     }
 }
