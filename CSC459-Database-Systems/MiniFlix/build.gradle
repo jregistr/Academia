@@ -9,17 +9,6 @@ repositories {
     jcenter()
 }
 
-dependencies {
-
-    compile 'org.slf4j:slf4j-api:latest.release'
-    compile 'com.sparkjava:spark-core:2.3'
-    compile 'com.sparkjava:spark-template-freemarker:2.3'
-    compile 'mysql:mysql-connector-java:5.1.38'
-    compile 'com.google.code.gson:gson:2.6.2'
-
-    testCompile 'junit:junit:latest.release'
-}
-
 sourceSets{
     main{
         java{
@@ -29,6 +18,17 @@ sourceSets{
             srcDir 'src/main/resources'
         }
     }
+}
+
+dependencies {
+
+    compile 'org.slf4j:slf4j-api:latest.release'
+    compile 'com.sparkjava:spark-core:2.3'
+    compile 'com.sparkjava:spark-template-freemarker:2.3'
+    compile 'mysql:mysql-connector-java:5.1.38'
+    compile 'com.google.code.gson:gson:2.6.2'
+
+    testCompile 'junit:junit:latest.release'
 }
 
 task wrapper(type: Wrapper) {
