@@ -1,46 +1,62 @@
 package com.jeff.miniflix.models;
 
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Category extends Model {
 
     private static final String ID_NAME = "ID_NAME";
-    private static final String ID_ID = "ID_ID";
 
     public static Optional<Category> getByName(String name) {
         Optional<Category> catOptional = Optional.empty();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet r = null;
         try {
-            Connection connection = connect();
-            PreparedStatement statement = connection.prepareStatement("SELECT ID, Name FROM Categories WHERE Name = ?");
+            connection = connect();
+            statement = connection.prepareStatement("SELECT ID, Name FROM Categories WHERE Name = ?");
             statement.setString(1, name);
-            ResultSet r = statement.executeQuery();
+            r = statement.executeQuery();
             if (r.next()) {
-                catOptional = Optional.of(new Category(r.getInt(ID_ID), r.getString(ID_NAME)));
+                catOptional = Optional.of(from(r));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            close(connection, statement, r);
         }
         return catOptional;
     }
 
-    public static JsonArray getAll(){
-        JsonArray array = new JsonArray();
+    public static List<Category> getAll(){
+        ImmutableList.Builder<Category> array = new ImmutableList.Builder<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet r = null;
         try{
-            Connection connection = connect();
-            Statement statement = connection.createStatement();
-            ResultSet r = statement.executeQuery("SELECT ID, Name FROM Categories");
+            connection = connect();
+            statement = connection.createStatement();
+            r = statement.executeQuery("SELECT ID, Name FROM Categories");
             while (r.next()){
-                array.add(new Category(r.getInt(ID_ID), r.getString(ID_NAME)).toJson());
+                array.add(from(r));
             }
         }catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            close(connection, statement, r);
         }
-        return array;
+        return array.build();
+    }
+
+    private static Category from(ResultSet r) throws SQLException {
+        return new Category(r.getInt(ID_ID), r.getString(ID_NAME));
     }
 
     public final int id;

@@ -14,19 +14,28 @@ public class User extends Model {
 
     public static Optional<User> getByUserName(String userName) {
         Optional<User> userOptional = Optional.empty();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet r = null;
         try {
-            Connection connection = connect();
-            PreparedStatement statement = connection.prepareStatement("SELECT UserName, Password, Email  FROM Users WHERE UserName = ?");
+            connection = connect();
+            statement = connection.prepareStatement("SELECT UserName, Password, Email  FROM Users WHERE UserName = ?");
             statement.setString(1, userName);
-            ResultSet r = statement.executeQuery();
+            r = statement.executeQuery();
             if (r.next()) {
-                userOptional = Optional.of(new User(r.getString(ID_USER_NAME), r.getString(ID_PASSWORD),
-                        r.getString(ID_EMAIL)));
+                userOptional = Optional.of(from(r));
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            close(connection, statement, r);
         }
         return userOptional;
+    }
+
+    private static User from(ResultSet r)throws SQLException {
+        return new User(r.getString(ID_USER_NAME), r.getString(ID_PASSWORD),
+                r.getString(ID_EMAIL));
     }
 
     public String userName;
