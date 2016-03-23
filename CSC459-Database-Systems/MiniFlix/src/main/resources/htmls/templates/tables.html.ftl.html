@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TCP Results</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/bootstrap.table/1.10.1/bootstrap-table.min.css" rel="stylesheet" />
+    <style>
+        :focus {
+            outline: none;
+        }
+        .row {
+            margin-right: 0;
+            margin-left: 0;
+        }
+        .side-menu {
+            position: fixed;
+            width: 300px;
+            height: 100%;
+            background-color: #f8f8f8;
+            border-right: 1px solid #e7e7e7;
+        }
+        .side-menu .navbar {
+            border: none;
+        }
+        .side-menu .navbar-header {
+            width: 100%;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .side-menu .navbar-nav .active a {
+            background-color: transparent;
+            margin-right: -1px;
+            border-right: 5px solid #e7e7e7;
+        }
+        .side-menu .navbar-nav li {
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .side-menu .navbar-nav li a {
+            padding: 15px;
+        }
+        .side-menu .navbar-nav li a .glyphicon {
+            padding-right: 10px;
+        }
+        .side-menu #dropdown {
+            border: 0;
+            margin-bottom: 0;
+            border-radius: 0;
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .side-menu #dropdown .caret {
+            float: right;
+            margin: 9px 5px 0;
+        }
+        .side-menu #dropdown .indicator {
+            float: right;
+        }
+        .side-menu #dropdown > a {
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .side-menu #dropdown .panel-body {
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+        .side-menu #dropdown .panel-body .navbar-nav {
+            width: 100%;
+        }
+        .side-menu #dropdown .panel-body .navbar-nav li {
+            padding-left: 15px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .side-menu #dropdown .panel-body .navbar-nav li:last-child {
+            border-bottom: none;
+        }
+        .side-menu #dropdown .panel-body .panel > a {
+            margin-left: -20px;
+            padding-left: 35px;
+        }
+        .side-menu #dropdown .panel-body .panel-body {
+            margin-left: -15px;
+        }
+        .side-menu #dropdown .panel-body .panel-body li {
+            padding-left: 30px;
+        }
+        .side-menu #dropdown .panel-body .panel-body li:last-child {
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .side-menu #search-trigger {
+            background-color: #f3f3f3;
+            border: 0;
+            border-radius: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 15px 18px;
+        }
+        .side-menu .brand-name-wrapper {
+            min-height: 50px;
+        }
+        .side-menu .brand-name-wrapper .navbar-brand {
+            display: block;
+        }
+        .side-menu #search {
+            position: relative;
+            z-index: 1000;
+        }
+        .side-menu #search .panel-body {
+            padding: 0;
+        }
+        .side-menu #search .panel-body .navbar-form {
+            padding: 0;
+            padding-right: 50px;
+            width: 100%;
+            margin: 0;
+            position: relative;
+            border-top: 1px solid #e7e7e7;
+        }
+        .side-menu #search .panel-body .navbar-form .form-group {
+            width: 100%;
+            position: relative;
+        }
+        .side-menu #search .panel-body .navbar-form input {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+            width: 100%;
+            height: 50px;
+        }
+        .side-menu #search .panel-body .navbar-form .btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            border: 0;
+            border-radius: 0;
+            background-color: #f3f3f3;
+            padding: 15px 18px;
+        }
+        /* Main body section */
+        .side-body {
+            margin-left: 285px;
+        }
+        /* small screen */
+        @media (max-width: 768px) {
+            .side-menu {
+                position: relative;
+                width: 100%;
+                height: 0;
+                border-right: 0;
+                border-bottom: 1px solid #e7e7e7;
+            }
+            .side-menu .brand-name-wrapper .navbar-brand {
+                display: inline-block;
+            }
+            /* Slide in animation */
+            @-moz-keyframes slidein {
+                0% {
+                    left: -300px;
+                }
+                100% {
+                    left: 10px;
+                }
+            }
+            @-webkit-keyframes slidein {
+                0% {
+                    left: -300px;
+                }
+                100% {
+                    left: 10px;
+                }
+            }
+            @keyframes slidein {
+                0% {
+                    left: -300px;
+                }
+                100% {
+                    left: 10px;
+                }
+            }
+            @-moz-keyframes slideout {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: -300px;
+                }
+            }
+            @-webkit-keyframes slideout {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: -300px;
+                }
+            }
+            @keyframes slideout {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: -300px;
+                }
+            }
+            /* Slide side menu*/
+            /* Add .absolute-wrapper.slide-in for scrollable menu -> see top comment */
+            .side-menu-container > .navbar-nav.slide-in {
+                -moz-animation: slidein 300ms forwards;
+                -o-animation: slidein 300ms forwards;
+                -webkit-animation: slidein 300ms forwards;
+                animation: slidein 300ms forwards;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+            .side-menu-container > .navbar-nav {
+                /* Add position:absolute for scrollable menu -> see top comment */
+                position: fixed;
+                left: -300px;
+                width: 300px;
+                top: 43px;
+                height: 100%;
+                border-right: 1px solid #e7e7e7;
+                background-color: #f8f8f8;
+                -moz-animation: slideout 300ms forwards;
+                -o-animation: slideout 300ms forwards;
+                -webkit-animation: slideout 300ms forwards;
+                animation: slideout 300ms forwards;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+            /* Uncomment for scrollable menu -> see top comment */
+            /*.absolute-wrapper{
+                  width:285px;
+                  -moz-animation: slideout 300ms forwards;
+                  -o-animation: slideout 300ms forwards;
+                  -webkit-animation: slideout 300ms forwards;
+                  animation: slideout 300ms forwards;
+                  -webkit-transform-style: preserve-3d;
+                  transform-style: preserve-3d;
+              }*/
+            @-moz-keyframes bodyslidein {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: 300px;
+                }
+            }
+            @-webkit-keyframes bodyslidein {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: 300px;
+                }
+            }
+            @keyframes bodyslidein {
+                0% {
+                    left: 0;
+                }
+                100% {
+                    left: 300px;
+                }
+            }
+            @-moz-keyframes bodyslideout {
+                0% {
+                    left: 300px;
+                }
+                100% {
+                    left: 0;
+                }
+            }
+            @-webkit-keyframes bodyslideout {
+                0% {
+                    left: 300px;
+                }
+                100% {
+                    left: 0;
+                }
+            }
+            @keyframes bodyslideout {
+                0% {
+                    left: 300px;
+                }
+                100% {
+                    left: 0;
+                }
+            }
+            /* Slide side body*/
+            .side-body {
+                margin-left: 5px;
+                margin-top: 70px;
+                position: relative;
+                -moz-animation: bodyslideout 300ms forwards;
+                -o-animation: bodyslideout 300ms forwards;
+                -webkit-animation: bodyslideout 300ms forwards;
+                animation: bodyslideout 300ms forwards;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+            .body-slide-in {
+                -moz-animation: bodyslidein 300ms forwards;
+                -o-animation: bodyslidein 300ms forwards;
+                -webkit-animation: bodyslidein 300ms forwards;
+                animation: bodyslidein 300ms forwards;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+            /* Hamburger */
+            .navbar-toggle {
+                border: 0;
+                float: left;
+                padding: 18px;
+                margin: 0;
+                border-radius: 0;
+                background-color: #f3f3f3;
+            }
+            /* Search */
+            #search .panel-body .navbar-form {
+                border-bottom: 0;
+            }
+            #search .panel-body .navbar-form .form-group {
+                margin: 0;
+            }
+            .navbar-header {
+                /* this is probably redundant */
+                position: fixed;
+                z-index: 3;
+                background-color: #f8f8f8;
+            }
+            /* Dropdown tweek */
+            #dropdown .panel-body .navbar-nav {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body onload="launchProgram()">
+<div class="row">
+    <!-- <nav class="navbar navbar-default navbar-static-top" style="margin-bottom:0!important;">
+         <div class="container">
+             <div class="navbar-header">
+                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                         aria-expanded="false" aria-controls="navbar">
+                     <span class="sr-only">Toggle navigation</span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                 </button>
+                 <a class="navbar-brand" href="http://cs.oswego.edu/~jregistr/">Jeff Registre</a>
+             </div>
+             <div id="navbar" class="navbar-collapse collapse navbar-right">
+                 <ul id="linksToOtherPages" class="nav navbar-nav">
+                     &lt;!&ndash; <li class="active"><a href="#">Home</a></li>
+                      <li><a href="#about">About</a></li>
+                      <li><a href="#contact">Contact</a></li>&ndash;&gt;
+                 </ul>
+             </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;
+         </div>
+     </nav>-->
+
+    <div class="side-menu">
+
+
+        <nav class="navbar navbar-default" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <div class="brand-wrapper">
+                    <!-- Hamburger -->
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <!-- Brand -->
+                    <div class="brand-name-wrapper">
+                        <a class="navbar-brand" href="tcpresults.html">
+                            Tables
+                        </a>
+                        <!-- <a class="navbar-brand" href="udpresults.html">
+                             UDP Results
+                         </a>-->
+                    </div>
+
+                    <!-- Search body -->
+                    <div id="search" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form class="navbar-form" role="search">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                                <button type="submit" class="btn btn-default "><span
+                                        class="glyphicon glyphicon-ok"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Main Menu -->
+            <div class="side-menu-container">
+                <ul id="group-links" class="nav navbar-nav">
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Categories</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Movies</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Users</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Histories</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Preferences</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-phone"></span>Ratings</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="side-body" style="">
+            <!--<div id="description" class="alert alert-success" role="alert">
+                You successfully read this important alert message.
+            </div>-->
+            <div class="row" style="margin-top: 50px">
+                <div class="col-lg-12">
+                    <div id="groups" class="row">
+
+                        <div><!-- Categories -->
+                            <table data-toggle="table" data-url="/categories"
+                                   data-pagination="true"
+                                   data-search="true"
+                                   data-height="600">
+                                <thead>
+                                    <tr>
+                                        <th data-field="ID">ID</th>
+                                        <th data-field="Name">Name</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div><!-- Movies -->
+                            <table data-toggle="table" data-url="/movies"
+                                   data-pagination="true"
+                                   data-search="true"
+                                   data-height="600">
+                                <thead>
+                                <tr>
+                                    <th data-field="ID">ID</th>
+                                    <th data-field="Title">Title</th>
+                                    <th data-field="Length">Length</th>
+                                    <th data-field="Description">Description</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div><!-- Users -->
+                            <table data-toggle="table" data-url="/users"
+                                   data-pagination="true"
+                                   data-search="true"
+                                   data-height="600">
+                                <thead>
+                                <tr>
+                                    <th data-field="UserName">User Name</th>
+                                    <th data-field="Password">Password</th>
+                                    <th data-field="Email">Email</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div><!-- Histories -->
+                            <table data-toggle="table" data-url="/histories"
+                                   data-pagination="true"
+                                   data-search="true"
+                                   data-height="600">
+                                <thead>
+                                <tr>
+                                    <th data-field="HistID">History ID</th>
+                                    <th data-field="User">User ID</th>
+                                    <th data-field="Progress">Progress</th>
+                                    <th data-field="MovieID">Movie ID</th>
+                                    <th data-field="Title">Title</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div><!-- Preferences -->
+                            <table data-toggle="table" data-url="/preferences"
+                                   data-pagination="true"
+                                   data-search="true"
+                                   data-height="600">
+                                <thead>
+                                <tr>
+                                    <th data-field="PrefID">Preference ID</th>
+                                    <th data-field="User">User ID</th>
+                                    <th data-field="CategoryID">Category ID</th>
+                                    <th data-field="Name">Category Name</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div><!-- Ratings -->
+                            <table data-toggle="table" data-url="/ratings"
+                                   data-pagination="true"
+                                   data-search="true"
+                                   data-height="600">
+                                <thead>
+                                <tr>
+                                    <th data-field="RateID">ID</th>
+                                    <th data-field="User">User ID</th>
+                                    <th data-field="MovieID">Movie ID</th>
+                                    <th data-field="Title">Movie Title</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.table/1.10.1/bootstrap-table.min.js"></script>
+
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>-->
+<script>
+    //group-links, //groups
+    var pageProgram = null;
+    var launchProgram = (function () {
+        pageProgram = new program();
+    });
+    var program = (function () {
+        var groupLinksOuter = document.getElementById("group-links");
+        var groupsOuter = document.getElementById("groups");
+        var groupLinks = groupLinksOuter.getElementsByTagName("li");
+        var groups = groupsOuter.getElementsByTagName("div");
+        var filterGroup = [];
+        for (var j = 0; j < groups.length; j++) {
+            (function (f) {
+                var ggg = groups.item(f);
+                if (ggg.parentElement == groupsOuter) {
+                    filterGroup.push(ggg)
+                }
+            })(j)
+        }
+        groups = filterGroup;
+        groupLinks.item(0).classList.add("active");
+        for (var i = 0; i < groups.length; i++) {
+            (function (e) {
+                var g = groups[e];
+                g.classList.add("hidden");
+                var gLink = groupLinks.item(e);
+                gLink.addEventListener("click", (function () {
+                    groupLinkClicked(e)
+                }))
+            })(i)
+        }
+        render();
+        function render() {
+            for (var i = 0; i < groupLinks.length; i++) {
+                var glink = groupLinks.item(i);
+                if (glink.classList.contains("active")) {
+                    groups[i].classList.remove("hidden");
+                } else {
+                    groups[i].classList.add("hidden");
+                }
+            }
+        }
+        function groupLinkClicked(index) {
+            groupLinksOuter.getElementsByClassName("active").item(0).classList.remove("active");
+            groupLinks.item(index).classList.add("active");
+            render();
+        }
+    });
+</script>
+
+</body>
+</html>

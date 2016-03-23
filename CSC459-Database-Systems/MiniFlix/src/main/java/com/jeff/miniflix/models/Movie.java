@@ -17,8 +17,8 @@ public class Movie extends Model {
     private static final String ID_LENGTH = "Length";
     private static final String ID_DESC = "Description";
 
-    public static Optional<Movie> getById(int id) {
-        Optional<Movie> movieOptional = Optional.empty();
+    public static Optional<JsonObject> getById(int id) {
+        Optional<JsonObject> movieOptional = Optional.empty();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
@@ -41,8 +41,8 @@ public class Movie extends Model {
         return movieOptional;
     }
 
-    public static List<Movie> getAll() {
-        ImmutableList.Builder<Movie> builder = new ImmutableList.Builder<>();
+    public static List<JsonObject> getAll() {
+        ImmutableList.Builder<JsonObject> builder = new ImmutableList.Builder<>();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
@@ -63,8 +63,8 @@ public class Movie extends Model {
         return builder.build();
     }
 
-    public static List<Movie> getByCategory(int catID) {
-        ImmutableList.Builder<Movie> builder = new ImmutableList.Builder<>();
+    public static List<JsonObject> getByCategory(int catID) {
+        ImmutableList.Builder<JsonObject> builder = new ImmutableList.Builder<>();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
@@ -86,30 +86,12 @@ public class Movie extends Model {
         return builder.build();
     }
 
-    private static Movie fromRes(ResultSet set) throws SQLException {
-        return new Movie(set.getInt(ID_ID), set.getString(ID_TITLE), set.getInt(ID_LENGTH),
-                set.getString(ID_DESC));
-    }
-
-    public final int id;
-    public final String title;
-    public final int length;
-    public final String description;
-
-    public Movie(int id, String title, int length, String description) {
-        this.id = id;
-        this.title = title;
-        this.length = length;
-        this.description = description;
-    }
-
-    @Override
-    public JsonObject toJson() {
+    public static JsonObject fromRes(ResultSet set) throws SQLException {
         JsonObject object = new JsonObject();
-        object.addProperty(ID_ID, id);
-        object.addProperty(ID_TITLE, title);
-        object.addProperty(ID_LENGTH, length);
-        object.addProperty(ID_DESC, description);
+        object.addProperty(ID_ID, set.getInt(ID_ID));
+        object.addProperty(ID_TITLE, set.getString(ID_TITLE));
+        object.addProperty(ID_LENGTH, set.getInt(ID_LENGTH));
+        object.addProperty(ID_DESC, set.getString(ID_DESC));
         return object;
     }
 

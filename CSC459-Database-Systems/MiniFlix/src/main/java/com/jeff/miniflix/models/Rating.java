@@ -4,25 +4,22 @@ package com.jeff.miniflix.models;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
-import java.util.Optional;
 
 public class Rating extends Model {
 
-    private static final String ID_USER = "User";
+   /* private static final String ID_USER = "User";
     private static final String ID_MOVIE = "Movie";
-    private static final String ID_RATING = "Rating";
+    private static final String ID_RATING = "Rating";*/
 
-    public final int user;
-    public final int movie;
-    public final int rating;
+    private static final String ID_RATE_ID = "RateID";
+    private static final String ID_RATE_USER = "User";
+    private static final String ID_MOVIE_ID = "MovieID";
+    private static final String ID_MOVIE_TITLE = "Title";
 
-    public static Optional<Rating> getByUserAndMovie(int user, int movie){
-        Optional<Rating> optional = java.util.Optional.empty();
+   /* public static Optional<JsonObject> getByUserAndMovie(int user, int movie){
+        Optional<JsonObject> optional = java.util.Optional.empty();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
@@ -45,8 +42,8 @@ public class Rating extends Model {
         return optional;
     }
 
-    public static List<Rating> getForMovie(int movie){
-        ImmutableList.Builder<Rating> array = new ImmutableList.Builder<>();
+    public static List<JsonObject> getForMovie(int movie){
+        ImmutableList.Builder<JsonObject> array = new ImmutableList.Builder<>();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
@@ -66,24 +63,44 @@ public class Rating extends Model {
             close(connection, statement, r);
         }
         return array.build();
+    }*/
+
+    public static List<JsonObject> getAll() {
+        ImmutableList.Builder<JsonObject> array = new ImmutableList.Builder<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet r = null;
+        try {
+            connection = connect();
+            String query = "SELECT " +
+                    "Ratings.ID AS " + ID_RATE_ID + "," +
+                    "Ratings.User," +
+                    "Movies.ID AS " + ID_MOVIE_ID + "," +
+                    "Movies.Title " +
+                    "FROM Ratings " +
+                    "INNER JOIN Movies " +
+                    "ON Ratings.Movie = Movies.ID " +
+                    "ORDER BY Ratings.User";
+            statement = connection.createStatement();
+            r = statement.executeQuery(query);
+            while (r.next()){
+                array.add(from(r));
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, statement, r);
+        }
+        return array.build();
     }
 
-    private static Rating from(ResultSet r) throws SQLException {
-        return new Rating(r.getInt(ID_USER), r.getInt(ID_MOVIE), r.getInt(ID_RATING));
-    }
-
-    public Rating(int user, int movie, int rating) {
-        this.user = user;
-        this.movie = movie;
-        this.rating = rating;
-    }
-
-    @Override
-    public JsonObject toJson() {
+    private static JsonObject from(ResultSet r) throws SQLException {
         JsonObject object = new JsonObject();
-        object.addProperty(ID_USER, user);
-        object.addProperty(ID_MOVIE, movie);
-        object.addProperty(ID_RATING, rating);
+        object.addProperty(ID_RATE_ID, r.getInt(ID_RATE_ID));
+        object.addProperty(ID_RATE_USER, r.getInt(ID_RATE_USER));
+        object.addProperty(ID_MOVIE_ID, r.getInt(ID_MOVIE_ID));
+        object.addProperty(ID_MOVIE_TITLE, r.getString(ID_MOVIE_TITLE));
         return object;
     }
+
 }

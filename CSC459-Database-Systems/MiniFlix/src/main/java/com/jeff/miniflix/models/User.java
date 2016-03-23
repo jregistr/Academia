@@ -1,19 +1,21 @@
 package com.jeff.miniflix.models;
 
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
 public class User extends Model {
 
-    private static final String ID_USER_NAME = "UserName";
-    private static final String ID_PASSWORD = "Password";
-    private static final String ID_EMAIL = "Email";
+    public static final String ID_USER_NAME = "UserName";
+    public static final String ID_PASSWORD = "Password";
+    public static final String ID_EMAIL = "Email";
 
-    public static Optional<User> getByUserName(String userName) {
-        Optional<User> userOptional = Optional.empty();
+    public static Optional<JsonObject> getByUserName(String userName) {
+        Optional<JsonObject> userOptional = Optional.empty();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
@@ -27,33 +29,39 @@ public class User extends Model {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, statement, r);
         }
         return userOptional;
     }
 
-    private static User from(ResultSet r)throws SQLException {
-        return new User(r.getString(ID_USER_NAME), r.getString(ID_PASSWORD),
-                r.getString(ID_EMAIL));
+    public static List<JsonObject> getAll() {
+        ImmutableList.Builder<JsonObject> array = new ImmutableList.Builder<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet r = null;
+        try {
+            connection = connect();
+            statement = connection.createStatement();
+            String query = "SELECT UserName, Password, Email  FROM Users";
+            r = statement.executeQuery(query);
+            while (r.next()){
+                array.add(from(r));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, statement, r);
+        }
+        return array.build();
     }
 
-    public String userName;
-    public String password;
-    public String email;
-
-    public User(String userName, String password, String email) {
-        this.userName = userName;
-        this.password = password;
-        this.email = email;
-    }
-
-    @Override
-    public JsonObject toJson() {
+    private static JsonObject from(ResultSet r) throws SQLException {
         JsonObject object = new JsonObject();
-        object.addProperty(ID_USER_NAME, userName);
-        object.addProperty(ID_PASSWORD, password);
-        object.addProperty(ID_EMAIL, email);
+        object.addProperty(ID_USER_NAME, r.getString(ID_USER_NAME));
+        object.addProperty(ID_PASSWORD, r.getString(ID_PASSWORD));
+        object.addProperty(ID_EMAIL, r.getString(ID_EMAIL));
         return object;
     }
+
 }

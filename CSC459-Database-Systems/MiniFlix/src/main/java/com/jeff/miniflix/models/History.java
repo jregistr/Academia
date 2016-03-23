@@ -9,58 +9,84 @@ import java.util.List;
 
 public class History extends Model {
 
+    private static final String ID_HIST_ID = "HistID";
     private static final String ID_USER = "User";
-    private static final String ID_MOVIE = "Movie";
     private static final String ID_PROGRESS = "Progress";
 
-    public static List<History> getForUser(int user){
-        ImmutableList.Builder<History> array = new ImmutableList.Builder<>();
+    private static final String ID_MOVIE = "Movie";
+    private static final String ID_MOVIE_ID = "MovieID";
+    private static final String ID_MOVIE_TITLE = "Title";
+    private static final String ID_MOVIE_LENGTH = "Length";
+
+    public static List<JsonObject> getForUser(int user) {
+        ImmutableList.Builder<JsonObject> array = new ImmutableList.Builder<>();
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet r = null;
         try {
             connection = connect();
-            statement = connection.prepareStatement("SELECT * FROM Histories WHERE User = ?");
+            String query = "SELECT Histories.ID AS " + ID_HIST_ID + ", Histories.User, Histories.Progress," +
+                    "Movies.ID AS " + ID_MOVIE_ID + ", Movies.Title, Movies.Length " +
+                    "FROM Movies " +
+                    "INNER JOIN Histories " +
+                    "ON Movies.ID = Histories.Movie " +
+                    "WHERE Histories.User = ?";
+
+            statement = connection.prepareStatement(query);
             statement.setInt(1, user);
+
             r = statement.executeQuery();
             while (r.next()) {
                 array.add(from(r));
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, statement, r);
         }
         return array.build();
     }
 
-    private static History from(ResultSet r) throws SQLException{
-        return new History(r.getInt(ID_ID), r.getTimestamp(ID_DATE_CREATED),
-                r.getInt(ID_USER), r.getInt(ID_MOVIE), r.getFloat(ID_PROGRESS));
+    public static List<JsonObject> getAll() {
+        ImmutableList.Builder<JsonObject> array = new ImmutableList.Builder<>();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet r = null;
+        try {
+            connection = connect();
+            String query = "SELECT Histories.ID AS " + ID_HIST_ID + ", Histories.User, Histories.Progress," +
+                    "Movies.ID AS " + ID_MOVIE_ID + ", Movies.Title, Movies.Length " +
+                    "FROM Movies " +
+                    "INNER JOIN Histories " +
+                    "ON Movies.ID = Histories.Movie";
+
+            statement = connection.createStatement();
+            r = statement.executeQuery(query);
+            while (r.next()) {
+                array.add(from(r));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, statement, r);
+        }
+        return array.build();
     }
 
-    public final int id;
-    public Timestamp dateCreated;
-    public final int user;
-    public final int movie;
-    public float progress;
-
-    public History(int id, Timestamp dateCreated, int user, int movie, float progress) {
-        this.id = id;
-        this.dateCreated = dateCreated;
-        this.user = user;
-        this.movie = movie;
-        this.progress = progress;
-    }
-
-    @Override
-    public JsonObject toJson() {
+    private static JsonObject from(ResultSet r) throws SQLException {
+        //JsonObject movie = new JsonObject();
         JsonObject object = new JsonObject();
-        object.addProperty(ID_ID, id);
-        object.addProperty(ID_DATE_CREATED, dateCreated.getTime());
-        object.addProperty(ID_USER, user);
-        object.addProperty(ID_MOVIE, movie);
-        object.addProperty(ID_PROGRESS, progress);
+     //   movie.addProperty(ID_MOVIE_ID, r.getInt(ID_MOVIE_ID));
+     //   movie.addProperty(ID_MOVIE_TITLE, r.getString(ID_MOVIE_TITLE));
+       // movie.addProperty(ID_MOVIE_LENGTH, r.getInt(ID_MOVIE_LENGTH));
+
+        object.addProperty(ID_HIST_ID, r.getInt(ID_HIST_ID));
+        object.addProperty(ID_USER, r.getInt(ID_USER));
+        object.addProperty(ID_PROGRESS, r.getFloat(ID_PROGRESS));
+
+        object.addProperty(ID_MOVIE_ID, r.getInt(ID_MOVIE_ID));
+        object.addProperty(ID_MOVIE_TITLE, r.getString(ID_MOVIE_TITLE));
+      //  object.add(ID_MOVIE, movie);
         return object;
     }
 }
