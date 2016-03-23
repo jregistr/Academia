@@ -1,18 +1,14 @@
 package com.jeff.chaser
 
-import com.badlogic.gdx.ApplicationAdapter
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.{ApplicationAdapter, Gdx}
+import com.badlogic.gdx.graphics.{GL20, Texture}
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.physics.bullet.Bullet
 
 class Chaser extends ApplicationAdapter {
-  private[chaser] var batch: SpriteBatch = null
-  private[chaser] var img: Texture = null
+  private var batch: SpriteBatch = null
+  private var img: Texture = null
 
   override def create() {
-    Bullet.init()
     batch = new SpriteBatch
     img = new Texture("badlogic.jpg")
   }
