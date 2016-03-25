@@ -1,6 +1,6 @@
 package com.jeff.chaser.models.components
 
 import com.badlogic.ashley.core.Component
-import com.badlogic.gdx.math.Vector2
+import com.jeff.chaser.models.util.AccelerationState
 
-class AccelerationComponent(val acceleration: Vector2) extends Component
+class AccelerationComponent(val x: Float, val y: Float, var state: AccelerationState.Value) extends Component

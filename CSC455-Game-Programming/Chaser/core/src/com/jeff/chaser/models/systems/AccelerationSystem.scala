@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import com.jeff.chaser.models.components.{AccelerationComponent, VelocityComponent}
+import com.jeff.chaser.models.util.AccelerationState
 
 
 class AccelerationSystem extends IteratingSystem(
@@ -13,15 +14,14 @@ class AccelerationSystem extends IteratingSystem(
   private val am = ComponentMapper.getFor(classOf[AccelerationComponent])
 
   override def processEntity(entity: Entity, deltaTime: Float): Unit = {
-    val velocityComponent = vm.get(entity)
-    val acc = am.get(entity).acceleration
-    val vel = velocityComponent.velocity
-
-    vel.set(clamp(vel.x + acc.x, velocityComponent.maxX), clamp(vel.y + acc.y, velocityComponent.maxY))
-  }
-
-  private def clamp(value:Float, max:Float):Float = {
-    MathUtils.clamp(value, -max, max)
+    val vel = vm.get(entity)
+    val acc = am.get(entity)
+    val state = acc.state
+    if(state != AccelerationState.ZERO){
+      val mult = if (state == AccelerationState.POSITIVE) 1 else -1
+      vel.x += ((acc.x * mult) * deltaTime)
+      vel.y += ((acc.y * mult) * deltaTime)
+    }
   }
 
 }
