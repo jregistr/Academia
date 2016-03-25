@@ -35,6 +35,7 @@ class Chaser extends ApplicationAdapter with InputProcessor {
 
   override def render() {
     val delta = Gdx.graphics.getDeltaTime
+    actives.update(delta)
     engine.update(delta)
     Gdx.gl.glClearColor(1, 0, 0, 1)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)

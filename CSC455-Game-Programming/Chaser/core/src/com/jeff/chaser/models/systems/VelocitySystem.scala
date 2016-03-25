@@ -16,6 +16,8 @@ class VelocitySystem extends IteratingSystem(Family.all(classOf[VelocityComponen
     val vel = vm.get(entity)
     trans.x += (clamp(vel.x, vel.maxX) * deltaTime)
     trans.y += (clamp(vel.y, vel.maxY) * deltaTime)
+    vel.targetX = clamp(vel.targetX, vel.maxX)
+    vel.targetY = clamp(vel.targetY, vel.maxY)
   }
 
   private def clamp(value: Float, max: Float): Float = {

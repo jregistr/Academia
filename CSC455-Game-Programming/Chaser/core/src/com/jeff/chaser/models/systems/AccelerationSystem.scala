@@ -2,9 +2,7 @@ package com.jeff.chaser.models.systems
 
 import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.MathUtils
 import com.jeff.chaser.models.components.{AccelerationComponent, VelocityComponent}
-import com.jeff.chaser.models.util.AccelerationState
 
 
 class AccelerationSystem extends IteratingSystem(
@@ -16,12 +14,19 @@ class AccelerationSystem extends IteratingSystem(
   override def processEntity(entity: Entity, deltaTime: Float): Unit = {
     val vel = vm.get(entity)
     val acc = am.get(entity)
-    val state = acc.state
-    if(state != AccelerationState.ZERO){
-      val mult = if (state == AccelerationState.POSITIVE) 1 else -1
-      vel.x += ((acc.x * mult) * deltaTime)
-      vel.y += ((acc.y * mult) * deltaTime)
+
+    def calculateForAxis(cur: Float, target: Float, accel: Float): Float = {
+      var out = 0f
+      if (cur != target) {
+        val dir = if (cur < target) 1 else -1
+        out = Math.min((accel * dir) * deltaTime, Math.abs(target - cur))
+      }
+      out
     }
+
+    vel.x += calculateForAxis(vel.x, vel.targetX, acc.x)
+    vel.y += calculateForAxis(vel.y, vel.targetY, acc.y)
+
   }
 
 }

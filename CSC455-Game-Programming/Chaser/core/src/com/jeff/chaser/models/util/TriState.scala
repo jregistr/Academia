@@ -1,6 +1,6 @@
 package com.jeff.chaser.models.util
 
 
-object AccelerationState extends Enumeration {
+object TriState extends Enumeration {
   val POSITIVE, NEGATIVE, ZERO = Value
 }

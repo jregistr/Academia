@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.{Animation, TextureRegion}
 import com.badlogic.gdx.utils.{Array => LibArray, ObjectMap}
 import com.jeff.chaser.models.components._
 import com.jeff.chaser.models.systems.{AnimatorSystem, AccelerationSystem, VelocitySystem}
-import com.jeff.chaser.models.util.{AnimInfo, AccelerationState, Tag}
+import com.jeff.chaser.models.util.{AnimInfo, TriState, Tag}
 import com.jeff.chaser.util.Constants.TexConstants.{TANKS, TANKS_NUM_LINES, TANKS_PER_LINE, grab}
 
 
@@ -47,7 +47,7 @@ class ActiveEntityManager(engine: Engine, textures: Map[String, Texture]) extend
       entity.add(new TransformComponent(basePos._1 - (baseTex.getRegionWidth / 2.0f),
         basePos._2 - (baseTex.getRegionHeight / 2.0f), rotation))
       entity.add(new VelocityComponent(0, 0, veloMax._1, veloMax._2))
-      entity.add(new AccelerationComponent(acc._1, acc._2, AccelerationState.ZERO))
+      entity.add(new AccelerationComponent(acc._1, acc._2))
       entity.add(new RenderComponent(baseTex, baseTex.getRegionWidth,
         baseTex.getRegionHeight))
       entity.add(new AnimatorComponent(init, init, simpleState(animRegions)))
@@ -66,7 +66,7 @@ class ActiveEntityManager(engine: Engine, textures: Map[String, Texture]) extend
     addSystems()
   }
 
-  private def addSystems(): Unit ={
+  private def addSystems(): Unit = {
     engine.addSystem(new VelocitySystem)
     engine.addSystem(new AccelerationSystem)
     engine.addSystem(new AnimatorSystem)
