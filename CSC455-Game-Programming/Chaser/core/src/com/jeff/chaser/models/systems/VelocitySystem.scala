@@ -3,7 +3,7 @@ package com.jeff.chaser.models.systems
 import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
-import com.jeff.chaser.models.components.{TransformComponent, VelocityComponent}
+import com.jeff.chaser.models.components.motion.{TransformComponent, VelocityComponent}
 
 
 class VelocitySystem extends IteratingSystem(Family.all(classOf[VelocityComponent], classOf[TransformComponent]).get()) {

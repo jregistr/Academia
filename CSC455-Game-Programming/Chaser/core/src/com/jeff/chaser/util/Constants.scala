@@ -14,7 +14,7 @@ object Constants {
 
     val GROUND = s"ground$TAIL"
     val HOUSE = s"house$TAIL"
-    val TANKS = s"tanks-2$TAIL"
+    val TANKS = s"tanks$TAIL"
     val TANKS_PER_LINE = 8
     val TANKS_NUM_LINES = 8
 

@@ -3,7 +3,8 @@ package com.jeff.chaser.entitymanagers
 import com.badlogic.ashley.core._
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.jeff.chaser.models.components.{TransformComponent, RenderComponent}
+import com.jeff.chaser.models.components.motion.TransformComponent
+import com.jeff.chaser.models.components.view.RenderComponent
 
 
 abstract class EntityManager(protected val engine: Engine, renderFamily: Family) {

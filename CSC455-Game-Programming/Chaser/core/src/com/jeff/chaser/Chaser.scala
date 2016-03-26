@@ -3,7 +3,7 @@ package com.jeff.chaser
 import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.{GL20, Texture}
+import com.badlogic.gdx.graphics.{OrthographicCamera, Camera, GL20, Texture}
 import com.badlogic.gdx.{ApplicationAdapter, Gdx, InputProcessor}
 import com.jeff.chaser.entitymanagers.{ActiveEntityManager, StaticEntityManager}
 import com.jeff.chaser.util.Constants.TexConstants._
@@ -14,6 +14,7 @@ class Chaser extends ApplicationAdapter with InputProcessor {
   private var engine: Engine = _
   private var statics: StaticEntityManager = _
   private var actives: ActiveEntityManager = _
+  private var camera:OrthographicCamera = _
 
   override def create() {
     asset.load(GROUND, classOf[Texture])
@@ -21,13 +22,15 @@ class Chaser extends ApplicationAdapter with InputProcessor {
     asset.load(TANKS, classOf[Texture])
     asset.finishLoading()
 
+    camera = new OrthographicCamera(Gdx.graphics.getWidth, Gdx.graphics.getHeight)
+    camera.setToOrtho(false, Gdx.graphics.getWidth, Gdx.graphics.getHeight)
     engine = new Engine()
     statics = new StaticEntityManager(engine, Map(
       GROUND -> asset.get(GROUND, classOf[Texture]),
       HOUSE -> asset.get(HOUSE, classOf[Texture])
     ))
 
-    actives = new ActiveEntityManager(engine, Map(
+    actives = new ActiveEntityManager(camera, engine, Map(
       TANKS -> asset.get(TANKS, classOf[Texture])
     ))
     Gdx.input.setInputProcessor(this)
@@ -48,24 +51,15 @@ class Chaser extends ApplicationAdapter with InputProcessor {
   override def keyTyped(character: Char): Boolean = false
 
   override def keyDown(keycode: Int): Boolean = {
-    val processed = keycode match {
-      case Keys.A | Keys.S | Keys.D | Keys.W =>
-        actives.updateKeyQueue(keycode, up = false)
-        true
-      case _ => false
-    }
-    processed
+    actives.updateKeyQueue(keycode, down = true)
+    false
   }
 
   override def touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = false
 
   override def keyUp(keycode: Int): Boolean = {
-    keycode match {
-      case Keys.A | Keys.S | Keys.D | Keys.W =>
-        actives.updateKeyQueue(keycode, up = true)
-        true
-      case _ => false
-    }
+    actives.updateKeyQueue(keycode, down = false)
+    true
   }
 
   override def scrolled(amount: Int): Boolean = false

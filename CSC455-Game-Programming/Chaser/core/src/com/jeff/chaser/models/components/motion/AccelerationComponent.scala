@@ -1,4 +1,4 @@
-package com.jeff.chaser.models.components
+package com.jeff.chaser.models.components.motion
 
 import com.badlogic.ashley.core.Component
 

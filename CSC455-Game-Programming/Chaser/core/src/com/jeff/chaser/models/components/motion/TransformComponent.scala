@@ -1,7 +1,6 @@
-package com.jeff.chaser.models.components
+package com.jeff.chaser.models.components.motion
 
 import com.badlogic.ashley.core.Component
-import com.badlogic.gdx.math.Vector2
 
 
 class TransformComponent(var x:Float, var y:Float) extends Component {

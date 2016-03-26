@@ -4,7 +4,9 @@ import com.badlogic.ashley.core._
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.jeff.chaser.models.components.{RenderComponent, StaticComponent, TransformComponent}
+import com.jeff.chaser.models.components.util.StaticComponent
+import com.jeff.chaser.models.components.motion.TransformComponent
+import com.jeff.chaser.models.components.view.RenderComponent
 import com.jeff.chaser.util.Constants.TexConstants.{GROUND, HOUSE, grab}
 
 class StaticEntityManager(engine: Engine, textures: Map[String, Texture]) extends EntityManager(engine,
