@@ -4,9 +4,11 @@ import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.MathUtils
 import com.jeff.chaser.models.components.motion.{TransformComponent, VelocityComponent}
+import com.jeff.chaser.models.components.util.NonStaticComponent
 
 
-class VelocitySystem extends IteratingSystem(Family.all(classOf[VelocityComponent], classOf[TransformComponent]).get()) {
+class VelocitySystem extends IteratingSystem(Family.all(classOf[VelocityComponent],
+  classOf[TransformComponent], classOf[NonStaticComponent]).get()) {
 
   private val vm = ComponentMapper.getFor(classOf[VelocityComponent])
   private val tm = ComponentMapper.getFor(classOf[TransformComponent])

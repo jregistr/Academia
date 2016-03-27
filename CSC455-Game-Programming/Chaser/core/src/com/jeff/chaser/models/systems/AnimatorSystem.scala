@@ -3,14 +3,16 @@ package com.jeff.chaser.models.systems
 import com.badlogic.ashley.core._
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
-import com.jeff.chaser.models.components.view.{AnimatorComponent, RenderComponent}
+import com.jeff.chaser.models.components.util.NonStaticComponent
+import com.jeff.chaser.models.components.view.{AnimatorComponent, RenderTextureComponent}
 import com.jeff.chaser.models.util.AnimInfo
 
 
-class AnimatorSystem extends IteratingSystem(Family.all(classOf[AnimatorComponent], classOf[RenderComponent]).get()) {
+class AnimatorSystem extends IteratingSystem(Family.all(classOf[AnimatorComponent],
+  classOf[RenderTextureComponent], classOf[NonStaticComponent]).get()) {
 
   private val am = ComponentMapper.getFor(classOf[AnimatorComponent])
-  private val rm = ComponentMapper.getFor(classOf[RenderComponent])
+  private val rm = ComponentMapper.getFor(classOf[RenderTextureComponent])
 
   override def processEntity(entity: Entity, deltaTime: Float): Unit = {
     val animComp = am.get(entity)

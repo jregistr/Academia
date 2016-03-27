@@ -4,13 +4,13 @@ import com.badlogic.ashley.core._
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.jeff.chaser.models.components.motion.TransformComponent
-import com.jeff.chaser.models.components.view.RenderComponent
+import com.jeff.chaser.models.components.view.RenderTextureComponent
 
 
 abstract class EntityManager(protected val engine: Engine, renderFamily: Family) {
 
   protected val batch = new SpriteBatch()
-  protected val rm = ComponentMapper.getFor(classOf[RenderComponent])
+  protected val rm = ComponentMapper.getFor(classOf[RenderTextureComponent])
   protected val tm = ComponentMapper.getFor(classOf[TransformComponent])
 
   protected var renderEntities: ImmutableArray[Entity] = {

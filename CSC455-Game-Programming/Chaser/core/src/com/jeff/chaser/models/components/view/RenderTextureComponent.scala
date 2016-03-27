@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 
-class RenderComponent(var tex: TextureRegion, val initWidth: Float, val initHeight: Float)
+class RenderTextureComponent(var tex: TextureRegion, val initWidth: Float, val initHeight: Float)
   extends Component {
   var sX = 1f
   var sY = 1f

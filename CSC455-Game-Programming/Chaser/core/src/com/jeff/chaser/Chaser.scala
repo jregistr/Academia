@@ -1,9 +1,8 @@
 package com.jeff.chaser
 
 import com.badlogic.ashley.core.Engine
-import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.{OrthographicCamera, Camera, GL20, Texture}
+import com.badlogic.gdx.graphics.{GL20, OrthographicCamera, Texture}
 import com.badlogic.gdx.{ApplicationAdapter, Gdx, InputProcessor}
 import com.jeff.chaser.entitymanagers.{ActiveEntityManager, StaticEntityManager}
 import com.jeff.chaser.util.Constants.TexConstants._
@@ -14,7 +13,7 @@ class Chaser extends ApplicationAdapter with InputProcessor {
   private var engine: Engine = _
   private var statics: StaticEntityManager = _
   private var actives: ActiveEntityManager = _
-  private var camera:OrthographicCamera = _
+  private var camera: OrthographicCamera = _
 
   override def create() {
     asset.load(GROUND, classOf[Texture])
@@ -44,6 +43,11 @@ class Chaser extends ApplicationAdapter with InputProcessor {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
     statics.draw()
     actives.draw()
+  }
+
+
+  override def dispose(): Unit = {
+    asset.dispose()
   }
 
   override def mouseMoved(screenX: Int, screenY: Int): Boolean = false

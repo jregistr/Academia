@@ -3,10 +3,11 @@ package com.jeff.chaser.models.systems
 import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
 import com.jeff.chaser.models.components.motion.{AccelerationComponent, VelocityComponent}
+import com.jeff.chaser.models.components.util.NonStaticComponent
 
 
 class AccelerationSystem extends IteratingSystem(
-  Family.all(classOf[VelocityComponent], classOf[AccelerationComponent]).get()) {
+  Family.all(classOf[VelocityComponent], classOf[AccelerationComponent], classOf[NonStaticComponent]).get()) {
 
   private val vm = ComponentMapper.getFor(classOf[VelocityComponent])
   private val am = ComponentMapper.getFor(classOf[AccelerationComponent])
