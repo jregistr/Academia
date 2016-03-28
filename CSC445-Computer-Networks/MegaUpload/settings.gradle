@@ -1,0 +1,5 @@
+rootProject.name = 'MegaUpload'
+include 'client'
+include 'server'
+include 'constant'
+

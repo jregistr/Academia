@@ -1,0 +1,12 @@
+group 'Networking'
+version '1.0-SNAPSHOT'
+
+mainClassName = "com.jeff.megaupload.server.Main"
+
+sourceSets{
+    main{
+        scala{
+            srcDir 'src/main'
+        }
+    }
+}

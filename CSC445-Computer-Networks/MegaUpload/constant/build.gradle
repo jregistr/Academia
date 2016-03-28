@@ -1,0 +1,10 @@
+group 'Networking'
+version '1.0-SNAPSHOT'
+
+sourceSets{
+    main{
+        scala{
+            srcDir 'src/main'
+        }
+    }
+}
