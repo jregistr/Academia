@@ -45,8 +45,9 @@ class Chaser extends ApplicationAdapter with InputProcessor {
     actives.draw()
   }
 
-
   override def dispose(): Unit = {
+    statics.close()
+    actives.close()
     asset.dispose()
   }
 

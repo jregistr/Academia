@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.{Array => LibArray, ObjectMap}
 import com.jeff.chaser.models.components.ai.DetectorComponent
 import com.jeff.chaser.models.components.motion.{AccelerationComponent, TransformComponent, VelocityComponent}
 import com.jeff.chaser.models.components.util.{AttachedComponent, ControlledComponent, IdentityComponent, NonStaticComponent}
-import com.jeff.chaser.models.components.view.{SimpleTextureComponent, AnimatorComponent, RenderTextureComponent}
+import com.jeff.chaser.models.components.view.{DetectorConeComponent, AnimatorComponent, RenderComponent}
 import com.jeff.chaser.models.systems._
 import com.jeff.chaser.models.util.{AnimInfo, Tag}
 import com.jeff.chaser.util.Constants.TexConstants.{TANKS, TANKS_NUM_LINES, TANKS_PER_LINE, grab}
@@ -19,21 +19,16 @@ import com.jeff.chaser.util.Constants.TexConstants.{TANKS, TANKS_NUM_LINES, TANK
 
 class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textures: Map[String, Texture])
   extends EntityManager(engine,
-    Family.all(classOf[TransformComponent], classOf[RenderTextureComponent], classOf[NonStaticComponent]) get()) {
+    Family.all(classOf[TransformComponent], classOf[RenderComponent], classOf[NonStaticComponent]) get()) {
 
   private val keyState = new ObjectMap[Int, Boolean]()
-  keyState.put(Keys.A, false)
   keyState.put(Keys.S, false)
-  keyState.put(Keys.D, false)
   keyState.put(Keys.W, false)
 
   //Systems that are held here
   private val controlSystem = new ControlSystem
 
   private val mousePos = new Vector3
-
-  private val otherViewFam = Family.all(classOf[SimpleTextureComponent]).get()
-  private val sm = ComponentMapper.getFor(classOf[SimpleTextureComponent])
 
   {
     val w = Gdx.graphics.getWidth
@@ -68,7 +63,7 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
         basePos._2 - (baseTex.getRegionHeight / 2.0f), rotation))
       entity.add(new VelocityComponent(0, 0, veloMax._1, veloMax._2))
       entity.add(new AccelerationComponent(acc._1, acc._2))
-      entity.add(new RenderTextureComponent(baseTex, baseTex.getRegionWidth,
+      entity.add(new RenderComponent(baseTex, baseTex.getRegionWidth,
         baseTex.getRegionHeight))
       entity.add(new AnimatorComponent(init, init, simpleState(animRegions)))
       entity
@@ -77,7 +72,13 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     val guardLine = getLine(1)
     val guard = makeTankEntity("Player", Tag.PLAYER, (w * 0.85f, h * 0.85f),
       (150f, 120f), (90f, 80f), guardLine._1, guardLine._2, 180)
-    val guardCone = new DetectorComponent(180, 200)
+    val detecFov = 120f
+    val detecRange = 200f
+    val detectorOffset = (
+      detecRange - (guardLine._1.getRegionWidth / 2.0f),
+      (-detecRange) + (guardLine._1.getRegionHeight / 2.0f)
+      )
+    val guardCone = new DetectorComponent(detecFov, detecRange, detectorOffset._1, detectorOffset._2)
     guard.add(guardCone)
 
     val playerLine = getLine(0)
@@ -85,11 +86,20 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
       (200f, 150f), (110f, 95f), playerLine._1, playerLine._2, 0f)
     player.add(new ControlledComponent)
 
-
     val detectorCone = new Entity
     detectorCone.add(new NonStaticComponent)
-    detectorCone.add(new SimpleTextureComponent(DetectorViewSystem.makeDetectorCone(guardCone, 1000)))
-    detectorCone.add(new AttachedComponent(Family.all(classOf[TransformComponent]).get(), guard))
+    detectorCone.add(new DetectorConeComponent)
+    detectorCone.add(new TransformComponent(0, 0))
+    val cone = DetectorViewSystem.makeDetectorCone(guardCone)
+    val coneRender = new RenderComponent(cone, cone.getRegionWidth, cone.getRegionHeight)
+    // coneRender.oX = -70
+    val value = -Math.abs(detectorOffset._1 / 2.0f) - 2
+    coneRender.oX = value
+
+    detectorCone.add(coneRender)
+    detectorCone.add(new AttachedComponent(guard,
+      detectorOffset._1,
+      detectorOffset._2))
 
     engine.addEntity(guard)
     engine.addEntity(player)
@@ -103,11 +113,12 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     engine.addSystem(new VelocitySystem)
     engine.addSystem(new AccelerationSystem)
     engine.addSystem(new AnimatorSystem)
+    engine.addSystem(new AttachedSystem)
   }
 
   def updateKeyQueue(keyCode: Int, down: Boolean): Unit = {
     keyCode match {
-      case Keys.A | Keys.S | Keys.D | Keys.W => keyState.put(keyCode, down)
+      case Keys.S | Keys.W => keyState.put(keyCode, down)
       case _ =>
     }
   }
@@ -124,21 +135,15 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     )
   }
 
-  override def draw(): Unit = {
-    super.draw()
-    //draw shape stuff
-    batch.begin()
-    val entities = engine.getEntitiesFor(otherViewFam)
+  override def close(): Unit = {
+    batch.dispose()
+    val fam = Family.all(classOf[DetectorConeComponent], classOf[RenderComponent]).get()
+    val entities = engine.getEntitiesFor(fam)
     val iter = entities.iterator()
     while (iter.hasNext) {
-      val tex = sm.get(iter.next()).tex
-      batch.draw(tex, 0, 0)
+      val ent = iter.next()
+      rm.get(ent).tex.getTexture.dispose()
     }
-    batch.end()
-  }
-
-  override def close(): Unit = {
-
   }
 
 }

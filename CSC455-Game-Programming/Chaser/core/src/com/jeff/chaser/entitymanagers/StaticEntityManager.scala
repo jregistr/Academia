@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.jeff.chaser.models.components.util.StaticComponent
 import com.jeff.chaser.models.components.motion.TransformComponent
-import com.jeff.chaser.models.components.view.RenderTextureComponent
+import com.jeff.chaser.models.components.view.RenderComponent
 import com.jeff.chaser.util.Constants.TexConstants.{GROUND, HOUSE, grab}
 
 class StaticEntityManager(engine: Engine, textures: Map[String, Texture]) extends EntityManager(engine,
-  Family.all(classOf[TransformComponent], classOf[RenderTextureComponent], classOf[StaticComponent]) get()) {
+  Family.all(classOf[TransformComponent], classOf[RenderComponent], classOf[StaticComponent]) get()) {
 
   {
     val w = Gdx.graphics.getWidth.toFloat
@@ -24,12 +24,12 @@ class StaticEntityManager(engine: Engine, textures: Map[String, Texture]) extend
     val ground = new Entity()
     ground.add(new TransformComponent((w / 2.0f) - (groundTex.getRegionWidth / 2.0f),
       (h / 2.0f) - (groundTex.getRegionHeight / 2.0f)))
-    ground.add(new RenderTextureComponent(groundTex, groundTex.getRegionWidth, groundTex.getRegionHeight))
+    ground.add(new RenderComponent(groundTex, groundTex.getRegionWidth, groundTex.getRegionHeight))
     ground.add(staticComponent)
 
     val house = new Entity()
     house.add(new TransformComponent(w * 0.95f, h * 0.75f))
-    house.add(new RenderTextureComponent(houseTex, houseTex.getRegionWidth, houseTex.getRegionHeight))
+    house.add(new RenderComponent(houseTex, houseTex.getRegionWidth, houseTex.getRegionHeight))
     house.add(staticComponent)
 
     engine.addEntity(ground)

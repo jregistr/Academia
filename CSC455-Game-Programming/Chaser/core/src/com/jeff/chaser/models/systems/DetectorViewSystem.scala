@@ -9,13 +9,15 @@ import com.jeff.chaser.models.components.ai.DetectorComponent
 
 object DetectorViewSystem {
 
-  def makeDetectorCone(dc: DetectorComponent, resolution: Int): TextureRegion = {
+  private val res = 100
+
+  def makeDetectorCone(dc: DetectorComponent): TextureRegion = {
     val radius = dc.distance
     val fov = dc.fovAngle
     val pix = new Pixmap(MathUtils.round(radius + MathUtils.round(radius * 0.01f)), MathUtils.round(radius * 2), Format.RGBA8888)
     pix.setColor(Color.RED)
 
-    val stepCount = resolution //MathUtils.round(fov * resolution)
+    val stepCount = MathUtils.round(fov * res)
     val stepAngleSize = fov / stepCount
     var curAngle = -(fov / 2.0f)
     val roundRad = MathUtils.round(radius)
