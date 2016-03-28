@@ -92,7 +92,6 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     detectorCone.add(new TransformComponent(0, 0))
     val cone = DetectorViewSystem.makeDetectorCone(guardCone)
     val coneRender = new RenderComponent(cone, cone.getRegionWidth, cone.getRegionHeight)
-    // coneRender.oX = -70
     val value = -Math.abs(detectorOffset._1 / 2.0f) - 2
     coneRender.oX = value
 
@@ -114,6 +113,7 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     engine.addSystem(new AccelerationSystem)
     engine.addSystem(new AnimatorSystem)
     engine.addSystem(new AttachedSystem)
+    engine.addSystem(new DetectorSystem)
   }
 
   def updateKeyQueue(keyCode: Int, down: Boolean): Unit = {
