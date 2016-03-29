@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.{Animation, TextureRegion}
 import com.badlogic.gdx.graphics.{OrthographicCamera, Texture}
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.{Array => LibArray, ObjectMap}
-import com.jeff.chaser.models.components.ai.DetectorComponent
+import com.jeff.chaser.models.components.ai.{DetectionComponent, DetectorComponent}
 import com.jeff.chaser.models.components.motion.{AccelerationComponent, TransformComponent, VelocityComponent}
 import com.jeff.chaser.models.components.util.{AttachedComponent, ControlledComponent, IdentityComponent, NonStaticComponent}
 import com.jeff.chaser.models.components.view.{DetectorConeComponent, AnimatorComponent, RenderComponent}
@@ -78,22 +78,31 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
       detecRange - (guardLine._1.getRegionWidth / 2.0f),
       (-detecRange) + (guardLine._1.getRegionHeight / 2.0f)
       )
-    val guardCone = new DetectorComponent(detecFov, detecRange, detectorOffset._1, detectorOffset._2)
+    val detectMake = DetectorViewSystem.makeDetectorCone(detecRange, detecFov)
+    val guardCone = new DetectorComponent(detecFov, detecRange, detectorOffset._1, detectorOffset._2, detectMake._2)
     guard.add(guardCone)
 
     val playerLine = getLine(0)
     val player = makeTankEntity("Cool Guard", Tag.GUARD, (w * 0.2f, h * 0.2f),
       (200f, 150f), (110f, 95f), playerLine._1, playerLine._2, 0f)
     player.add(new ControlledComponent)
+    val poly = DetectorViewSystem.makeDetectableRect(
+      playerLine._1.getRegionWidth,
+      playerLine._1.getRegionHeight
+    )
+    poly.setOrigin(playerLine._1.getRegionWidth / 2.0f, playerLine._1.getRegionHeight / 2.0f)
+    player.add(new DetectionComponent(poly))
 
     val detectorCone = new Entity
     detectorCone.add(new NonStaticComponent)
     detectorCone.add(new DetectorConeComponent)
     detectorCone.add(new TransformComponent(0, 0))
-    val cone = DetectorViewSystem.makeDetectorCone(guardCone)
+
+    val cone = detectMake._1
     val coneRender = new RenderComponent(cone, cone.getRegionWidth, cone.getRegionHeight)
     val value = -Math.abs(detectorOffset._1 / 2.0f) - 2
     coneRender.oX = value
+    detectMake._2.setOrigin(value, detectMake._2.getOriginY)
 
     detectorCone.add(coneRender)
     detectorCone.add(new AttachedComponent(guard,
