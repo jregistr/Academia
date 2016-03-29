@@ -81,11 +81,12 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     val detectMake = DetectorViewSystem.makeDetectorCone(detecRange, detecFov)
     val guardCone = new DetectorComponent(detecFov, detecRange, detectorOffset._1, detectorOffset._2, detectMake._2)
     guard.add(guardCone)
+    guard.add(new ControlledComponent)
 
     val playerLine = getLine(0)
     val player = makeTankEntity("Cool Guard", Tag.GUARD, (w * 0.2f, h * 0.2f),
       (200f, 150f), (110f, 95f), playerLine._1, playerLine._2, 0f)
-    player.add(new ControlledComponent)
+   // player.add(new ControlledComponent)
     val poly = DetectorViewSystem.makeDetectableRect(
       playerLine._1.getRegionWidth,
       playerLine._1.getRegionHeight

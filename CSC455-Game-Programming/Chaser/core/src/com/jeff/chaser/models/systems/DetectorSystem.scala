@@ -4,7 +4,7 @@ import com.badlogic.ashley.core._
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.{Polygon, Vector2}
+import com.badlogic.gdx.math.{Vector3, Polygon, Vector2}
 import com.jeff.chaser.models.components.ai.{DetectionComponent, DetectorComponent}
 import com.jeff.chaser.models.components.motion.TransformComponent
 
@@ -70,7 +70,13 @@ class DetectorSystem extends EntitySystem {
     val ableVec = new Vector2(dt.x, dt.y)
     ableVec.setAngle(dt.rotation)
 
-    println(detectorVec.add(ableVec).len())
+    val copy = new Vector2(ableVec)
+    copy.sub(detectorVec)
+
+    val angle = copy.nor().angle(ableVec.nor()) - 90
+    println(s"ANGLE:$angle")
+
+ //   println(detectorVec.dst(ableVec))
 
    // println(s"DETECTOR:(${detectorVec.x}, ${detectorVec.y})")
   //  println(s"DETECTABLE:(${ableVec.x}, ${ableVec.y})")
