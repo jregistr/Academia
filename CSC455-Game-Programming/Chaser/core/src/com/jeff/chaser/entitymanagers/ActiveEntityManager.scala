@@ -72,7 +72,7 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     val guardLine = getLine(1)
     val guard = makeTankEntity("Player", Tag.PLAYER, (w * 0.85f, h * 0.85f),
       (150f, 120f), (90f, 80f), guardLine._1, guardLine._2, 180)
-    val detecFov = 120f
+    val detecFov = 90f
     val detecRange = 200f
     val detectorOffset = (
       detecRange - (guardLine._1.getRegionWidth / 2.0f),

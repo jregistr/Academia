@@ -4,7 +4,7 @@ import com.badlogic.ashley.core._
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.{Vector3, Polygon, Vector2}
+import com.badlogic.gdx.math.{MathUtils, Vector3, Polygon, Vector2}
 import com.jeff.chaser.models.components.ai.{DetectionComponent, DetectorComponent}
 import com.jeff.chaser.models.components.motion.TransformComponent
 
@@ -61,27 +61,24 @@ class DetectorSystem extends EntitySystem {
   private def processEntity(entity: Entity): Unit = {
     val t = tm.get(entity)
     val d = dm.get(entity)
-    val detectorVec = new Vector2(t.x + d.oX, t.y + d.oY)
-    detectorVec.setAngle(t.rotation)
 
     val detectable = detectableEntities.first()
     val dt = tm.get(detectable)
 
-    val ableVec = new Vector2(dt.x, dt.y)
-    ableVec.setAngle(dt.rotation)
+    val guardVec = new Vector2(t.x + d.oX, t.y + d.oY)
+    val playerVec = new Vector2(dt.x, dt.y)
 
-    val copy = new Vector2(ableVec)
-    copy.sub(detectorVec)
+    val diff = new Vector2(playerVec)
+    diff.sub(guardVec)
 
-    val angle = copy.nor().angle(ableVec.nor()) - 90
-    println(s"ANGLE:$angle")
+    val guardOrient = new Vector2(
+      MathUtils.cosDeg(t.rotation),
+      MathUtils.sinDeg(t.rotation)
+    ).nor()
 
- //   println(detectorVec.dst(ableVec))
-
-   // println(s"DETECTOR:(${detectorVec.x}, ${detectorVec.y})")
-  //  println(s"DETECTABLE:(${ableVec.x}, ${ableVec.y})")
-  //  println(s"Angle:${detectorVec.angle(ableVec)}")
-    //println(ableVec.dst(detectorVec))
+    println(s"LENGTH:${diff.len()}")
+    val dot = guardOrient.dot(diff.nor())
+    println(s"DOT:${dot * MathUtils.radDeg}")
 
   }
 
