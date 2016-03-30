@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     config.apply {
         title = "PathFinder"
         width = 1500
-        height = 800
+        height = 648
         resizable = false
     }
     LwjglApplication(PathFinder(), config)

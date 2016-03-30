@@ -38,8 +38,8 @@ class GraphScene(inputFileName: String, val camera: Camera) : Screen {
     private val cellStart: Texture
     private val cellStop: Texture
     private val cellTouched: Texture
-    private val w = Gdx.graphics.width
-    private val h = Gdx.graphics.height
+    private val w = Gdx.graphics.width - 100
+    private val h = Gdx.graphics.height - 100
     private val topY: Float
     private val cellW: Float
     private val cellH: Float
