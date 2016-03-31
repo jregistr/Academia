@@ -2,36 +2,20 @@ package com.jeff.chaser.models.systems
 
 import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.{MathUtils, Vector2, Vector3}
+import com.badlogic.gdx.math.{Vector2, MathUtils}
 import com.jeff.chaser.models.components.motion.{TransformComponent, VelocityComponent}
-import com.jeff.chaser.models.components.util.{NonStaticComponent, ControlledComponent}
+import com.jeff.chaser.models.components.util.ControlledComponent
 
 
-class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledComponent],
-  classOf[TransformComponent], classOf[VelocityComponent], classOf[NonStaticComponent]).get()) {
+class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledComponent]).get()) {
 
   private val tm = ComponentMapper.getFor(classOf[TransformComponent])
   private val vm = ComponentMapper.getFor(classOf[VelocityComponent])
-  /*private var mX = 0f
-  private var mY = 0f*/
 
   private var turnDir = 0
-
   private var throttle = 0
 
   override def processEntity(entity: Entity, deltaTime: Float): Unit = {
-    /*val t = tm.get(entity)
-    val v = vm.get(entity)
-    var angle = MathUtils.atan2(
-      mY - t.y,
-      mX - t.x
-    )
-    angle *= (180.0f / MathUtils.PI)
-    if (angle < 0) {
-      angle = 360 - (-angle)
-    }
-    val end = angle*/
-
     val t = tm.get(entity)
     val v = vm.get(entity)
     var end = t.rotation
@@ -65,7 +49,6 @@ class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledCompone
     } else {
       throttle = 0
     }
-
     if (a) {
       turnDir = -1
     } else if (d) {

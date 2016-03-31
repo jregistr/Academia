@@ -12,17 +12,12 @@ class AttachedSystem extends IteratingSystem(Family.all(classOf[AttachedComponen
   private val tm = ComponentMapper.getFor(classOf[TransformComponent])
 
   override def processEntity(entity: Entity, deltaTime: Float): Unit = {
-    val at = tm.get(entity)
-    val aa = am.get(entity)
+    val attachedTransform = tm.get(entity)
+    val attachedComponent = am.get(entity)
 
-    val pt = tm.get(aa.entity)
-    pt match {
-      case null => throw new NullPointerException("Missing transform on entity attached to")
-      case _ =>
-        at.x = pt.x + aa.oX
-        at.y = pt.y + aa.oY
-        at.rotation = pt.rotation
-
-    }
+    val toTrans = attachedComponent.entity.getComponent(classOf[TransformComponent])
+    attachedTransform.x = toTrans.x + attachedComponent.oX
+    attachedTransform.y = toTrans.y + attachedComponent.oY
+    attachedTransform.rotation = toTrans.rotation
   }
 }
