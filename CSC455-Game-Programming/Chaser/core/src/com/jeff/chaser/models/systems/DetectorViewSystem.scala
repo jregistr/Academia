@@ -19,7 +19,7 @@ object DetectorViewSystem {
     val pix = new Pixmap(MathUtils.round(radius + MathUtils.round(radius * 0.01f)), MathUtils.round(radius * 2), Format.RGBA8888)
     pix.setColor(Color.RED)
 
-    val stepCount = MathUtils.round(fov * res)
+    val stepCount = 1000
     val stepAngleSize = fov / stepCount
     var curAngle = -(fov / 2.0f)
     val roundRad = MathUtils.round(radius)

@@ -1,6 +1,6 @@
 package com.jeff.chaser.entitymanagers
 
-import com.badlogic.ashley.core.{ComponentMapper, Engine, Entity, Family}
+import com.badlogic.ashley.core.{Engine, Entity, Family}
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.graphics.g2d.Animation.PlayMode
@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.{Array => LibArray, ObjectMap}
 import com.jeff.chaser.models.components.ai.{DetectionComponent, DetectorComponent}
 import com.jeff.chaser.models.components.motion.{AccelerationComponent, TransformComponent, VelocityComponent}
 import com.jeff.chaser.models.components.util.{AttachedComponent, ControlledComponent, IdentityComponent, NonStaticComponent}
-import com.jeff.chaser.models.components.view.{DetectorConeComponent, AnimatorComponent, RenderComponent}
+import com.jeff.chaser.models.components.view.{AnimatorComponent, DetectorConeComponent, RenderComponent}
 import com.jeff.chaser.models.systems._
 import com.jeff.chaser.models.util.{AnimInfo, Tag}
 import com.jeff.chaser.util.Constants.TexConstants.{TANKS, TANKS_NUM_LINES, TANKS_PER_LINE, grab}
@@ -70,7 +70,7 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     }
 
     val guardLine = getLine(1)
-    val guard = makeTankEntity("Player", Tag.PLAYER, (w * 0.85f, h * 0.85f),
+    val guard = makeTankEntity("Player", Tag.PLAYER, (w * 0.36f, h * 0.2f),
       (150f, 120f), (90f, 80f), guardLine._1, guardLine._2, 180)
     val detecFov = 90f
     val detecRange = 200f
@@ -86,7 +86,7 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     val playerLine = getLine(0)
     val player = makeTankEntity("Cool Guard", Tag.GUARD, (w * 0.2f, h * 0.2f),
       (200f, 150f), (110f, 95f), playerLine._1, playerLine._2, 0f)
-   // player.add(new ControlledComponent)
+    // player.add(new ControlledComponent)
     val poly = DetectorViewSystem.makeDetectableRect(
       playerLine._1.getRegionWidth,
       playerLine._1.getRegionHeight
@@ -128,20 +128,17 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
 
   def updateKeyQueue(keyCode: Int, down: Boolean): Unit = {
     keyCode match {
-      case Keys.S | Keys.W => keyState.put(keyCode, down)
+      case Keys.A | Keys.S | Keys.D | Keys.W => keyState.put(keyCode, down)
       case _ =>
     }
   }
 
   override def update(delta: Float): Unit = {
-    val x = Gdx.input.getX
-    val y = Gdx.input.getY
-    mousePos.set(x, y, 0)
-    camera.unproject(mousePos)
     controlSystem.updateKeyStates(
-      keyState.get(Keys.W),
+      keyState.get(Keys.A),
       keyState.get(Keys.S),
-      mousePos
+      keyState.get(Keys.D),
+      keyState.get(Keys.W)
     )
   }
 

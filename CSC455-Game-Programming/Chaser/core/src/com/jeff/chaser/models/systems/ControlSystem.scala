@@ -12,13 +12,15 @@ class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledCompone
 
   private val tm = ComponentMapper.getFor(classOf[TransformComponent])
   private val vm = ComponentMapper.getFor(classOf[VelocityComponent])
-  private var mX = 0f
-  private var mY = 0f
+  /*private var mX = 0f
+  private var mY = 0f*/
+
+  private var turnDir = 0
 
   private var throttle = 0
 
   override def processEntity(entity: Entity, deltaTime: Float): Unit = {
-    val t = tm.get(entity)
+    /*val t = tm.get(entity)
     val v = vm.get(entity)
     var angle = MathUtils.atan2(
       mY - t.y,
@@ -28,7 +30,21 @@ class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledCompone
     if (angle < 0) {
       angle = 360 - (-angle)
     }
-    val end = angle
+    val end = angle*/
+
+    val t = tm.get(entity)
+    val v = vm.get(entity)
+    var end = t.rotation
+    end += (turnDir match {
+      case 0 => 0
+      case 1 => -15.0f * deltaTime
+      case _ => 15.0f * deltaTime
+    })
+
+    if (end < 0) {
+      end = 360 - (-end)
+    }
+
     t.rotation = end
 
     val x = MathUtils.cosDeg(end)
@@ -41,9 +57,7 @@ class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledCompone
     v.targetY = vec.y * throttle
   }
 
-  def updateKeyStates(w: Boolean, s: Boolean, mousePos: Vector3): Unit = {
-    mX = mousePos.x
-    mY = mousePos.y
+  def updateKeyStates(a: Boolean, s: Boolean, d: Boolean, w: Boolean): Unit = {
     if (w) {
       throttle = 1
     } else if (s) {
@@ -51,6 +65,15 @@ class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledCompone
     } else {
       throttle = 0
     }
+
+    if (a) {
+      turnDir = -1
+    } else if (d) {
+      turnDir = 1
+    } else {
+      turnDir = 0
+    }
+
   }
 
 }

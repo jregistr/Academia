@@ -65,20 +65,105 @@ class DetectorSystem extends EntitySystem {
     val detectable = detectableEntities.first()
     val dt = tm.get(detectable)
 
-    val guardVec = new Vector2(t.x + d.oX, t.y + d.oY)
+    val guardVec = new Vector2(t.x, t.y)
     val playerVec = new Vector2(dt.x, dt.y)
+    val distance = guardVec.dst(playerVec)
 
     val diff = new Vector2(playerVec)
-    diff.sub(guardVec)
+    diff.sub(guardVec).nor()
 
     val guardOrient = new Vector2(
-      MathUtils.cosDeg(t.rotation),
-      MathUtils.sinDeg(t.rotation)
+      Math.cos(Math.toRadians(t.rotation)).toFloat,
+      Math.sin(Math.toRadians(t.rotation)).toFloat
     ).nor()
 
-    println(s"LENGTH:${diff.len()}")
     val dot = guardOrient.dot(diff.nor())
-    println(s"DOT:${dot * MathUtils.radDeg}")
+    if(Math.abs(dot) > Math.cos(Math.toRadians(MathUtils.round(d.fovAngle / 2.0f))) && distance <= d.distance){
+      d.detectedLastCheck = detectable
+    }
+
+
+//    val dot = guardOrient.dot(diff.nor())
+    //println(s"DOT:$guardOrient")
+
+   // println(s"T:$guardOrient")
+
+    /*val dot = guardOrient.dot(diff.nor())
+    if(Math.abs(dot) < 0.5){
+      println("DETECTED")
+    }*/
+
+
+
+   /* val diff = new Vector2(playerVec)
+    diff.sub(guardVec)
+    val distance = playerVec.dst(guardVec)
+
+    val guardOrient = new Vector2(
+      MathUtils.sinDeg(t.rotation),
+      MathUtils.cosDeg(t.rotation)
+    ).nor()
+
+    val dot = guardOrient.dot(diff.nor())
+    println(s"${Math.abs(dot)}")
+*/
+
+
+   /* if(Math.abs(dot) < Math.cos(Math.toRadians(MathUtils.round(d.fovAngle / 2.0f))) && distance < d.distance){
+      println("Detected")
+    }*/
+
+
+   /* println(s"GUARD:$guardVec")
+    println(s"PLAYER:$playerVec")
+    println(s"DIFF:${diff.nor()}")
+    println(s"Guard Orient:$guardOrient")
+    val dot = guardOrient.dot(diff.nor())
+    val otherDot = diff.dot(guardOrient)
+    println(s"DOT:$dot")*/
+
+
+    /*val diff = new Vector2(playerVec)
+    diff.sub(guardVec).nor()
+    println(s"DIFFERENCE:$diff")
+
+    println("---------------------------------------------------------")
+    var count = 180f
+    while(count >= 0){
+      val guardOrient = new Vector2(
+        Math.cos(Math.toRadians(count)).toFloat,
+        Math.sin(Math.toRadians(count)).toFloat
+      ).nor()
+      val dot = guardOrient.dot(diff.nor())
+      println(s"COUNT:$count, DOT:$dot")
+      count -=1
+    }
+    println("---------------------------------------------------------")*/
+
+    /*val guardOrient = new Vector2(
+      Math.cos(Math.toRadians(180.0)).toFloat,
+      Math.sin(Math.toRadians(180.0)).toFloat
+    )*/
+
+
+
+
+
+
+    /*val guardOrient = new Vector2(
+      MathUtils.cosDeg(t.rotation),
+      MathUtils.sinDeg(t.rotation)
+    )*/
+
+   // println(t.rotation)
+    //println(s"$guardOrient")
+
+   // println(s"LENGTH:${diff.len()}")
+   // val dot = guardOrient.dot(diff.nor())
+   // println(s"DOT:${dot}")
+
+    /*println(s"PLAYER:$playerVec")
+    println(s"PLAYER:$guardVec")*/
 
   }
 
