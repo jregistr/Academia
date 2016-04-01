@@ -1,8 +1,8 @@
-package com.jeff.chaser.models.systems
+package com.jeff.chaser.models.systems.common
 
 import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.math.{Vector2, MathUtils}
+import com.badlogic.gdx.math.{MathUtils, Vector2}
 import com.jeff.chaser.models.components.motion.{TransformComponent, VelocityComponent}
 import com.jeff.chaser.models.components.util.ControlledComponent
 
@@ -21,10 +21,9 @@ class ControlSystem extends IteratingSystem(Family.all(classOf[ControlledCompone
     var end = t.rotation
     end += (turnDir match {
       case 0 => 0
-      case 1 => -15.0f * deltaTime
-      case _ => 15.0f * deltaTime
+      case 1 => -45.0f * deltaTime
+      case _ => 45.0f * deltaTime
     })
-
     if (end < 0) {
       end = 360 - (-end)
     }

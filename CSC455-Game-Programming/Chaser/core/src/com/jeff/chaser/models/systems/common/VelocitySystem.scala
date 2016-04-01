@@ -1,4 +1,4 @@
-package com.jeff.chaser.models.systems
+package com.jeff.chaser.models.systems.common
 
 import com.badlogic.ashley.core.{ComponentMapper, Entity, Family}
 import com.badlogic.ashley.systems.IteratingSystem

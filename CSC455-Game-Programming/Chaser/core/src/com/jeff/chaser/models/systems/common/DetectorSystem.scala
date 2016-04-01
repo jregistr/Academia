@@ -1,9 +1,9 @@
-package com.jeff.chaser.models.systems
+package com.jeff.chaser.models.systems.common
 
 import com.badlogic.ashley.core._
 import com.badlogic.ashley.utils.ImmutableArray
 import com.badlogic.gdx.math.Vector2
-import com.jeff.chaser.models.components.ai.{DetectionComponent, DetectorComponent}
+import com.jeff.chaser.models.components.ai.detect.{DetectionComponent, DetectorComponent}
 import com.jeff.chaser.models.components.motion.TransformComponent
 
 

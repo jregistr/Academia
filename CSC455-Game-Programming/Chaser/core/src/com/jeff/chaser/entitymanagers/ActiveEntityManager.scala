@@ -4,13 +4,13 @@ import com.badlogic.ashley.core.{Engine, Family}
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.graphics.{OrthographicCamera, Texture}
-import com.badlogic.gdx.utils.{Array => LibArray, ObjectMap}
+import com.badlogic.gdx.utils.ObjectMap
 import com.jeff.chaser.builders.EntityBuilder
-import com.jeff.chaser.models.components.ai.{DetectionComponent, DetectorComponent}
+import com.jeff.chaser.models.components.ai.detect.{DetectionComponent, DetectorComponent}
 import com.jeff.chaser.models.components.motion.TransformComponent
 import com.jeff.chaser.models.components.util._
 import com.jeff.chaser.models.components.view.{DetectorConeComponent, RenderComponent}
-import com.jeff.chaser.models.systems._
+import com.jeff.chaser.models.systems.common._
 import com.jeff.chaser.models.util.Tag
 import com.jeff.chaser.util.Constants
 import com.jeff.chaser.util.Constants.TexConstants.{TANKS, grab}
