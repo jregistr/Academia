@@ -5,7 +5,9 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.{GL20, OrthographicCamera, Texture}
 import com.badlogic.gdx.{ApplicationAdapter, Gdx, InputProcessor}
 import com.jeff.chaser.entitymanagers.{ActiveEntityManager, StaticEntityManager}
+import com.jeff.chaser.models.graph.{Graph, GraphBuilder}
 import com.jeff.chaser.util.Constants.TexConstants._
+import scala.collection.JavaConversions._
 
 class Chaser extends ApplicationAdapter with InputProcessor {
 
@@ -15,7 +17,17 @@ class Chaser extends ApplicationAdapter with InputProcessor {
   private var actives: ActiveEntityManager = _
   private var camera: OrthographicCamera = _
 
-  override def create() {
+  override def create(): Unit ={
+    val graph = GraphBuilder.make()
+    val from = graph.find(p=> p.within(0, 0)).get
+    val to = graph.find(p=>p.within(0, Gdx.graphics.getHeight)).get
+
+    val path = new Graph(graph).findPath((0, 0), (0, Gdx.graphics.getHeight))
+   // println(s"SIZE:${path.path.size}")
+    path.path.foreach(println)
+  }
+
+ /* override def create() {
     asset.load(GROUND, classOf[Texture])
     asset.load(HOUSE, classOf[Texture])
     asset.load(TANKS, classOf[Texture])
@@ -33,7 +45,7 @@ class Chaser extends ApplicationAdapter with InputProcessor {
       TANKS -> asset.get(TANKS, classOf[Texture])
     ))
     Gdx.input.setInputProcessor(this)
-  }
+  }*/
 
   override def render() {
     val delta = Gdx.graphics.getDeltaTime
