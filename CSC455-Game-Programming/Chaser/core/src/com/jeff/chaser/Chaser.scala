@@ -16,7 +16,7 @@ class Chaser extends ApplicationAdapter with InputProcessor {
   private var statics: StaticEntityManager = _
   private var actives: ActiveEntityManager = _
   private var camera: OrthographicCamera = _
-
+/*
   override def create(): Unit ={
     val graph = GraphBuilder.make()
     val from = graph.find(p=> p.within(0, 0)).get
@@ -25,9 +25,9 @@ class Chaser extends ApplicationAdapter with InputProcessor {
     val path = new Graph(graph).findPath((0, 0), (0, Gdx.graphics.getHeight))
    // println(s"SIZE:${path.path.size}")
     path.path.foreach(println)
-  }
+  }*/
 
- /* override def create() {
+  override def create() {
     asset.load(GROUND, classOf[Texture])
     asset.load(HOUSE, classOf[Texture])
     asset.load(TANKS, classOf[Texture])
@@ -45,7 +45,7 @@ class Chaser extends ApplicationAdapter with InputProcessor {
       TANKS -> asset.get(TANKS, classOf[Texture])
     ))
     Gdx.input.setInputProcessor(this)
-  }*/
+  }
 
   override def render() {
     val delta = Gdx.graphics.getDeltaTime

@@ -29,6 +29,7 @@ class StaticEntityManager(engine: Engine, textures: Map[String, Texture]) extend
 
     val house = new Entity()
     house.add(new TransformComponent(w * 0.95f, h * 0.75f))
+    println(s"${houseTex.getRegionWidth}, ${houseTex.getRegionHeight}")
     house.add(new RenderComponent(houseTex, houseTex.getRegionWidth, houseTex.getRegionHeight))
     house.add(staticComponent)
 

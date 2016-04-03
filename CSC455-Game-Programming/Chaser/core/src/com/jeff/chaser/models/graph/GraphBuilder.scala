@@ -9,8 +9,8 @@ import scala.collection.mutable.ListBuffer
 object GraphBuilder {
 
   def make() = {
-    val wC = 200
-    val hC = 150
+    val wC = 100
+    val hC = 50
     val wC2 = wC / 2.0f
     val hC2 = hC / 2.0f
 

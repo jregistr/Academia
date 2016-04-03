@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.{OrthographicCamera, Texture}
 import com.badlogic.gdx.utils.ObjectMap
 import com.jeff.chaser.builders.EntityBuilder
 import com.jeff.chaser.models.components.ai.detect.{DetectionComponent, DetectorComponent}
+import com.jeff.chaser.models.components.ai.states.{PatrolComponent, SeekingComponent}
 import com.jeff.chaser.models.components.motion.TransformComponent
 import com.jeff.chaser.models.components.util._
 import com.jeff.chaser.models.components.view.{DetectorConeComponent, RenderComponent}
+import com.jeff.chaser.models.systems.aistates.{PatrolSystem, SeekingSystem}
 import com.jeff.chaser.models.systems.common._
 import com.jeff.chaser.models.util.Tag
 import com.jeff.chaser.util.Constants
@@ -48,19 +50,18 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
     player ++= Seq(new ControlledComponent, new DetectionComponent)
 
     val guard = EntityBuilder.makeTankEntity("Guard",
-      Tag.PLAYER, (w * 0.7f, h * 0.75f),
+      Tag.GUARD, (w * 0.4f, h * 0.4f),
       (170, 170), (90, 90),
       rgt, redTankLine, 180)
-    guard.add(new DetectorComponent(dfov, ddist, 0, 0))
+    guard ++= Seq(
+      new DetectorComponent(dfov, ddist, 0, 0),
+      new SeekingComponent
+    )
 
     val cone = EntityBuilder.makeAttachedDetector(ddist, dfov, 0, 0,
       rgt.getRegionWidth, rgt.getRegionHeight, guard)
 
-    engine += Seq(
-      player,
-      cone,
-      guard
-    )
+    engine += Seq(player, cone, guard)
 
     addSystems()
   }
@@ -72,7 +73,9 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
       new AnimatorSystem,
       new AttachedSystem,
       new DetectorSystem,
-      controlSystem
+      controlSystem,
+      new SeekingSystem,
+      new PatrolSystem
     )
   }
 

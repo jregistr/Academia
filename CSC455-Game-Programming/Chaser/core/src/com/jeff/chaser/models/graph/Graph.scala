@@ -5,7 +5,9 @@ import com.badlogic.gdx.utils.{Array => LibArray}
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 
-class Graph(val graph: LibArray[Node]) {
+object Graph {
+
+  private val graph: LibArray[Node] = GraphBuilder.make()
 
   def findPath(from: (Float, Float), to: (Float, Float)): Path = {
     clear()
@@ -51,7 +53,7 @@ class Graph(val graph: LibArray[Node]) {
             curNodeOpt.get.marker.mkType = MarkerType.VISITED
             addConnectedNodes(curNodeOpt.get, minKeep)
           }
-        }else{
+        } else {
           throw new IllegalArgumentException
         }
       }
@@ -91,16 +93,14 @@ class Graph(val graph: LibArray[Node]) {
   }
 
   private def backTrace(start: Node, end: Node): Path = {
-    val array = new LibArray[Node]()
+    val array = new LibArray[(Float, Float)]()
     if (end.marker != null && end.marker.from != null) {
       end.marker.mkType = MarkerType.DST
       var part = end.marker.from
-      array.add(start)
       while (part.isDefined) {
-        array.add(part.get)
+        array.add((part.get.cX, part.get.cY))
         part = part.get.marker.from
       }
-      array.add(end)
     }
     new Path(array)
   }

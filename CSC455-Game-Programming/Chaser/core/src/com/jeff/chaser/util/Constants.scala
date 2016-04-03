@@ -12,6 +12,9 @@ object Constants {
   val WIDTH = 1500
   val HEIGHT = 700
 
+  val PATROL_X = (WIDTH * 0.7f) - 128
+  val PATROL_Y = (HEIGHT * 0.75f) - 128
+
   def splitTankSheet(sheet: Texture): Array[Array[TextureRegion]] = {
     TextureRegion.split(sheet,
       sheet.getWidth / TexConstants.TANKS_PER_LINE,

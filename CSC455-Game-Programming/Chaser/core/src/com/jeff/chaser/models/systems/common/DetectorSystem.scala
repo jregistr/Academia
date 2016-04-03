@@ -64,6 +64,8 @@ class DetectorSystem extends EntitySystem {
     val dot = guardOrient.dot(diff.nor())
     if (dot >= 0.5f && distance <= (d.distance * 1.25f)) {
       d.detectedLastCheck = detectable
+    } else {
+      d.detectedLastCheck = null
     }
 
   }
