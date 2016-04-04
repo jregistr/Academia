@@ -2,6 +2,7 @@ package com.jeff.chaser.models.graph
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.ObjectMap
+import com.jeff.chaser.util.Constants
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
@@ -28,6 +29,12 @@ object GraphBuilder {
         grid.put((y, x), node)
       }
     }
+
+    grid.filter(entry => {
+      val node = entry.value
+      node.fromX >= Constants.HOUSE_X && node.toX <= (Constants.HOUSE_X + Constants.HOUSE_WIDTH) &&
+        node.fromY >= Constants.HOUSE_Y && node.toY <= (Constants.HOUSE_Y + Constants.HOUSE_HEIGHT)
+    })
 
     def make(y: Int, x: Int, from: Node): Edge = {
       val node = grid.get((y, x))
