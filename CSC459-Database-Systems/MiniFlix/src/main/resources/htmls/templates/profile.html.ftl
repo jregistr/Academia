@@ -62,6 +62,11 @@
                 </div>
                 <div class="panel-body">
                     <img class="img-responsive img-thumbnail img-movie" src="http://placehold.it/300x180">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                             aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
@@ -85,6 +90,6 @@
 
 <script src="javascripts/lib/jquery.min.js"></script>
 <script src="javascripts/lib/bootstrap.min.js"></script>
-<script src="javascripts/js/profile.js"></script>
+<script src="javascripts/js/movie.js"></script>
 </body>
 </html>
