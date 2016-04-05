@@ -15,6 +15,12 @@ object Constants {
   val PATROL_X = (WIDTH * 0.7f) - 128
   val PATROL_Y = (HEIGHT * 0.75f) - 128
 
+  val HOUSE_X = WIDTH * 0.78f
+  val HOUSE_Y = HEIGHT * 0.58f
+
+  val HOUSE_WIDTH = 140
+  val HOUSE_HEIGHT = 200
+
   def splitTankSheet(sheet: Texture): Array[Array[TextureRegion]] = {
     TextureRegion.split(sheet,
       sheet.getWidth / TexConstants.TANKS_PER_LINE,
@@ -40,7 +46,7 @@ object Constants {
     private val TAIL = ".png"
 
     val GROUND = s"ground$TAIL"
-    val HOUSE = s"house$TAIL"
+    val HOUSE = s"building$TAIL"
     val TANKS = s"tanks$TAIL"
     val TANKS_PER_LINE = 8
     val TANKS_NUM_LINES = 8

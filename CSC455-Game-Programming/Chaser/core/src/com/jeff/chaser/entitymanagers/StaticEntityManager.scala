@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.jeff.chaser.models.components.util.StaticComponent
 import com.jeff.chaser.models.components.motion.TransformComponent
 import com.jeff.chaser.models.components.view.RenderComponent
+import com.jeff.chaser.util.Constants.{HOUSE_X, HOUSE_Y, HOUSE_WIDTH, HOUSE_HEIGHT}
 import com.jeff.chaser.util.Constants.TexConstants.{GROUND, HOUSE, grab}
 
 class StaticEntityManager(engine: Engine, textures: Map[String, Texture]) extends EntityManager(engine,
@@ -28,9 +29,8 @@ class StaticEntityManager(engine: Engine, textures: Map[String, Texture]) extend
     ground.add(staticComponent)
 
     val house = new Entity()
-    house.add(new TransformComponent(w * 0.95f, h * 0.75f))
-    println(s"${houseTex.getRegionWidth}, ${houseTex.getRegionHeight}")
-    house.add(new RenderComponent(houseTex, houseTex.getRegionWidth, houseTex.getRegionHeight))
+    house.add(new TransformComponent(HOUSE_X, HOUSE_Y))
+    house.add(new RenderComponent(houseTex, HOUSE_WIDTH, HOUSE_HEIGHT))
     house.add(staticComponent)
 
     engine.addEntity(ground)
