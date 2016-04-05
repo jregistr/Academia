@@ -1,0 +1,21 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-image: url("../images/back-main.jpg");
+    -webkit-background-size:100%;
+    background-size:100%;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.wrapper{
+    margin-top: 50px;
+}
+
+.nav-image{
+    width: 30px;
+    height: 30px;
+}
+

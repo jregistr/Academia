@@ -16,7 +16,7 @@ public abstract class Model {
    /* private static final String DB_LINK = String.format("jdbc:mysql://%s:%d/%s",
             "ec2-52-36-2-80.us-west-2.compute.amazonaws.com", 3306, "hw1");*/
     private static final String DB_LINK = String.format("jdbc:mysql://%s:%d/%s",
-            "localhost", 3306, "hw1");
+            "ec2-52-36-2-80.us-west-2.compute.amazonaws.com", 3306, "hw1");
     private static final String DB_USER = "appman";
     private static final String DB_PASS = "password";
 

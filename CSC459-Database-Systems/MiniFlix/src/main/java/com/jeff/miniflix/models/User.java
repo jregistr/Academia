@@ -45,7 +45,7 @@ public class User extends Model {
             statement = connection.createStatement();
             String query = "SELECT UserName, Password, Email  FROM Users";
             r = statement.executeQuery(query);
-            while (r.next()){
+            while (r.next()) {
                 array.add(from(r));
             }
         } catch (SQLException e) {
@@ -62,6 +62,28 @@ public class User extends Model {
         object.addProperty(ID_PASSWORD, r.getString(ID_PASSWORD));
         object.addProperty(ID_EMAIL, r.getString(ID_EMAIL));
         return object;
+    }
+
+    public static boolean makeUser(String uName, String pass, String email) {
+        boolean success = true;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = connect();
+            String query = "INSERT INTO Users (UserName,Password,Email) " +
+                    "VALUES (?, ?, ?)";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, uName);
+            statement.setString(2, pass);
+            statement.setString(3, email);
+            success = statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+        } finally {
+            close(connection, statement);
+        }
+        return success;
     }
 
 }
