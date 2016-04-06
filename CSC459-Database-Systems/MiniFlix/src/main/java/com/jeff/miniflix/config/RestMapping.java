@@ -5,10 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.jeff.miniflix.models.*;
 import org.apache.commons.lang3.math.NumberUtils;
-import spark.ModelAndView;
-import spark.template.freemarker.FreeMarkerEngine;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +62,115 @@ public class RestMapping {
             return Model.fromList(Rating.getAll()).toString();
         });
 
+        get(Constants.Routes.ADD_HISTORY, (request, response) -> {
+            String rawUID = request.queryParams(Constants.Keys.U_ID);
+            String movID = request.queryParams(Constants.Keys.M_ID);
+            String progVal = request.queryParams(Constants.Keys.PROG);
+            if (rawUID != null && movID != null && progVal != null) {
+                if (NumberUtils.isNumber(rawUID) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(progVal)) {
+                    //return Constants.succFailOpt(true);
+                    return Constants.succFailOpt(History.addHistory(Integer.parseInt(rawUID), Integer.parseInt(movID), Float.parseFloat(progVal)));
+                } else {
+                    return Constants.succFailOpt(false);
+                }
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.UPDATE_HISTORY, (request, response) -> {
+            response.type(TYPE_JSON);
+            String rawUID = request.queryParams(Constants.Keys.U_ID);
+            String movID = request.queryParams(Constants.Keys.M_ID);
+            String progVal = request.queryParams(Constants.Keys.PROG);
+            if (rawUID != null && movID != null && progVal != null) {
+                if (NumberUtils.isNumber(rawUID) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(progVal)) {
+                    //return Constants.succFailOpt(true);
+                    return Constants.succFailOpt(History.updateHistory(Integer.parseInt(rawUID), Integer.parseInt(movID), Float.parseFloat(progVal)));
+                } else {
+                    return Constants.succFailOpt(false);
+                }
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.HIST_MOVIE_AND_USER, (request, response) -> {
+            response.type(TYPE_JSON);
+            String rawUID = request.queryParams(Constants.Keys.U_ID);
+            String movID = request.queryParams(Constants.Keys.M_ID);
+            System.out.println("RAWUID:" + rawUID + " MOVIEID:" + movID);
+            if (rawUID != null && movID != null) {
+                if (NumberUtils.isNumber(rawUID) && NumberUtils.isNumber(movID)) {
+                    Optional<JsonObject> optional = History.getForUserAndMovie(Integer.parseInt(rawUID), Integer.parseInt(movID));
+                    if(optional.isPresent()){
+                        return optional.get().toString();
+                    }else {
+                        return Constants.succFailOpt(false);
+                    }
+                    //return History.getForUserAndMovie(Integer.parseInt(rawUID), Integer.parseInt(movID)).get().toString();
+                } else {
+                    return Constants.succFailOpt(false);
+                }
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.ADD_RATING, (request, response) -> {
+            response.type(TYPE_JSON);
+            String uid = request.queryParams(Constants.Keys.U_ID);
+            String movID = request.queryParams(Constants.Keys.M_ID);
+            String rating = request.queryParams(Constants.Keys.RATING);
+            if(uid != null && movID != null && rating != null){
+                if(NumberUtils.isNumber(uid) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(rating)){
+                   return Rating.addRating(Integer.parseInt(uid), Integer.parseInt(movID), Integer.parseInt(rating));
+                    //return Constants.succFailOpt(true);
+                }else {
+                    return Constants.succFailOpt(false);
+                }
+            }else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.UPDATE_RATING, (request, response) -> {
+            response.type(TYPE_JSON);
+            String uid = request.queryParams(Constants.Keys.U_ID);
+            String movID = request.queryParams(Constants.Keys.M_ID);
+            String rating = request.queryParams(Constants.Keys.RATING);
+            if(uid != null && movID != null && rating != null){
+                if(NumberUtils.isNumber(uid) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(rating)){
+                    System.out.println("HERE");
+                    return Rating.updateRating(Integer.parseInt(uid), Integer.parseInt(movID), Integer.parseInt(rating));
+                   // return Constants.succFailOpt(true);
+                }else {
+                    return Constants.succFailOpt(false);
+                }
+            }else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.RATING_MOVIE_AND_USER, (request, response) -> {
+            response.type(TYPE_JSON);
+            String rawUID = request.queryParams(Constants.Keys.U_ID);
+            String movID = request.queryParams(Constants.Keys.M_ID);
+            if (rawUID != null && movID != null) {
+                if (NumberUtils.isNumber(rawUID) && NumberUtils.isNumber(movID)) {
+                    Optional<JsonObject> optional = Rating.getByUserAndMovie(Integer.parseInt(rawUID), Integer.parseInt(movID));
+                    if(optional.isPresent()){
+                        return optional.get().toString();
+                    }else {
+                        return Constants.succFailOpt(false);
+                    }
+                } else {
+                    return Constants.succFailOpt(false);
+                }
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
 
     }
 

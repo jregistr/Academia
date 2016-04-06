@@ -1,4 +1,4 @@
-var Movie = (function (id, title, progress, rating, ratingClicked, playClicked) {
+var Movie = (function (id, title, progress, rating) {
 
     const r1 = radio(id, 1);
     const r2 = radio(id, 2);
@@ -6,17 +6,25 @@ var Movie = (function (id, title, progress, rating, ratingClicked, playClicked) 
     const r4 = radio(id, 4);
     const r5 = radio(id, 5);
 
+    const progressBody = document.createElement("div");
+
     const body = (function () {
         var temp = document.createElement("div");
         temp.className = "panel-body";
+        const img = document.createElement("img");
+        img.className = "img-responsive img-thumbnail img-movie";
+        img.setAttribute("src", "http://placehold.it/300x180");
+        temp.appendChild(img);
+        temp.appendChild(progressBody);
+        progressBody.appendChild(makeProgress());
         return temp;
     })();
 
-    var panelDiv = (function () {
+    var panelDiv = function () {
         var temp = document.createElement("div");
         temp.className = "panel panel-info";
-        return panelDiv;
-    })();
+        return temp;
+    }();
 
     var headingDiv = (function () {
         var temp = document.createElement("div");
@@ -57,6 +65,16 @@ var Movie = (function (id, title, progress, rating, ratingClicked, playClicked) 
         bottomDiv.appendChild(r5);
         setRadioValue(rating, [r1, r2, r3, r4, r5]);
         row.appendChild(bottomDiv);
+
+        playBtn.addEventListener("click", function () {
+            playClicked();
+        });
+        radioEvent(r1, 1);
+        radioEvent(r2, 2);
+        radioEvent(r3, 3);
+        radioEvent(r4, 4);
+        radioEvent(r5, 5);
+
         return temp;
     })();
 
@@ -79,13 +97,139 @@ var Movie = (function (id, title, progress, rating, ratingClicked, playClicked) 
     }
 
     function setRadioValue(rate, radios) {
-        radios.forEach(function (elem, index) {
-            elem.checked = rate == index
+        if(rate > 0){
+            radios.forEach(function (elem, index) {
+                elem.checked = rate == index
+            });
+        }else {
+            radios.forEach(function (elem) {
+                elem.checked = false;
+            });
+        }
+    }
+
+    function radioEvent(btn, index) {
+        btn.addEventListener("click", function () {
+            ratingClicked(index);
         });
     }
 
+    function makeProgress() {
+        const temp = document.createElement("div");
+        temp.className = "progress";
+        const progBarDiv = document.createElement("div");
+        progBarDiv.className = "progress-bar";
+        progBarDiv.setAttribute("role", "progressbar");
+        progBarDiv.setAttribute("aria-valuenow", "" + progress);
+        progBarDiv.setAttribute("aria-valuemin", "0");
+        progBarDiv.setAttribute("aria-valuemax", "100");
+        const width = "width:" + progress + "%";
+        progBarDiv.setAttribute("style", width);
+        temp.appendChild(progBarDiv);
+        return temp;
+    }
+
+    function ratingClicked(btnIndex) {
+        const endpoint = rating == -1 ? "/addrating" : "/updaterating";
+        $.ajax({
+            url: endpoint,
+            data: {
+                uid: getUID(),
+                mid: id,
+                rating: btnIndex
+            }
+        }).then(function (output) {
+            console.log(output);
+            if (output["Success"] == true) {
+                queryRatings();
+            }else {
+                //alert("Update Failed");
+            }
+        });
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+
+    function getUID() {
+        return parseInt(getCookie("uid"));
+    }
+
+    function playClicked() {
+        const endpoint = progress == 0 ? "/addhistory" : "/updatehistory";
+        $.ajax({
+            url: endpoint,
+            data: {
+                uid: getUID(),
+                mid: id,
+                progress: progress + 10
+            }
+        }).then(function (output) {
+            if (output["Success"] == true) {
+                queryHistory();
+            } else {
+                alert("Update Failed");
+            }
+        });
+    }
+
+    function queryHistory() {
+        $.ajax({
+            url: "/histmovieuser",
+            data: {
+                uid: getUID(),
+                mid: id
+            },
+            success: function (output) {
+                const val = output["Progress"];
+                if (val != undefined) {
+                    progressBody.innerHTML = "";
+                    progress = val;
+                    progressBody.appendChild(makeProgress());
+                } else {
+                    alert("Val undefined");
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        })
+    }
+
+    function queryRatings() {
+        $.ajax({
+            url: "/ratingmovieuser",
+            data: {
+                uid: getUID(),
+                mid: id
+            },
+            success: function (output) {
+                const succ = output["Success"];
+                if (succ == undefined) {
+                    rating = output["Rating"];
+                    setRadioValue(rating, [r1, r2, r3, r4, r5])
+                } else {
+                    alert("Unable to do");
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        })
+    }
+
     return {
-        getOuter:outer
+        getOuter: function () {
+            return outer;
+        }
     }
 
 });

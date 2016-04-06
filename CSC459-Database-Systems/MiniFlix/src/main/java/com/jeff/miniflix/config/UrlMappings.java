@@ -41,6 +41,7 @@ public class UrlMappings {
                 Optional<JsonObject> user = User.getByUserName(uName);
                 if (user.isPresent() && user.get().get(User.ID_PASSWORD).getAsString().equals(pass)) {
                     res.cookie(Keys.UNAME, user.get().get(User.ID_USER_NAME).getAsString());
+                    res.cookie(Keys.U_ID, String.valueOf(user.get().get(User.ID_ID).getAsInt()));
                     res.redirect(Routes.PROFILE);
                     return res;
                 } else {
@@ -61,8 +62,10 @@ public class UrlMappings {
             notNull(uName, pass, confPass, email);
             if (confPass.equals(pass)) {
                 boolean success = User.makeUser(uName, pass, email);
-                if (success) {
+                Optional<JsonObject> user = User.getByUserName(uName);
+                if (success && user.isPresent()) {
                     res.cookie(Keys.UNAME, uName);
+                    res.cookie(Keys.U_ID, String.valueOf(user.get().get(User.ID_ID).getAsInt()));
                     res.redirect(Routes.PROFILE);
                 } else {
                     halt(404, "BAD Info.");
@@ -80,11 +83,11 @@ public class UrlMappings {
                 response.redirect(Routes.BASE);
                 halt();
             }
-            return new ModelAndView(new HashMap<String, String>(), "htmls/templates/profile.html.ftl");
+            return new ModelAndView(new HashMap<String, String>(), Pages.PROFILE);
         }), new FreeMarkerEngine(conf));
 
         get(Constants.Routes.TABLES, (request, response) -> {
-            return new ModelAndView(new HashMap<String, String>(), "htmls/templates/tables.html.ftl.html");
+            return new ModelAndView(new HashMap<String, String>(), Pages.TABLES);
         }, new FreeMarkerEngine(conf));
 
         RestMapping.makeMap();

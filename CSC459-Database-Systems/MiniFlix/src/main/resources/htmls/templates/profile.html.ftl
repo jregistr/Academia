@@ -41,7 +41,7 @@
     </div>
 </nav>
 
-<div class="container-fluid" style="margin-left: 300px">
+<div class="container-fluid">
     <div class="row" style="margin-top: 10px">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
@@ -50,46 +50,23 @@
                 <li><a href="#">Recomendations</a></li>
             </ul>
         </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div id="movies" class="row">
+
+            </div>
+        </div>
+
        <#-- <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">Dashboard</h1>
         </div>-->
     </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    Title
-                </div>
-                <div class="panel-body">
-                    <img class="img-responsive img-thumbnail img-movie" src="http://placehold.it/300x180">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                             aria-valuemin="0" aria-valuemax="100" style="width:70%">
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-play"></span></button>
-                        </div>
-                        <div class="col-lg-4"></div>
-                        <div class="col-lg-6">
-                            <input type="radio" value="1" name="optradio">
-                            <input type="radio" value="2" name="optradio">
-                            <input type="radio" value="3" name="optradio">
-                            <input type="radio" value="4" name="optradio">
-                            <input type="radio" value="5" name="optradio">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <script src="javascripts/lib/jquery.min.js"></script>
 <script src="javascripts/lib/bootstrap.min.js"></script>
 <script src="javascripts/js/movie.js"></script>
+<script src="javascripts/js/program.js"></script>
 </body>
 </html>

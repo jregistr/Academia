@@ -10,6 +10,7 @@ public class Constants {
     public class Pages {
         public static final String WELCOME = "htmls/templates/welcome.html.ftl";
         public static final String PROFILE = "htmls/templates/profile.html.ftl";
+        public static final String TABLES = "htmls/templates/tables.html.ftl.html";
     }
 
     public class Keys {
@@ -19,6 +20,9 @@ public class Constants {
         public static final String EMAIL = "email";
         public static final String CATEGORY = "category";
         public static final String U_ID = "uid";
+        public static final String M_ID = "mid";
+        public static final String PROG = "progress";
+        public static final String RATING = "rating";
     }
 
     public class Routes {
@@ -34,6 +38,15 @@ public class Constants {
         public static final String HISTORIES = "/histories";
         public static final String PREFERENCES = "/preferences";
         public static final String RATING = "/ratings";
+
+        public static final String ADD_HISTORY = "/addhistory";
+        public static final String UPDATE_HISTORY = "/updatehistory";
+        public static final String HIST_MOVIE_AND_USER = "/histmovieuser";
+
+        public static final String ADD_RATING = "/addrating";
+        public static final String UPDATE_RATING = "/updaterating";
+        public static final String RATING_MOVIE_AND_USER = "/ratingmovieuser";
+
     }
 
     public static String TYPE_JSON = "application/json";
@@ -41,6 +54,12 @@ public class Constants {
     public static JsonObject output(JsonElement element) {
         JsonObject object = new JsonObject();
         object.add("Data", element);
+        return object;
+    }
+
+    public static JsonObject succFailOpt(boolean success){
+        JsonObject object = new JsonObject();
+        object.addProperty("Success", success);
         return object;
     }
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class Model {
 
-    protected static final String ID_ID = "ID";
+    public static final String ID_ID = "ID";
     protected static final String ID_DATE_CREATED = "DateCreated";
 
     private static final String DB_LINK = String.format("jdbc:mysql://%s:%d/%s",

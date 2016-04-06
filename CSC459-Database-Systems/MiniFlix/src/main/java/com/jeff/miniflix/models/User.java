@@ -21,7 +21,7 @@ public class User extends Model {
         ResultSet r = null;
         try {
             connection = connect();
-            statement = connection.prepareStatement("SELECT UserName, Password, Email  FROM Users WHERE UserName = ?");
+            statement = connection.prepareStatement("SELECT ID, UserName, Password, Email  FROM Users WHERE UserName = ?");
             statement.setString(1, userName);
             r = statement.executeQuery();
             if (r.next()) {
@@ -43,7 +43,7 @@ public class User extends Model {
         try {
             connection = connect();
             statement = connection.createStatement();
-            String query = "SELECT UserName, Password, Email  FROM Users";
+            String query = "SELECT ID,UserName, Password, Email  FROM Users";
             r = statement.executeQuery(query);
             while (r.next()) {
                 array.add(from(r));
@@ -58,6 +58,7 @@ public class User extends Model {
 
     private static JsonObject from(ResultSet r) throws SQLException {
         JsonObject object = new JsonObject();
+        object.addProperty(ID_ID, r.getInt(ID_ID));
         object.addProperty(ID_USER_NAME, r.getString(ID_USER_NAME));
         object.addProperty(ID_PASSWORD, r.getString(ID_PASSWORD));
         object.addProperty(ID_EMAIL, r.getString(ID_EMAIL));
