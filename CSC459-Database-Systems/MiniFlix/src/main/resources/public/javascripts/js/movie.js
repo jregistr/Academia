@@ -1,3 +1,16 @@
+const gifList = [
+    "../images/gif/1.gif",
+    "../images/gif/2.gif",
+    "../images/gif/3.gif",
+    "../images/gif/4.gif",
+    "../images/gif/5.gif",
+    "../images/gif/6.gif",
+    "../images/gif/7.gif",
+    "../images/gif/8.gif",
+    "../images/gif/9.gif",
+    "../images/gif/10.gif"
+];
+
 var Movie = (function (id, title, progress, rating) {
 
     const r1 = radio(id, 1);
@@ -13,7 +26,7 @@ var Movie = (function (id, title, progress, rating) {
         temp.className = "panel-body";
         const img = document.createElement("img");
         img.className = "img-responsive img-thumbnail img-movie";
-        img.setAttribute("src", "http://placehold.it/300x180");
+        img.setAttribute("src", gifList[Math.round(Math.random() * 10)]);
         temp.appendChild(img);
         temp.appendChild(progressBody);
         progressBody.appendChild(makeProgress());
@@ -97,11 +110,11 @@ var Movie = (function (id, title, progress, rating) {
     }
 
     function setRadioValue(rate, radios) {
-        if(rate > 0){
+        if (rate > 0) {
             radios.forEach(function (elem, index) {
                 elem.checked = rate == index
             });
-        }else {
+        } else {
             radios.forEach(function (elem) {
                 elem.checked = false;
             });
@@ -142,7 +155,7 @@ var Movie = (function (id, title, progress, rating) {
             console.log(output);
             if (output["Success"] == true) {
                 queryRatings();
-            }else {
+            } else {
                 //alert("Update Failed");
             }
         });

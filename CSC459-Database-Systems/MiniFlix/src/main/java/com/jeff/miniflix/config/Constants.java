@@ -47,6 +47,8 @@ public class Constants {
         public static final String UPDATE_RATING = "/updaterating";
         public static final String RATING_MOVIE_AND_USER = "/ratingmovieuser";
 
+        public static final String MOVIES_WITH_USER = "/movieswithuser";
+
     }
 
     public static String TYPE_JSON = "application/json";

@@ -86,6 +86,46 @@ public class Movie extends Model {
         return builder.build();
     }
 
+    public static List<JsonObject> getAllWithUser(int uid) {
+        ImmutableList.Builder<JsonObject> builder = new ImmutableList.Builder<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet r = null;
+        try {
+            connection = connect();
+            String query =
+                    "SELECT " +
+                            "Movies.ID," +
+                            "Movies.Title," +
+                            "Histories.Progress," +
+                            "Ratings.Rating " +
+                            "FROM Movies " +
+                            "LEFT JOIN Histories " +
+                            "ON Movies.ID = Histories.Movie AND Histories.User = ? " +
+                            "LEFT JOIN Ratings " +
+                            "ON Movies.ID = Ratings.Movie AND Ratings.User = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, uid);
+            statement.setInt(2, uid);
+            r = statement.executeQuery();
+            while (r.next()) {
+                JsonObject object = new JsonObject();
+                object.addProperty(ID_ID, r.getInt(ID_ID));
+                object.addProperty(ID_TITLE, r.getString(ID_TITLE));
+                Float prog = r.getFloat("Progress");
+                object.addProperty("Progress", r.wasNull() ? 0f : prog);
+                Integer rating = r.getInt("Rating");
+                object.addProperty("Rating", r.wasNull() ? -1 : rating);
+                builder.add(object);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, statement, r);
+        }
+        return builder.build();
+    }
+
     public static JsonObject fromRes(ResultSet set) throws SQLException {
         JsonObject object = new JsonObject();
         object.addProperty(ID_ID, set.getInt(ID_ID));

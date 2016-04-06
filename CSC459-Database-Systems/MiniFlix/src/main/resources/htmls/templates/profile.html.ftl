@@ -45,9 +45,9 @@
     <div class="row" style="margin-top: 10px">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Home<span class="sr-only">(current)</span></a></li>
-                <li><a href="#">History</a></li>
-                <li><a href="#">Recomendations</a></li>
+                <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-hourglass"></span>History</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cloud"></span>Recomendations</a></li>
             </ul>
         </div>
 
@@ -67,6 +67,7 @@
 <script src="javascripts/lib/jquery.min.js"></script>
 <script src="javascripts/lib/bootstrap.min.js"></script>
 <script src="javascripts/js/movie.js"></script>
+<script src="javascripts/js/catalog.js"></script>
 <script src="javascripts/js/program.js"></script>
 </body>
 </html>

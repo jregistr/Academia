@@ -99,13 +99,12 @@ public class RestMapping {
             response.type(TYPE_JSON);
             String rawUID = request.queryParams(Constants.Keys.U_ID);
             String movID = request.queryParams(Constants.Keys.M_ID);
-            System.out.println("RAWUID:" + rawUID + " MOVIEID:" + movID);
             if (rawUID != null && movID != null) {
                 if (NumberUtils.isNumber(rawUID) && NumberUtils.isNumber(movID)) {
                     Optional<JsonObject> optional = History.getForUserAndMovie(Integer.parseInt(rawUID), Integer.parseInt(movID));
-                    if(optional.isPresent()){
+                    if (optional.isPresent()) {
                         return optional.get().toString();
-                    }else {
+                    } else {
                         return Constants.succFailOpt(false);
                     }
                     //return History.getForUserAndMovie(Integer.parseInt(rawUID), Integer.parseInt(movID)).get().toString();
@@ -122,14 +121,14 @@ public class RestMapping {
             String uid = request.queryParams(Constants.Keys.U_ID);
             String movID = request.queryParams(Constants.Keys.M_ID);
             String rating = request.queryParams(Constants.Keys.RATING);
-            if(uid != null && movID != null && rating != null){
-                if(NumberUtils.isNumber(uid) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(rating)){
-                   return Rating.addRating(Integer.parseInt(uid), Integer.parseInt(movID), Integer.parseInt(rating));
+            if (uid != null && movID != null && rating != null) {
+                if (NumberUtils.isNumber(uid) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(rating)) {
+                    return Rating.addRating(Integer.parseInt(uid), Integer.parseInt(movID), Integer.parseInt(rating));
                     //return Constants.succFailOpt(true);
-                }else {
+                } else {
                     return Constants.succFailOpt(false);
                 }
-            }else {
+            } else {
                 return Constants.succFailOpt(false);
             }
         });
@@ -139,15 +138,14 @@ public class RestMapping {
             String uid = request.queryParams(Constants.Keys.U_ID);
             String movID = request.queryParams(Constants.Keys.M_ID);
             String rating = request.queryParams(Constants.Keys.RATING);
-            if(uid != null && movID != null && rating != null){
-                if(NumberUtils.isNumber(uid) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(rating)){
-                    System.out.println("HERE");
+            if (uid != null && movID != null && rating != null) {
+                if (NumberUtils.isNumber(uid) && NumberUtils.isNumber(movID) && NumberUtils.isNumber(rating)) {
                     return Rating.updateRating(Integer.parseInt(uid), Integer.parseInt(movID), Integer.parseInt(rating));
-                   // return Constants.succFailOpt(true);
-                }else {
+                    // return Constants.succFailOpt(true);
+                } else {
                     return Constants.succFailOpt(false);
                 }
-            }else {
+            } else {
                 return Constants.succFailOpt(false);
             }
         });
@@ -159,14 +157,24 @@ public class RestMapping {
             if (rawUID != null && movID != null) {
                 if (NumberUtils.isNumber(rawUID) && NumberUtils.isNumber(movID)) {
                     Optional<JsonObject> optional = Rating.getByUserAndMovie(Integer.parseInt(rawUID), Integer.parseInt(movID));
-                    if(optional.isPresent()){
+                    if (optional.isPresent()) {
                         return optional.get().toString();
-                    }else {
+                    } else {
                         return Constants.succFailOpt(false);
                     }
                 } else {
                     return Constants.succFailOpt(false);
                 }
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.MOVIES_WITH_USER, (request, response) -> {
+            response.type(TYPE_JSON);
+            String uid = request.queryParams(Constants.Keys.U_ID);
+            if (uid != null && NumberUtils.isNumber(uid)) {
+                return Model.fromList(Movie.getAllWithUser(Integer.parseInt(uid))).toString();
             } else {
                 return Constants.succFailOpt(false);
             }
