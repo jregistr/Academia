@@ -26,7 +26,8 @@ var Movie = (function (id, title, progress, rating) {
         temp.className = "panel-body";
         const img = document.createElement("img");
         img.className = "img-responsive img-thumbnail img-movie";
-        img.setAttribute("src", gifList[Math.round(Math.random() * 10)]);
+        const ind = Math.round(Math.random() * 9);
+        img.setAttribute("src", gifList[4]);
         temp.appendChild(img);
         temp.appendChild(progressBody);
         progressBody.appendChild(makeProgress());
@@ -41,7 +42,7 @@ var Movie = (function (id, title, progress, rating) {
 
     var headingDiv = (function () {
         var temp = document.createElement("div");
-        temp.className = "panel-heading";
+        temp.className = "panel-heading panel-heading-size";
         temp.appendChild(document.createTextNode(title));
         return temp;
     })();
@@ -93,7 +94,7 @@ var Movie = (function (id, title, progress, rating) {
 
     const outer = (function () {
         var temp = document.createElement("div");
-        temp.className = "col-lg-3";
+        temp.className = "col-lg-3 col-md-3 col-sm-4 col-xs-6";
         temp.appendChild(panelDiv);
         panelDiv.appendChild(headingDiv);
         panelDiv.appendChild(body);
@@ -110,9 +111,9 @@ var Movie = (function (id, title, progress, rating) {
     }
 
     function setRadioValue(rate, radios) {
-        if (rate > 0) {
+        if (rate >= 0) {
             radios.forEach(function (elem, index) {
-                elem.checked = rate == index
+                elem.checked = rate == (index + 1)
             });
         } else {
             radios.forEach(function (elem) {
@@ -147,33 +148,17 @@ var Movie = (function (id, title, progress, rating) {
         $.ajax({
             url: endpoint,
             data: {
-                uid: getUID(),
+                uid: Util.getUIDCookie(),
                 mid: id,
                 rating: btnIndex
             }
         }).then(function (output) {
-            console.log(output);
             if (output["Success"] == true) {
                 queryRatings();
             } else {
-                //alert("Update Failed");
+                setRadioValue(0, [r1, r2, r3, r4, r5])
             }
         });
-    }
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1);
-            if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-        }
-        return "";
-    }
-
-    function getUID() {
-        return parseInt(getCookie("uid"));
     }
 
     function playClicked() {
@@ -181,7 +166,7 @@ var Movie = (function (id, title, progress, rating) {
         $.ajax({
             url: endpoint,
             data: {
-                uid: getUID(),
+                uid: Util.getUIDCookie(),
                 mid: id,
                 progress: progress + 10
             }
@@ -198,7 +183,7 @@ var Movie = (function (id, title, progress, rating) {
         $.ajax({
             url: "/histmovieuser",
             data: {
-                uid: getUID(),
+                uid: Util.getUIDCookie(),
                 mid: id
             },
             success: function (output) {
@@ -221,7 +206,7 @@ var Movie = (function (id, title, progress, rating) {
         $.ajax({
             url: "/ratingmovieuser",
             data: {
-                uid: getUID(),
+                uid: Util.getUIDCookie(),
                 mid: id
             },
             success: function (output) {
@@ -230,7 +215,7 @@ var Movie = (function (id, title, progress, rating) {
                     rating = output["Rating"];
                     setRadioValue(rating, [r1, r2, r3, r4, r5])
                 } else {
-                    alert("Unable to do");
+
                 }
             },
             error: function (error) {

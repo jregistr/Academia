@@ -29,38 +29,62 @@ object GraphBuilder {
         grid.put((y, x), node)
       }
     }
+/*
+    //grid.foreach(out => println(s"${out.value.fromX}, ${out.value.fromY}"))
 
-    grid.filter(entry => {
-      val node = entry.value
-      node.fromX >= Constants.HOUSE_X && node.toX <= (Constants.HOUSE_X + Constants.HOUSE_WIDTH) &&
-        node.fromY >= Constants.HOUSE_Y && node.toY <= (Constants.HOUSE_Y + Constants.HOUSE_HEIGHT)
-    })
+
+    val grid = new ObjectMap[(Int, Int), Node]()
+
+    pgrid.foreach(out => {
+      if (!(out.value.fromX >= Constants.HOUSE_X && out.value.fromX <= Constants.HOUSE_X + Constants.HOUSE_WIDTH &&
+        out.value.fromY >= Constants.HOUSE_Y && out.value.fromY <= Constants.HOUSE_Y + Constants.HOUSE_HEIGHT)) {
+        grid.put(out.key, out.value)
+      }
+    })*/
 
     def make(y: Int, x: Int, from: Node): Edge = {
       val node = grid.get((y, x))
-      node match {
+      if (node != null) {
+        new Edge(from, node)
+      } else {
+        null
+      }
+
+      /*node match {
         case null => throw new NullPointerException
         case _ => new Edge(from, node)
-      }
+      }*/
     }
 
     def addNei(node: ((Int, Int), Node)) = {
       val list = new ListBuffer[Edge]()
       val pos = node._1
       if (pos._2 + 1 < wC) {
-        list += make(pos._1, pos._2 + 1, node._2)
+        val out = make(pos._1, pos._2 + 1, node._2)
+        if (out != null) {
+          list += out
+        }
       }
 
       if (pos._1 + 1 < hC) {
-        list += make(pos._1 + 1, pos._2, node._2)
+        val out = make(pos._1 + 1, pos._2, node._2)
+        if (out != null) {
+          list += out
+        }
       }
 
       if (pos._2 - 1 >= 0) {
-        list += make(pos._1, pos._2 - 1, node._2)
+        val out = make(pos._1, pos._2 - 1, node._2)
+        if (out != null) {
+          list += out
+        }
       }
 
       if (pos._1 - 1 >= 0) {
-        list += make(pos._1 - 1, pos._2, node._2)
+        val out = make(pos._1 - 1, pos._2, node._2)
+        if (out != null) {
+          list += out
+        }
       }
       node._2.edges = list.toList
     }

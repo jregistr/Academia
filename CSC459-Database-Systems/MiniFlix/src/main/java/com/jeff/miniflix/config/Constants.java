@@ -2,6 +2,7 @@ package com.jeff.miniflix.config;
 
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -11,6 +12,10 @@ public class Constants {
         public static final String WELCOME = "htmls/templates/welcome.html.ftl";
         public static final String PROFILE = "htmls/templates/profile.html.ftl";
         public static final String TABLES = "htmls/templates/tables.html.ftl.html";
+        public static final String HISTORY = "htmls/templates/history.html.ftl";
+        public static final String RECOMEND = "htmls/templates/recommends.html.ftl";
+        public static final String ADMIN_PROFILE = "htmls/templates/admin.html.ftl";
+        public static final String ADMIN_STATS = "htmls/templates/adminstats.html.ftl";
     }
 
     public class Keys {
@@ -48,6 +53,16 @@ public class Constants {
         public static final String RATING_MOVIE_AND_USER = "/ratingmovieuser";
 
         public static final String MOVIES_WITH_USER = "/movieswithuser";
+        public static final String MOVIES_FOR_USER_HISTORY = "/moviesforuserhist";
+
+        public static final String PROFILE_HISTORY = "/profile/myhistory";
+        public static final String PROFILE_RECOMMENDS = "/profile/myrecommendations";
+
+        public static final String RECOMMEND_MOVIES = "/recommendforthisuser";
+
+        public static final String ADMIN_LOGIN = "/adminlogin";
+        public static final String ADMIN_PROFILE = "/adminprofile";
+        public static final String ADMIN_STATS = "/adminstats";
 
     }
 

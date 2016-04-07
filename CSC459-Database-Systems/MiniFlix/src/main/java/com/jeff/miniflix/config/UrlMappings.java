@@ -1,25 +1,22 @@
 package com.jeff.miniflix.config;
 
-import com.google.common.base.Preconditions;
-import com.google.gson.JsonElement;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonObject;
-import com.jeff.miniflix.models.*;
+import com.jeff.miniflix.config.Constants.Keys;
+import com.jeff.miniflix.config.Constants.Pages;
+import com.jeff.miniflix.config.Constants.Routes;
+import com.jeff.miniflix.models.Admin;
+import com.jeff.miniflix.models.User;
 import freemarker.template.Configuration;
-import org.apache.commons.lang3.math.NumberUtils;
 import spark.ModelAndView;
 import spark.Spark;
 import spark.template.freemarker.FreeMarkerEngine;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
-import com.jeff.miniflix.config.Constants.Keys;
-import com.jeff.miniflix.config.Constants.Routes;
-import com.jeff.miniflix.config.Constants.Pages;
-
-import static spark.Spark.*;
 import static com.jeff.miniflix.config.Constants.notNull;
+import static spark.Spark.*;
 
 public class UrlMappings {
 
@@ -83,11 +80,58 @@ public class UrlMappings {
                 response.redirect(Routes.BASE);
                 halt();
             }
-            return new ModelAndView(new HashMap<String, String>(), Pages.PROFILE);
+            return new ModelAndView(ImmutableMap.of("name", uName), Pages.PROFILE);
+        }), new FreeMarkerEngine(conf));
+
+        get(Routes.PROFILE_HISTORY, ((request, response) -> {
+            String uName = request.cookie(Keys.UNAME);
+            if (uName == null || (!User.getByUserName(uName).isPresent())) {
+                response.redirect(Routes.BASE);
+                halt();
+            }
+            return new ModelAndView(ImmutableMap.of("name", uName), Pages.HISTORY);
+        }), new FreeMarkerEngine(conf));
+
+        get(Routes.PROFILE_RECOMMENDS, ((request, response) -> {
+            String uName = request.cookie(Keys.UNAME);
+            if (uName == null || (!User.getByUserName(uName).isPresent())) {
+                response.redirect(Routes.BASE);
+                halt();
+            }
+            return new ModelAndView(ImmutableMap.of("name", uName), Pages.RECOMEND);
         }), new FreeMarkerEngine(conf));
 
         get(Constants.Routes.TABLES, (request, response) -> {
             return new ModelAndView(new HashMap<String, String>(), Pages.TABLES);
+        }, new FreeMarkerEngine(conf));
+
+        get(Routes.ADMIN_LOGIN, ((request, response) -> {
+            String uName = request.queryParams(Keys.UNAME);
+            String pass = request.queryParams(Keys.PASS);
+            if (Admin.getByUnameAndPass(uName, pass).isPresent()) {
+                response.cookie("adminuname", uName);
+                response.redirect(Routes.ADMIN_PROFILE);
+                return response;
+            } else {
+                halt("Wrong login info");
+                return response;
+            }
+        }));
+
+        get(Routes.ADMIN_PROFILE, (request, response) -> {
+            String uname = request.cookie("adminuname");
+            if (uname == null) {
+                halt(404, "go login first boi");
+            }
+            return new ModelAndView(ImmutableMap.of(), Pages.ADMIN_PROFILE);
+        }, new FreeMarkerEngine(conf));
+
+        get(Routes.ADMIN_STATS, (request, response) -> {
+            String uname = request.cookie("adminuname");
+            if (uname == null) {
+                halt(404, "go login first boi");
+            }
+            return new ModelAndView(ImmutableMap.of(), Pages.ADMIN_STATS);
         }, new FreeMarkerEngine(conf));
 
         RestMapping.makeMap();

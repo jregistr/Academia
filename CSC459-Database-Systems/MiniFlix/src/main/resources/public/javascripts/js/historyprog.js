@@ -3,7 +3,7 @@ $(document).ready(function () {
     var catalog = null;
 
     $.ajax({
-        url: '/movieswithuser',
+        url: '/moviesforuserhist',
         data: {
             uid: Util.getUIDCookie()
         },
@@ -12,7 +12,7 @@ $(document).ready(function () {
             data.forEach(function (elem) {
                 movies.push(new Movie(elem["ID"], elem["Title"], elem["Progress"], elem["Rating"]));
             });
-            catalog = new Catalog(document.getElementById("allmovies"), movies,30);
+            catalog = new Catalog(document.getElementById("allmovies"), movies, 30);
         },
         error:function(error, other){
             alert(error);

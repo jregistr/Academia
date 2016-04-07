@@ -75,7 +75,8 @@ class ActiveEntityManager(val camera: OrthographicCamera, engine: Engine, textur
       new DetectorSystem,
       controlSystem,
       new SeekingSystem,
-      new PatrolSystem
+      new PatrolSystem,
+      new TransformSystem
     )
   }
 
