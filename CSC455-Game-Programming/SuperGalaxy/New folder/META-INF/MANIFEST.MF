@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: asteroidsfw.Game
+Class-Path: lib/scala-library.jar lib/jinput.jar lib/lwjgl.jar lib/lwjgl_util.jar
+

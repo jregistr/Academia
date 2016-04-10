@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="asteroidsfw">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/asteroidsfw.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/asteroids-src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/asteroids-src.zip!/" />
+    </SOURCES>
+  </library>
+</component>
