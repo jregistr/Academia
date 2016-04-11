@@ -6,6 +6,7 @@ import com.jeff.miniflix.config.Constants.Keys;
 import com.jeff.miniflix.config.Constants.Pages;
 import com.jeff.miniflix.config.Constants.Routes;
 import com.jeff.miniflix.models.Admin;
+import com.jeff.miniflix.models.Movie;
 import com.jeff.miniflix.models.User;
 import freemarker.template.Configuration;
 import spark.ModelAndView;

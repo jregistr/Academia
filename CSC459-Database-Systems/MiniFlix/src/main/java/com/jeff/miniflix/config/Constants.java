@@ -64,6 +64,11 @@ public class Constants {
         public static final String ADMIN_PROFILE = "/adminprofile";
         public static final String ADMIN_STATS = "/adminstats";
 
+        public static final String WHO_WAS_RECOMMENDED_TO = "/whowasthismovierecto";
+        public static final String MOVIE_STATS = "/moviestats";
+        public static final String MOVIE_CATEGORY = "/moviecategory";
+        public static final String MOVIE_CATEGORY_SET = "/moviecategoryset";
+
     }
 
     public static String TYPE_JSON = "application/json";
