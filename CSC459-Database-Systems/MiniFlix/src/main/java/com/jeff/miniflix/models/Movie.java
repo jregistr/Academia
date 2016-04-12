@@ -218,6 +218,106 @@ public class Movie extends Model {
         return builder.build();
     }
 
+    public static Optional<JsonObject> getStatsForMovie(int mid) {
+        Optional<JsonObject> object = Optional.empty();
+        Connection connection = null;
+        PreparedStatement partialStatement = null;
+        PreparedStatement fullyStatement = null;
+        PreparedStatement avgRatingState = null;
+        ResultSet partialResult = null;
+        ResultSet fullyResult = null;
+        ResultSet avgResult = null;
+        try {
+            connection = connect();
+
+            partialStatement = connection.prepareStatement("SELECT COUNT(*) AS Count FROM Histories " +
+                    "WHERE Movie = ? AND Progress > 0 AND Progress < 100");
+            partialStatement.setInt(1, mid);
+            partialResult = partialStatement.executeQuery();
+            if (partialResult.next()) {
+                JsonObject temp = new JsonObject();
+                temp.addProperty("Partial", partialResult.getInt("Count"));
+
+                fullyStatement = connection.prepareStatement("SELECT COUNT(*) AS Count FROM Histories " +
+                        "WHERE Movie = ? AND Progress = 100");
+                fullyStatement.setInt(1, mid);
+                fullyResult = fullyStatement.executeQuery();
+
+                if (fullyResult.next()) {
+                    temp.addProperty("Fully", fullyResult.getInt("Count"));
+
+                    String avgQuery = "SELECT AVG(Rating) AS Rating FROM Ratings" +
+                            " WHERE Movie = ?";
+                    avgRatingState = connection.prepareCall(avgQuery);
+                    avgRatingState.setInt(1, mid);
+                    avgResult = avgRatingState.executeQuery();
+
+                    if(avgResult.next()){
+                        temp.addProperty("AVG", avgResult.getFloat("Rating"));
+                        object = Optional.of(temp);
+                    }
+
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, partialStatement, fullyStatement, partialResult, fullyResult, avgRatingState, avgResult);
+        }
+        return object;
+    }
+
+    public static Optional<JsonObject> getCategoryFor(int mid) {
+        Optional<JsonObject> object = Optional.empty();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet r = null;
+        try {
+            connection = connect();
+            String query = "SELECT Categories.ID, Categories.Name AS Category " +
+                    "FROM Movies " +
+                    "INNER JOIN Categories " +
+                    "ON Movies.Category = Categories.ID " +
+                    "WHERE Movies.ID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, mid);
+            r = statement.executeQuery();
+            if (r.next()) {
+                JsonObject temp = new JsonObject();
+                temp.addProperty("ID", r.getInt("ID"));
+                temp.addProperty("Category", r.getString("Category"));
+                object = Optional.of(temp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, statement, r);
+        }
+        return object;
+    }
+
+    public static boolean updateCategory(int mid, int categoryID) {
+        boolean success = false;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = connect();
+            String query = "UPDATE Movies " +
+                    "SET Category = ? " +
+                    "WHERE ID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, categoryID);
+            statement.setInt(2, mid);
+            success = statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, statement);
+        }
+        return success;
+    }
+
     public static JsonObject fromRes(ResultSet set) throws SQLException {
         JsonObject object = new JsonObject();
         object.addProperty(ID_ID, set.getInt(ID_ID));

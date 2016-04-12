@@ -55,18 +55,62 @@
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="row">
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><h1>Users</h1></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table id="usersTable" data-toggle="table" data-url="/users"
+                           data-pagination="true"
+                           data-search="true"
+                           data-height="600"
+                           data-sort-name="UserName"
+                           data-sort-order="desc">
+                        <thead>
+                        <tr>
+                            <th data-field="UserName" data-sortable="true">User Name</th>
+                            <th data-field="Password" data-sortable="true">Password</th>
+                            <th data-field="Email" data-sortable="true">Email</th>
+                        </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><h1>History</h1></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table id="userInfoData" data-toggle="table"
+                           data-pagination="true"
+                           data-search="false"
+                           data-height="300"
+                           data-sort-name="ID"
+                           data-sort-order="desc">
+                        <thead>
+                        <tr>
+                            <th data-field="ID" data-sortable="true"> Movie ID</th>
+                            <th data-field="Title" data-sortable="true"> Movie Title</th>
+                            <th data-field="Progress" data-sortable="true">Watch Progress</th>
+                            <th data-field="Rating" data-sortable="true">User Rating</th>
+                        </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><h1>Recommendation</h1></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table id="userRecommendation" data-toggle="table"
+                           data-pagination="true"
+                           data-search="false"
+                           data-height="400"
+                           data-sort-name="ID"
+                           data-sort-order="desc">
+                        <thead>
+                        <tr>
+                            <th data-field="ID" data-sortable="true"> Movie ID</th>
+                            <th data-field="Title" data-sortable="true"> Movie Title</th>
+                            <th data-field="Category" data-sortable="true">Category</th>
+                        </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>

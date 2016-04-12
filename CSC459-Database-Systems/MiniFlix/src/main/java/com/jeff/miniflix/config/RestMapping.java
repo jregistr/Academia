@@ -1,6 +1,7 @@
 package com.jeff.miniflix.config;
 
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.jeff.miniflix.models.*;
@@ -181,7 +182,7 @@ public class RestMapping {
             }
         });
 
-        get(Constants.Routes.MOVIES_FOR_USER_HISTORY, (request, response)->{
+        get(Constants.Routes.MOVIES_FOR_USER_HISTORY, (request, response) -> {
             response.type(TYPE_JSON);
             String uid = request.queryParams(Constants.Keys.U_ID);
             if (uid != null && NumberUtils.isNumber(uid)) {
@@ -200,6 +201,55 @@ public class RestMapping {
                 return Constants.succFailOpt(false);
             }
         }));
+
+        get(Constants.Routes.WHO_WAS_RECOMMENDED_TO, ((request, response) -> {
+            response.type(TYPE_JSON);
+            String mid = request.queryParams(Constants.Keys.M_ID);
+            if (mid != null && NumberUtils.isDigits(mid)) {
+                return Model.fromList(Recommendation.whoWasRecommendedTo(Integer.parseInt(mid)));
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        }));
+
+        get(Constants.Routes.MOVIE_STATS, ((request, response) -> {
+            response.type(TYPE_JSON);
+            String mid = request.queryParams(Constants.Keys.M_ID);
+            if (mid != null && NumberUtils.isDigits(mid)) {
+                Optional<JsonObject> stats = Movie.getStatsForMovie(Integer.parseInt(mid));
+                if(stats.isPresent()){
+                    JsonArray array = new JsonArray();
+                    array.add(stats.get());
+                    return array;
+                }else {
+                    return Constants.succFailOpt(false);
+                }
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        }));
+
+        get(Constants.Routes.MOVIE_CATEGORY, (request, response) -> {
+            response.type(TYPE_JSON);
+            String mid = request.queryParams(Constants.Keys.M_ID);
+            if (mid != null && NumberUtils.isDigits(mid)) {
+                Optional<JsonObject> stats = Movie.getCategoryFor(Integer.parseInt(mid));
+                return stats.isPresent() ? stats.get().toString() : Constants.succFailOpt(false);
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
+
+        get(Constants.Routes.MOVIE_CATEGORY_SET, (request, response) -> {
+            response.type(TYPE_JSON);
+            String mid = request.queryParams(Constants.Keys.M_ID);
+            String cat = request.queryParams("cat");
+            if (mid != null && NumberUtils.isDigits(mid) && cat != null) {
+                return Movie.updateCategory(Integer.parseInt(mid), Integer.parseInt(cat)) ? Constants.succFailOpt(true) : Constants.succFailOpt(false);
+            } else {
+                return Constants.succFailOpt(false);
+            }
+        });
 
     }
 
