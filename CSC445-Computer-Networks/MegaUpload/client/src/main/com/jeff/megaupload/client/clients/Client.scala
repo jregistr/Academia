@@ -1,25 +1,36 @@
 package com.jeff.megaupload.client.clients
 
 import java.io.FileInputStream
-import java.net.{DatagramSocket, InetAddress}
+import java.net.{DatagramPacket, DatagramSocket, InetAddress}
+
+import scala.collection.mutable.ListBuffer
 
 
 abstract class Client(localAddress: String, localPort: Int) {
 
-  private final val MAX_CHUNK_SIZE = 256000
-  private final val PAYLOAD_SIZE = 1000
+  private final val MAX_PAYLOAD_SIZE = 1000
 
   protected val socket = new DatagramSocket(localPort, InetAddress.getByName(localAddress))
 
   final def uploadFile(path: String, destAddress: String, destPort: Int): Unit = {
     val stream = new FileInputStream(path)
-    var lastReadSize = 0
-    //when read returns -1, end of stream. while loop for until end with
-    //inner while loop condition on made full chunk or end of file.
-    //after each inner loop. chunk was made, so upload chunk.
-    //outer loop keeps map for current chunk.
+    var done = false
+    val buffer = new Array[Byte](MAX_PAYLOAD_SIZE)
+    val packetBuffer = new ListBuffer[DatagramPacket]()
+    while (!done) {
+      val readCount = stream.read(buffer)
+      if (readCount != -1) {
+        packetBuffer += asPacket(buffer.slice(0, readCount), destAddress, destPort)
+      } else {
+        done = true
+      }
+    }
+
+    send(packetBuffer.toList, destAddress, destPort)
   }
 
-  protected def asPacket(bytes: Array[Byte], destAddress: String, destPort: Int)
+  protected def asPacket(bytes: Array[Byte], destAddress: String, destPort: Int): DatagramPacket
+
+  protected def send(packets: List[DatagramPacket], destAddress: String, destPort: Int): Unit
 
 }

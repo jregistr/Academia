@@ -14,5 +14,8 @@ sourceSets{
         scala{
             srcDir 'src/main'
         }
+        resources{
+            srcDir 'src/resources'
+        }
     }
 }
