@@ -1,54 +1,38 @@
 package com.jeff.megaupload.client
 
-import java.net.DatagramPacket
-import java.nio.ByteBuffer
-
-import com.jeff.megaupload.constant.Constants
-
-import scala.collection.mutable.ArrayBuffer
+import java.io.{FileOutputStream, PrintWriter}
+import java.nio.file.{Files, Paths}
+import java.util.concurrent.ThreadLocalRandom
 
 
 object Main {
 
+  private val fileName = "./data.datafile"
+  private val writeChunk = 10000
+
   def main(args: Array[String]) {
 
-    val byteBuffer = ByteBuffer.allocate(1000)
-    byteBuffer.put(Constants.intToByteArray(10))
-    byteBuffer.put(Constants.intToByteArray(2))
-
-    val byteArray = byteBuffer.array()
-
-  /*  val processed = seqAndPayload(byteArray)
-//    println(processed)*/
+    createFile(100000000)
 
   }
 
+  private def createFile(size: Int): Unit = {
+    Files.deleteIfExists(Paths.get(fileName))
+    val stream = new FileOutputStream(fileName)
+    val random = ThreadLocalRandom.current()
 
+    var remain = size
 
-
-  /*
-  *  val stream = new FileInputStream(getClass.getClassLoader.getResource("TCPThroughClient.scala").getPath)
-    var done = false
-    val buffer = new Array[Byte](1000)
-    val outStream = new FileOutputStream("out.txt")
-    while (!done) {
-      (for (i <- 0 until 500 if !done) yield {
-        val readCount = stream.read(buffer)
-        if (readCount != -1) {
-          // Some((readCount, buffer.slice(0, readCount)))
-          Some(buffer.slice(0, readCount))
-        } else {
-          done = true
-          None
-        }
-      }).filter(_.isDefined).map(_.get).toList.foreach(bytes => {
-        outStream.write(bytes)
-      })
+    while (remain > 0) {
+      val now = if (remain >= writeChunk) writeChunk else remain
+      remain -= now
+      val bytes = new Array[Byte](now)
+      random.nextBytes(bytes)
+      stream.write(bytes)
     }
 
-    outStream.flush()
-    outStream.close()
-  *
-  * */
+    stream.flush()
+    stream.close()
+  }
 
 }

@@ -2,20 +2,19 @@ package com.jeff.megaupload.client.clients
 
 import java.io.FileInputStream
 import java.net.{DatagramPacket, DatagramSocket, InetAddress}
+import com.jeff.megaupload.constant.Constants.PAYLOAD_SIZE
 
 import scala.collection.mutable.ListBuffer
 
 
 abstract class Client(localAddress: String, localPort: Int) {
 
-  private final val MAX_PAYLOAD_SIZE = 1000
-
   protected val socket = new DatagramSocket(localPort, InetAddress.getByName(localAddress))
 
   final def uploadFile(path: String, destAddress: String, destPort: Int): Unit = {
     val stream = new FileInputStream(path)
     var done = false
-    val buffer = new Array[Byte](MAX_PAYLOAD_SIZE)
+    val buffer = new Array[Byte](PAYLOAD_SIZE)
     val packetBuffer = new ListBuffer[DatagramPacket]()
     while (!done) {
       val readCount = stream.read(buffer)
@@ -25,7 +24,6 @@ abstract class Client(localAddress: String, localPort: Int) {
         done = true
       }
     }
-
     send(packetBuffer.toList, destAddress, destPort)
   }
 

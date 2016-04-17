@@ -9,6 +9,9 @@ object Constants {
 
   val INT_BYTES = 4
 
+  val PACKET_SIZE = 1000
+  val PAYLOAD_SIZE = PACKET_SIZE - (INT_BYTES * 2)
+
   def intToByteArray(value: Int): Array[Byte] = {
     val buf = new ArrayBuffer[Byte](INT_BYTES)
     for (i <- 0 until INT_BYTES) {
