@@ -38,6 +38,7 @@ project(":server"){
 
     dependencies {
         compile project(":constant")
+        compile 'com.typesafe.akka:akka-actor_2.11:2.4.4'
     }
 }
 

@@ -12,9 +12,9 @@ public abstract class Model {
 
     public static final String ID_ID = "ID";
     protected static final String ID_DATE_CREATED = "DateCreated";
-
+    //ec2-52-36-2-80.us-west-2.compute.amazonaws.com
     private static final String DB_LINK = String.format("jdbc:mysql://%s:%d/%s",
-            "ec2-52-36-2-80.us-west-2.compute.amazonaws.com", 3306, "hw1");
+            "localhost", 3306, "hw1");
     private static final String DB_USER = "appman";
     private static final String DB_PASS = "password";
 

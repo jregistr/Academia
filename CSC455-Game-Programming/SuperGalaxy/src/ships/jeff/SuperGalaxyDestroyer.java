@@ -9,9 +9,11 @@ import ships.jeff.states.AvoidProcessor;
 import ships.jeff.states.InitProcessor;
 import ships.jeff.states.SnipingProcessor;
 import ships.jeff.states.StateProcessor;
+import ships.jeff.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * This is the awe inspiring Super Galaxy Destroyer, Designed and manufactured
@@ -41,47 +43,50 @@ public class SuperGalaxyDestroyer implements ShipMind {
 
     @Override
     public void think(Perceptions perceptions, double v) {
-       states.get(getCurrentState(perceptions, v)).processMove(
-                control, perceptions.asteroids(), v
+        Pair<Double, AsteroidPerception> curInfo = closestAsteroid(perceptions.asteroids(), control);
+        states.get(getCurrentState(curInfo)).processMove(
+                control, perceptions.asteroids(), curInfo, v
         );
         control.shooting(true);
-      //  control.thrustForward(true);
     }
 
     /**
      * Method to decide which state to be in.
      *
-     * @param perceptions The perceptions.
-     * @param v           Delta.
+     * @param curInfo The current close asteroid info.
      * @return The class identifying which state to be process.
      */
-    private Class<? extends StateProcessor> getCurrentState(Perceptions perceptions, double v) {
+    private Class<? extends StateProcessor> getCurrentState(Pair<Double, AsteroidPerception> curInfo) {
         Vector2d pos = control.pos();
         Class<? extends StateProcessor> temp;
         double scaredDist = 80;
-        if(pos.x() >= baseX.key - baseX.value && pos.x() <= baseX.key + baseX.value
-                && pos.y() >= baseY.key - baseY.value && pos.y() <= pos.y() + baseY.value){
+        if (control.respawnIn() > 0) {
             temp = InitProcessor.class;
-        }else if(closestAsteroidDist(perceptions.asteroids(), control) <= scaredDist) {
+        } else if (pos.x() >= baseX.key - baseX.value && pos.x() <= baseX.key + baseX.value
+                && pos.y() >= baseY.key - baseY.value && pos.y() <= pos.y() + baseY.value) {
+            temp = InitProcessor.class;
+        } else if (curInfo.key <= scaredDist) {
             temp = AvoidProcessor.class;
-        }else {
+        } else {
             temp = SnipingProcessor.class;
         }
         return temp;
     }
 
-    public static double closestAsteroidDist(AsteroidPerception[] asteroids, ShipControl control){
+    private static Pair<Double, AsteroidPerception> closestAsteroid(AsteroidPerception[] asteroids, ShipControl control) {
         double smallest = Double.MAX_VALUE;
+        AsteroidPerception closest = null;
         for (AsteroidPerception asteroid : asteroids) {
             double dst = dst(control.pos(), asteroid.pos());
-            if(dst < smallest){
+            if (dst < smallest) {
                 smallest = dst;
+                closest = asteroid;
             }
         }
-        return smallest;
+        return new Pair<>(smallest, closest);
     }
 
-    public static double dst(Vector2d a, Vector2d b){
+    public static double dst(Vector2d a, Vector2d b) {
         double dx = a.x() - b.x();
         double dy = a.y() - b.y();
         return Math.sqrt(dx * dx + dy * dy

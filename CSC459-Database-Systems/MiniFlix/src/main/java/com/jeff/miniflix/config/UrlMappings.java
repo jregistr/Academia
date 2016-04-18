@@ -26,7 +26,7 @@ public class UrlMappings {
         Configuration conf = new Configuration();
         conf.setClassForTemplateLoading(UrlMappings.class, "/");
         Spark.staticFileLocation("/public");
-        port(4567);
+        port(80);
 
         get(Routes.BASE, (request, response) -> {
             return new ModelAndView(new HashMap<String, String>(), Pages.WELCOME);

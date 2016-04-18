@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MegaUpload.iml" filepath="$PROJECT_DIR$/.idea/modules/MegaUpload.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MegaUpload_main.iml" filepath="$PROJECT_DIR$/.idea/modules/MegaUpload_main.iml" group="MegaUpload" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MegaUpload_test.iml" filepath="$PROJECT_DIR$/.idea/modules/MegaUpload_test.iml" group="MegaUpload" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client.iml" group="client" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client_main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client_main.iml" group="client" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client_test.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client_test.iml" group="client" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/constant/constant.iml" filepath="$PROJECT_DIR$/.idea/modules/constant/constant.iml" group="constant" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/constant/constant_main.iml" filepath="$PROJECT_DIR$/.idea/modules/constant/constant_main.iml" group="constant" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/constant/constant_test.iml" filepath="$PROJECT_DIR$/.idea/modules/constant/constant_test.iml" group="constant" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server.iml" group="server" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server_main.iml" group="server" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server_test.iml" group="server" />
+      <module fileurl="file://$PROJECT_DIR$/MegaUpload.iml" filepath="$PROJECT_DIR$/MegaUpload.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/constant/constant.iml" filepath="$PROJECT_DIR$/constant/constant.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
     </modules>
   </component>
 </project>

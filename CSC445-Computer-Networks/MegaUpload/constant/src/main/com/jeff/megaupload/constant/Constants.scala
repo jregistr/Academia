@@ -9,6 +9,9 @@ object Constants {
 
   val INT_BYTES = 4
 
+  val FLAG_RESEND_HIGHEST = -1
+
+
   val PACKET_SIZE = 1000
   val PAYLOAD_SIZE = PACKET_SIZE - (INT_BYTES * 2)
 
@@ -22,6 +25,10 @@ object Constants {
 
   def byteArrayToInt(value: Array[Byte]): Int = {
     ByteBuffer.wrap(value).getInt
+  }
+
+  def bytesToString(value: Array[Byte]): String = {
+    new String(value, "UTF-8")
   }
 
 }
