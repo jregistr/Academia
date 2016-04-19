@@ -15,7 +15,7 @@ class Scribe(fileName: String) extends Actor {
 
   def receive = {
     case Write(data) =>
-      data.foreach(stream.write)
+      stream.write(data)
       stream.flush()
 
     case Finish =>

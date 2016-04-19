@@ -18,5 +18,15 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="client_main" target="1.7" />
+      <module name="client_test" target="1.7" />
+      <module name="constant_main" target="1.7" />
+      <module name="constant_test" target="1.7" />
+      <module name="MegaUpload_main" target="1.7" />
+      <module name="MegaUpload_test" target="1.7" />
+      <module name="server_main" target="1.7" />
+      <module name="server_test" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>

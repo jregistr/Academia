@@ -39,14 +39,14 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     */
   while (true) {
     socket.receive(readPacket)
-    val data = seqAndPayload(readPacket)._2
-    val maxAck = Constants.byteArrayToInt(data)
+//    val data = seqAndPayload(readPacket)._2
+ //   val maxAck = Constants.byteArrayToInt(data)
     val destAdd = readPacket.getAddress
     val destPort = readPacket.getPort
     val fileName = acquireFileName(destAdd, destPort)
     val scribe = system.actorOf(Scribe.props(fileName))
     socket.setSoTimeout(timeOut)
-    processFileTransfer(maxAck, scribe, destAdd, destPort)
+    processFileTransfer(scribe, destAdd, destPort)
     socket.setSoTimeout(0)
   }
 
@@ -61,12 +61,11 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
   /**
     * Method called to process a file transfer.
     *
-    * @param lastAck  The last expected ack number.
     * @param scribe   The scribe actor to write the data to file.
     * @param destAdd  The address origin of the file.
     * @param destPort The port origin of the file.
     */
-  protected def processFileTransfer(lastAck: Int, scribe: ActorRef, destAdd: InetAddress, destPort: Int): Unit
+  protected def processFileTransfer(scribe: ActorRef, destAdd: InetAddress, destPort: Int): Unit
 
   /**
     * Method to send an ack packet to a destination.

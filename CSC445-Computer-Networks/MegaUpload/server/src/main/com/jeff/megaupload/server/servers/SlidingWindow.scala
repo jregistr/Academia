@@ -1,13 +1,19 @@
 package com.jeff.megaupload.server.servers
 
+import java.io.ByteArrayOutputStream
 import java.net.{DatagramPacket, InetAddress, SocketTimeoutException}
 
 import akka.actor.ActorRef
 import com.jeff.megaupload.constant.Flags
-import com.jeff.megaupload.server.util.scribe.Scribe
+import com.jeff.megaupload.server.util.scribe.Write
 
-import scala.collection.mutable.ListBuffer
-
+/**
+  * Sliding window implementation of a transfer server.
+  *
+  * @param port         The port this server runs on.
+  * @param localAddress The local address of this server.
+  * @param simDrops     True to simulate dropping 10% packets.
+  */
 class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends Server(port, localAddress, simDrops) {
 
   /**
@@ -18,81 +24,104 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
     */
   class WindowItem(var ack: Int, var data: Array[Byte])
 
-
-  /*  protected override def processFileTransfer(lastAck: Int, destAdd: InetAddress, destPort: Int): List[Array[Byte]] = {
-      var done = false
-      val fileData = new ListBuffer[Array[Byte]]()
-      val window = createWindow(500)
-      var position = 0
-      var highestReceived = 0
-      while (!done) {
-        try {
-          socket.receive(readPacket)
-          val extracted = fromPacket(readPacket)
-          val curAck = extracted._1
-
-          curAck match {
-            case Flags.RESEND_HIGHEST.identifier => sendAck(curAck, destAdd, destPort)
-            case _ =>
-              val piece = window(position)
-              piece.ack = curAck
-              piece.data = extracted._2
-              position += 1
-              highestReceived = curAck
-              done = curAck == lastAck
-          }
-        } catch {
-          case s: SocketTimeoutException =>
-            slideWindow(window, fileData, position)
-            position = 0
-          case t: Throwable => throw t
-        }
-      }
-      fileData.toList
-    }*/
-
+  private val windowSize = 500
 
   /**
     * Method called to process a file transfer.
     *
-    * @param lastAck  The last expected ack number.
     * @param scribe   The scribe actor to write the data to file.
     * @param destAdd  The address origin of the file.
     * @param destPort The port origin of the file.
     */
-  override protected def processFileTransfer(lastAck: Int, scribe: ActorRef, destAdd: InetAddress, destPort: Int): Unit = {
-
-  }
-
-  /**
-    * Method to entries to the start of the window from a point p and push all data from start to p into the output.
-    *
-    * @param window   The window to operate on.
-    * @param out      The output.
-    * @param position The position to work from.
-    */
-  private def slideWindow(window: Array[WindowItem], out: ListBuffer[Array[Byte]], position: Int): Unit = {
-    for (i <- 0 to position) {
-      out += window(i).data
-      val op = i + position
-      if (op < window.length) {
-        window.update(i, window(op))
+  override protected def processFileTransfer(scribe: ActorRef, destAdd: InetAddress, destPort: Int): Unit = {
+    var done = false
+    while (!done) {
+      val next = getWindow(destAdd, destPort)
+      done = next._1
+      val data = next._2
+      if (data.length > 0) {
+        scribe ! Write(data)
       }
     }
   }
 
   /**
-    * Method to create a window.
+    * Method called to complete the transfer of a full window's worth of data.
     *
-    * @param size The size of the window.
-    * @return A new window.
+    * @param destAdd  The source address for the transfer.
+    * @param destPort The source port for the transfer.
+    * @return The data transferred during said window.
     */
-  private def createWindow(size: Int): Array[WindowItem] = {
-    val window = new Array[WindowItem](size)
-    for (i <- 0 until size) {
-      window.update(i, new WindowItem(0, null))
+  private def getWindow(destAdd: InetAddress, destPort: Int): (Boolean, Array[Byte]) = {
+    var highest = -1
+    var transferDone = false
+
+    val window = new Array[Array[Byte]](windowSize)
+    val output = new ByteArrayOutputStream
+
+    while (highest < windowSize - 1 && !transferDone) {
+      try {
+        socket.receive(readPacket)
+        val extracted = fromPacket(readPacket)
+        val seq = extracted._1
+        seq match {
+          case Flags.RESEND_HIGHEST.identifier =>
+            sendHighestAck(highest, destAdd, destPort)
+          case Flags.END_OF_TRANSFER.identifier =>
+            transferDone = true
+          case _ =>
+            if (seq > highest && seq < windowSize) {
+              window(seq) = extracted._2
+            } else {
+              throw new IllegalStateException(s"Received wrong SEQ, " +
+                s"program might need re-evaluation.[Highest:$highest, SEQ:$seq]")
+            }
+        }
+      } catch {
+        case s: SocketTimeoutException =>
+          highest = slideWindow(window, output, highest)
+          sendHighestAck(highest, destAdd, destPort)
+        case t: Throwable => throw t
+      }
     }
-    window
+    (transferDone, output.toByteArray)
+  }
+
+  /**
+    * Method called to send the highest ack to the source.
+    *
+    * @param highest  The highest ack.
+    * @param destAdd  The source address for the transfer.
+    * @param destPort The source port for the transfer.
+    */
+  private def sendHighestAck(highest: Int, destAdd: InetAddress, destPort: Int): Unit = {
+    sendAck(highest match {
+      case -1 => Flags.NO_PACKET_RECEIVED.identifier
+      case _ => highest
+    }, destAdd, destPort)
+  }
+
+  /**
+    * Method to determined highest received seq number. Also pushes data from given position to highest seq onto the byte buffer.
+    *
+    * @param window      The window array.
+    * @param output      The output buffer.
+    * @param lastHighest The last highest ack.
+    * @return The new highest position.
+    */
+  private def slideWindow(window: Array[Array[Byte]], output: ByteArrayOutputStream, lastHighest: Int): Int = {
+    val start = lastHighest + 1
+    var current = window(start)
+    var highest = lastHighest
+
+    for (i <- start until window.length if current != null) {
+      current = window(i)
+      if (current != null) {
+        output.write(current)
+        highest = i
+      }
+    }
+    highest
   }
 
   override protected def fromPacket(packet: DatagramPacket): (Int, Array[Byte]) = seqAndPayload(packet)
