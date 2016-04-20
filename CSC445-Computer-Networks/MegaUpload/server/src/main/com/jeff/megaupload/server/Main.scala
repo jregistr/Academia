@@ -7,7 +7,9 @@ import scala.collection.mutable.ListBuffer
 
 object Main {
   def main(args: Array[String]) {
-    val window = new Array[Array[Byte]](100)
+
+
+    /*val window = new Array[Array[Byte]](100)
     window(0) = Array(1.toByte)
     window(1) = Array(2.toByte)
     window(2) = Array(3.toByte)
@@ -61,7 +63,7 @@ object Main {
     print("]\n")
 
     println(last)
-    println(s"STREAM OUT SIZE:${stream.toByteArray.length}")
+    println(s"STREAM OUT SIZE:${stream.toByteArray.length}")*/
 
   }
 

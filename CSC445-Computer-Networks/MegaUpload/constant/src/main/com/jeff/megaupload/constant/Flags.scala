@@ -15,4 +15,6 @@ object Flags {
 
   case object END_OF_TRANSFER extends Flag(-4)
 
+  case object SEND_WINDOW_SIZE extends Flag(-5)
+
 }

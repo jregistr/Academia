@@ -1,5 +1,6 @@
 package com.jeff.megaupload.constant
 
+import java.net.DatagramPacket
 import java.nio.ByteBuffer
 
 import scala.collection.mutable.ArrayBuffer
@@ -29,6 +30,16 @@ object Constants {
 
   def bytesToString(value: Array[Byte]): String = {
     new String(value, "UTF-8")
+  }
+
+  def seqAndPayload(packet: DatagramPacket): (Int, Array[Byte]) = {
+    val raw = packet.getData
+    val seq = Constants.byteArrayToInt(raw.slice(0, Constants.INT_BYTES))
+    val countStartIndex = Constants.INT_BYTES
+    val endCountIndex = countStartIndex + Constants.INT_BYTES
+    val count = Constants.byteArrayToInt(raw.slice(countStartIndex, endCountIndex))
+    val payLoad = raw.slice(endCountIndex, endCountIndex + count)
+    (seq, payLoad)
   }
 
 }

@@ -1,7 +1,6 @@
 group 'Networking'
 version '1.0-SNAPSHOT'
 
-
 allprojects {
     apply plugin: 'scala'
     sourceCompatibility = 1.7
@@ -12,6 +11,9 @@ allprojects {
 
     ext {
         scalaVersion = "2.11.7"
+        akkaVersion = "2.4.4"
+        guavaVersion = "19.0"
+        apachePoolVersion = "2.4.2"
     }
 
     dependencies {
@@ -21,24 +23,26 @@ allprojects {
 
 }
 
-project(":constant"){
+project(":constant") {
 
 }
 
-project(":client"){
+project(":client") {
     apply plugin: 'application'
 
     dependencies {
         compile project(":constant")
+        compile "com.google.guava:guava:$guavaVersion"
+        compile "org.apache.commons:commons-pool2:$apachePoolVersion"
     }
 }
 
-project(":server"){
+project(":server") {
     apply plugin: 'application'
 
     dependencies {
         compile project(":constant")
-        compile 'com.typesafe.akka:akka-actor_2.11:2.4.4'
+        compile "com.typesafe.akka:akka-actor_2.11:$akkaVersion"
     }
 }
 

@@ -1,6 +1,6 @@
 package com.jeff.megaupload.client
 
-import java.io.{FileOutputStream, PrintWriter}
+import java.io.FileOutputStream
 import java.nio.file.{Files, Paths}
 import java.util.concurrent.ThreadLocalRandom
 
@@ -11,8 +11,6 @@ object Main {
   private val writeChunk = 10000
 
   def main(args: Array[String]) {
-
-    createFile(100000000)
 
   }
 
