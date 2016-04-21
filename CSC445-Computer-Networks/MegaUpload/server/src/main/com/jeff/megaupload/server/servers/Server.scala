@@ -87,6 +87,6 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     *
     * @return True to simulate a drop.
     */
-  protected final def drop: Boolean = !simDrops && (random.nextInt(101) <= 1)
+  protected final def drop: Boolean = simDrops && (random.nextInt(101) <= 1)
 
 }

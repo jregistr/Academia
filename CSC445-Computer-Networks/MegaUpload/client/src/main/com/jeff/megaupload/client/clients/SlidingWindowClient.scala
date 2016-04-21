@@ -1,10 +1,9 @@
 package com.jeff.megaupload.client.clients
 
 import java.io.FileInputStream
-import java.net.{DatagramPacket, InetAddress, SocketTimeoutException}
-import java.nio.ByteBuffer
+import java.net.{InetAddress, SocketTimeoutException}
 
-import com.jeff.megaupload.constant.{Constants, Flags}
+import com.jeff.megaupload.constant.Constants
 
 /**
   * The sliding window implementation of a transfer client.
@@ -56,6 +55,7 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
         counter += 1
       }
       val resp = getHighest(destAddress, destPort)
+      println(resp)
       counter = resp match {
         case 0 => 1
         case _ => resp
@@ -63,6 +63,13 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
     }
   }
 
+  /**
+    * Method to process aquiring highest ack from the server.
+    *
+    * @param destAddress The server address.
+    * @param destPort    The server port.
+    * @return The highest ack.
+    */
   private def getHighest(destAddress: InetAddress, destPort: Int): Int = {
     var highest: Option[Int] = None
     while (highest.isEmpty) {
@@ -77,7 +84,7 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
         }
       } catch {
         case s: SocketTimeoutException =>
-          socket.send(Constants.makePacket(Flags.RESEND_HIGHEST.identifier, Constants.intToByteArray(0), destAddress, destPort))
+        //          socket.send(Constants.makePacket(Flags.RESEND_HIGHEST.identifier, Constants.intToByteArray(0), destAddress, destPort))
         case t: Throwable => throw t
       }
     }

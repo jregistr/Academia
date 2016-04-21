@@ -69,23 +69,25 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
       while (count < windowSize && !done) {
         try {
           socket.receive(readPacket)
-          val extracted = Constants.seqAndPayload(readPacket)
-          val seq = extracted._1
-          val data = extracted._2
-          seq match {
-            case Flags.RESEND_HIGHEST.identifier =>
-              sendHighestAck(highestSeq, destAdd, destPort)
-            case Flags.END_OF_TRANSFER.identifier =>
-              done = true
-              sendHighestAck(Flags.END_OF_TRANSFER.identifier, destAdd, destPort)
-            case _ =>
-              if (seq < Flags.SEND_WINDOW_SIZE.identifier) {
-                sendAck(Flags.INFO_NAME.identifier, destAdd, destPort)
-              } else {
-                window += seq -> data
-                count += 1
-                noneReceived = false
-              }
+          if (!drop) {
+            val extracted = Constants.seqAndPayload(readPacket)
+            val seq = extracted._1
+            val data = extracted._2
+            seq match {
+              case Flags.RESEND_HIGHEST.identifier =>
+                sendHighestAck(highestSeq, destAdd, destPort)
+              case Flags.END_OF_TRANSFER.identifier =>
+                done = true
+                sendHighestAck(Flags.END_OF_TRANSFER.identifier, destAdd, destPort)
+              case _ =>
+                if (seq < Flags.SEND_WINDOW_SIZE.identifier) {
+                  sendAck(Flags.INFO_NAME.identifier, destAdd, destPort)
+                } else {
+                  window += seq -> data
+                  count += 1
+                  noneReceived = false
+                }
+            }
           }
         } catch {
           case s: SocketTimeoutException =>

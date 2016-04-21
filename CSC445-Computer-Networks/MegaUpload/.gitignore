@@ -1,5 +1,4 @@
-/data.datafile
-/client/src/resources/data.datafile
+*.datafile
 
 # Created by https://www.gitignore.io/api/gradle,intellij,scala
 
