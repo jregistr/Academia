@@ -44,12 +44,18 @@ class StopAndWaitClient(localAddress: String, localPort: Int) extends Client(loc
     */
   private def send(packets: Array[Array[Byte]], destAddress: InetAddress, destPort: Int): Unit = {
     packets.foreach(data => {
+      var acknowledged = false
       val packet = Constants.makePacket(seq, data, destAddress, destPort)
       socket.send(packet)
-      try {
-        socket.receive(readPacket)
-      } catch {
-        case s: SocketTimeoutException => socket.send(packet)
+      while (!acknowledged) {
+        try {
+          socket.receive(readPacket)
+          val seq = Constants.seqAndPayload(readPacket)._1
+          acknowledged = true
+        } catch {
+          case s: SocketTimeoutException =>
+            socket.send(packet)
+        }
       }
     })
   }
