@@ -32,18 +32,20 @@ class StopAndWait(port: Int, localAddress: String, simDrops: Boolean) extends Se
 
     while (!done) {
       socket.receive(readPacket)
-      val extracted = Constants.seqAndPayload(readPacket)
-      val seq = extracted._1
-      val data = extracted._2
-      seq match {
-        case Flags.END_OF_TRANSFER.identifier => done = true
-        case _ =>
-          buffer.write(data)
-          if (buffer.size() >= chunkSize) {
-            scribe.write(buffer.toByteArray)
-            buffer = new ByteArrayOutputStream()
-          }
-          sendAck(seq, destAdd, destPort)
+      if (!drop) {
+        val extracted = Constants.seqAndPayload(readPacket)
+        val seq = extracted._1
+        val data = extracted._2
+        seq match {
+          case Flags.END_OF_TRANSFER.identifier => done = true
+          case _ =>
+            buffer.write(data)
+            if (buffer.size() >= chunkSize) {
+              scribe.write(buffer.toByteArray)
+              buffer = new ByteArrayOutputStream()
+            }
+            sendAck(seq, destAdd, destPort)
+        }
       }
     }
 
