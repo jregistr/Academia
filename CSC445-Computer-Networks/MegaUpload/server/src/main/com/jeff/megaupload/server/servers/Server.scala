@@ -1,13 +1,11 @@
 package com.jeff.megaupload.server.servers
 
-import java.io.FileOutputStream
 import java.net.{DatagramPacket, DatagramSocket, InetAddress}
 import java.nio.ByteBuffer
 import java.util.concurrent.ThreadLocalRandom
 
-import akka.actor.{ActorRef, ActorSystem}
-import com.jeff.megaupload.constant.{Constants, Flags}
 import com.jeff.megaupload.constant.Constants.PACKET_SIZE
+import com.jeff.megaupload.constant.{Constants, Flags}
 import com.jeff.megaupload.server.util.scribe.Scribe
 
 /**
@@ -24,8 +22,6 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
   protected val writePacket = new DatagramPacket(new Array[Byte](PACKET_SIZE), 0, PACKET_SIZE)
   protected val timeOut = 1000
   protected val chunkSize = 100000
-
-  private val system = ActorSystem("Scribes-Guild")
 
   private val random = ThreadLocalRandom.current()
 
@@ -45,10 +41,8 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
       val wSize = Math.abs(extracted._1)
       val fileName = Constants.bytesToString(extracted._2)
       sendAck(Flags.INFO_NAME.identifier, destAdd, destPort)
-      val scribe = system.actorOf(Scribe.props(fileName))
       socket.setSoTimeout(timeOut)
-//      println(s"SIZE:$wSize, FileName:$fileName")
-      processFileTransfer(fileName, destAdd, destPort, wSize)
+      processFileTransfer(new Scribe(fileName), destAdd, destPort, wSize)
       socket.setSoTimeout(0)
     }
   }
@@ -64,12 +58,12 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
   /**
     * Method called to process a file transfer.
     *
-    * @param fileName    The scribe actor to write the data to file.
+    * @param scribe     The scribe master for writing this file.
     * @param destAdd    The address origin of the file.
     * @param destPort   The port origin of the file.
     * @param windowSize The size of the window.
     */
-  protected def processFileTransfer(fileName: String, destAdd: InetAddress, destPort: Int, windowSize: Int): Unit
+  protected def processFileTransfer(scribe: Scribe, destAdd: InetAddress, destPort: Int, windowSize: Int): Unit
 
   /**
     * Method to send an ack packet to a destination.
@@ -110,18 +104,5 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     * @return True to simulate a drop.
     */
   protected final def drop: Boolean = !simDrops && (random.nextInt(101) <= 1)
-
-  /**
-    * Method to write a file with the given name using the given binary data.
-    *
-    * @param fileName The name of the file.
-    * @param data     The data for the file.
-    */
-  protected final def saveFile(fileName: String, data: List[Array[Byte]]): Unit = {
-    val stream = new FileOutputStream(fileName)
-    data.foreach(stream.write)
-    stream.flush()
-    stream.close()
-  }
 
 }

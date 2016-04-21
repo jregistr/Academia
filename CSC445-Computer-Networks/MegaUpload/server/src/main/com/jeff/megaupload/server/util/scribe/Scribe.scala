@@ -1,42 +1,43 @@
 package com.jeff.megaupload.server.util.scribe
 
 import java.io.FileOutputStream
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.locks.LockSupport.{park, unpark}
 
-import akka.actor.{Props, Actor}
 
-/**
-  * Class to describe an actor that writes data to a file.
-  *
-  * @param fileName The name of the file.
-  */
-class Scribe(fileName: String) extends Actor {
+class Scribe(fileName: String) extends Thread {
 
   private val stream = new FileOutputStream(fileName)
+  private val work = new ConcurrentLinkedQueue[Array[Byte]]()
+  private var finished = false
 
-  def receive = {
-    case Write(data) =>
-      stream.write(data)
-      stream.flush()
+  override def run(): Unit = {
 
-    case Finish =>
-      stream.flush()
-      stream.close()
-      context stop self
+    while (!finished) {
+      doWork()
+      park()
+    }
+
   }
+
+  def write(bytes: Array[Byte]): Unit = {
+    work.add(bytes)
+    unpark(this)
+  }
+
+  def finish(): Unit = {
+    finished = true
+    doWork()
+    stream.flush()
+    stream.close()
+    unpark(this)
+  }
+
+  private def doWork(): Unit = {
+    while (work.peek() != null) {
+      stream.write(work.poll())
+    }
+    stream.flush()
+  }
+
 }
-
-/**
-  * Companion for this actor.
-  */
-object Scribe {
-
-  /**
-    * Method to return the props to create the scribe actor.
-    *
-    * @param fileName The name of the file.
-    * @return The props.
-    */
-  def props(fileName: String): Props = Props(classOf[Scribe], fileName)
-}
-
-
