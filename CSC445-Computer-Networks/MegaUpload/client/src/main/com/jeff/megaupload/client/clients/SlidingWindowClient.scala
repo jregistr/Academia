@@ -57,6 +57,7 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
       val localMax = Math.min(counter + windowSize, max)
 
       while (counter <= localMax) {
+      //  println(s"SENDING:$counter")
         socket.send(asPacket(counter, packets.get(counter).get, destAddress, destPort))
         counter += 1
       }

@@ -47,8 +47,8 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
       sendAck(Flags.INFO_NAME.identifier, destAdd, destPort)
       val scribe = system.actorOf(Scribe.props(fileName))
       socket.setSoTimeout(timeOut)
-      println(s"SIZE:$wSize, FileName:$fileName")
-      processFileTransfer(scribe, destAdd, destPort, wSize)
+//      println(s"SIZE:$wSize, FileName:$fileName")
+      processFileTransfer(fileName, destAdd, destPort, wSize)
       socket.setSoTimeout(0)
     }
   }
@@ -64,12 +64,12 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
   /**
     * Method called to process a file transfer.
     *
-    * @param scribe     The scribe actor to write the data to file.
+    * @param fileName    The scribe actor to write the data to file.
     * @param destAdd    The address origin of the file.
     * @param destPort   The port origin of the file.
     * @param windowSize The size of the window.
     */
-  protected def processFileTransfer(scribe: ActorRef, destAdd: InetAddress, destPort: Int, windowSize: Int): Unit
+  protected def processFileTransfer(fileName: String, destAdd: InetAddress, destPort: Int, windowSize: Int): Unit
 
   /**
     * Method to send an ack packet to a destination.

@@ -12,9 +12,9 @@ object Main {
   private val writeChunk = 10000
 
   def main(args: Array[String]) {
-   /* val in = getClass.getClassLoader.getResource("TCPThroughClient.scala").getPath
-    new SlidingWindowClient("localhost", 7001).uploadFile(in, "localhost", 7000)*/
-    createFile(400000000)
+    val in = getClass.getClassLoader.getResource("data.datafile").getPath
+    new SlidingWindowClient("localhost", 7001).uploadFile(in, "localhost", 7000)
+   // createFile(100000000)
   }
 
   private def createFile(size: Int): Unit = {

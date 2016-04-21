@@ -1,6 +1,6 @@
 package com.jeff.megaupload.server.servers
 
-import java.io.ByteArrayOutputStream
+import java.io.{ByteArrayOutputStream, FileOutputStream}
 import java.net.{DatagramPacket, InetAddress, SocketTimeoutException}
 
 import akka.actor.ActorRef
@@ -21,12 +21,12 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
   /**
     * Method called to process a file transfer.
     *
-    * @param scribe     The scribe actor to write the data to file.
+    * @param fileName     The scribe actor to write the data to file.
     * @param destAdd    The address origin of the file.
     * @param destPort   The port origin of the file.
     * @param windowSize The size of the window.
     */
-  override protected def processFileTransfer(scribe: ActorRef, destAdd: InetAddress, destPort: Int, windowSize: Int): Unit = {
+  override protected def processFileTransfer(fileName: String, destAdd: InetAddress, destPort: Int, windowSize: Int): Unit = {
     var done = false
     var highestSeq = 1
     var noneReceived = true
@@ -35,30 +35,42 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
     val window = MutMap[Int, Array[Byte]]()
     var stream = new ByteArrayOutputStream
 
+    val fileStream = new FileOutputStream(fileName)
+
     def timeOutOperation(): Unit = {
+      println("TIME OUT")
       var checkDone = false
       while (!checkDone) {
         if (highestSeq > maxSeq) {
+          println("I AM true")
           checkDone = true
+          maxSeq = highestSeq + windowSize
+          sendHighestAck(highestSeq, destAdd, destPort)
         } else {
           if (noneReceived) {
             sendHighestAck(Flags.NO_PACKET_RECEIVED.identifier, destAdd, destPort)
           } else {
 //            println(s"I did get shit:highest seq:$highestSeq")
             val get = window.get(highestSeq)
-            println(window)
+           // println(window)
             get match {
               case None =>
                 checkDone = true
 //                println("NONE")
+               // println(s"HIGHEST:$highestSeq")
+                println(s"PRE MAX SEQ:$maxSeq")
                 maxSeq = highestSeq + windowSize
+                println(s"AFTER MAX SEQ:$maxSeq")
                 sendHighestAck(highestSeq, destAdd, destPort)
               case Some(value) =>
                 highestSeq += 1
+                println(highestSeq)
                 stream.write(value)
 //                println("SOME")
                 if (stream.size() >= chunkSize) {
-                  scribe ! stream.toByteArray
+               //   scribe ! stream.toByteArray
+                  fileStream.write(stream.toByteArray)
+                  fileStream.flush()
                   stream = new ByteArrayOutputStream()
                 }
             }
@@ -75,6 +87,7 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
           val extracted = seqAndPayload(readPacket)
           val seq = extracted._1
           val data = extracted._2
+        //  println(s"SEQ:$seq")
           seq match {
             case Flags.RESEND_HIGHEST.identifier =>
               sendHighestAck(highestSeq, destAdd, destPort)
@@ -99,10 +112,13 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
     }
 
     if (stream.size() > 0) {
-      scribe ! Write(stream.toByteArray)
+//      scribe ! Write(stream.toByteArray)
+      fileStream.write(stream.toByteArray)
+
     }
 
-    scribe ! Finish
+    //scribe ! Finish
+    fileStream.flush()
 
   }
 
@@ -158,7 +174,6 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
     * @param destPort The source port for the transfer.
     */
   private def sendHighestAck(highest: Int, destAdd: InetAddress, destPort: Int): Unit = {
-    println(s"HIGHEST:$highest")
     sendAck(highest match {
       case -1 => Flags.NO_PACKET_RECEIVED.identifier
       case _ => highest
