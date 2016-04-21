@@ -13,7 +13,7 @@ object Main {
 
   def main(args: Array[String]) {
     val in = getClass.getClassLoader.getResource("data.datafile").getPath
-    new SlidingWindowClient("localhost", 7001).uploadFile(in, "localhost", 7000)
+    new SlidingWindowClient("localhost", 7001).upload(in, "localhost", 7000)
    // createFile(100000000)
   }
 

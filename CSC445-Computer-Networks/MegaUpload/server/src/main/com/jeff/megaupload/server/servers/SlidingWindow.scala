@@ -3,7 +3,7 @@ package com.jeff.megaupload.server.servers
 import java.io.ByteArrayOutputStream
 import java.net.{DatagramPacket, InetAddress, SocketTimeoutException}
 
-import com.jeff.megaupload.constant.Flags
+import com.jeff.megaupload.constant.{Constants, Flags}
 import com.jeff.megaupload.server.util.scribe.Scribe
 
 import scala.collection.mutable.{Map => MutMap}
@@ -69,7 +69,7 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
       while (count < windowSize && !done) {
         try {
           socket.receive(readPacket)
-          val extracted = seqAndPayload(readPacket)
+          val extracted = Constants.seqAndPayload(readPacket)
           val seq = extracted._1
           val data = extracted._2
           seq match {
@@ -116,6 +116,6 @@ class SlidingWindow(port: Int, localAddress: String, simDrops: Boolean) extends 
     }, destAdd, destPort)
   }
 
-  override protected def fromPacket(packet: DatagramPacket): (Int, Array[Byte]) = seqAndPayload(packet)
+  override protected def fromPacket(packet: DatagramPacket): (Int, Array[Byte]) = Constants.seqAndPayload(packet)
 
 }

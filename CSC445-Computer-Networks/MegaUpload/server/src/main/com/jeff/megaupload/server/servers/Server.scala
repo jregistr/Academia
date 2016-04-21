@@ -32,7 +32,7 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     socket.receive(readPacket)
     val destAdd = readPacket.getAddress
     val destPort = readPacket.getPort
-    val extracted = seqAndPayload(readPacket)
+    val extracted = Constants.seqAndPayload(readPacket)
 
     val seq = extracted._1
     if (seq == Flags.END_OF_TRANSFER.identifier) {
@@ -80,22 +80,6 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     buffer.putInt(ack)
     writePacket.setData(buffer.array())
     socket.send(writePacket)
-  }
-
-  /**
-    * Method to extract the sequence number and payload from a packet.
-    *
-    * @param packet The packet.
-    * @return A tuple containing the sequence number and the payload.
-    */
-  protected final def seqAndPayload(packet: DatagramPacket): (Int, Array[Byte]) = {
-    val raw = packet.getData
-    val seq = Constants.byteArrayToInt(raw.slice(0, Constants.INT_BYTES))
-    val countStartIndex = Constants.INT_BYTES
-    val endCountIndex = countStartIndex + Constants.INT_BYTES
-    val count = Constants.byteArrayToInt(raw.slice(countStartIndex, endCountIndex))
-    val payLoad = raw.slice(endCountIndex, endCountIndex + count)
-    (seq, payLoad)
   }
 
   /**
