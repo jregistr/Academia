@@ -3,8 +3,6 @@ package com.jeff.megaupload.constant
 import java.net.DatagramPacket
 import java.nio.ByteBuffer
 
-import scala.collection.mutable.ArrayBuffer
-
 
 object Constants {
 
@@ -12,16 +10,18 @@ object Constants {
 
   val FLAG_RESEND_HIGHEST = -1
 
-
   val PACKET_SIZE = 1000
   val PAYLOAD_SIZE = PACKET_SIZE - (INT_BYTES * 2)
 
   def intToByteArray(value: Int): Array[Byte] = {
-    val buf = new ArrayBuffer[Byte](INT_BYTES)
+    /*val buf = new ArrayBuffer[Byte](INT_BYTES)
     for (i <- 0 until INT_BYTES) {
       buf += ((value >>> (INT_BYTES - i - 1 << 3)) & 0xFF).toByte
     }
-    buf.toArray
+    buf.toArray*/
+    val buffer = ByteBuffer.allocate(Integer.BYTES)
+    buffer.putInt(value)
+    buffer.array()
   }
 
   def byteArrayToInt(value: Array[Byte]): Int = {

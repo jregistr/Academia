@@ -19,7 +19,7 @@ import com.jeff.megaupload.server.util.scribe.Scribe
   */
 abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
 
-  protected val socket = new DatagramSocket(port, InetAddress.getLocalHost)
+  protected val socket = new DatagramSocket(port, InetAddress.getByName(localAddress))
   protected val readPacket = new DatagramPacket(new Array[Byte](PACKET_SIZE), 0, PACKET_SIZE)
   protected val writePacket = new DatagramPacket(new Array[Byte](PACKET_SIZE), 0, PACKET_SIZE)
   protected val timeOut = 1000
@@ -37,13 +37,20 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     val destAdd = readPacket.getAddress
     val destPort = readPacket.getPort
     val extracted = seqAndPayload(readPacket)
-    val wSize = Math.abs(extracted._1)
-    val fileName = Constants.bytesToString(extracted._2)
-    sendAck(Flags.INFO_NAME.identifier, destAdd, destPort)
-    val scribe = system.actorOf(Scribe.props(fileName))
-    socket.setSoTimeout(timeOut)
-    processFileTransfer(scribe, destAdd, destPort, wSize)
-    socket.setSoTimeout(0)
+
+    val seq = extracted._1
+    if (seq == Flags.END_OF_TRANSFER.identifier) {
+      sendAck(Flags.END_OF_TRANSFER.identifier, destAdd, destPort)
+    } else {
+      val wSize = Math.abs(extracted._1)
+      val fileName = Constants.bytesToString(extracted._2)
+      sendAck(Flags.INFO_NAME.identifier, destAdd, destPort)
+      val scribe = system.actorOf(Scribe.props(fileName))
+      socket.setSoTimeout(timeOut)
+      println(s"SIZE:$wSize, FileName:$fileName")
+      processFileTransfer(scribe, destAdd, destPort, wSize)
+      socket.setSoTimeout(0)
+    }
   }
 
   /**
@@ -76,8 +83,8 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     writePacket.setAddress(destAdd)
     writePacket.setPort(destPort)
     val buffer = ByteBuffer.allocate(Constants.PACKET_SIZE)
-    buffer.put(Constants.intToByteArray(ack))
-
+    buffer.putInt(ack)
+    writePacket.setData(buffer.array())
     socket.send(writePacket)
   }
 
@@ -103,38 +110,6 @@ abstract class Server(port: Int, localAddress: String, val simDrops: Boolean) {
     * @return True to simulate a drop.
     */
   protected final def drop: Boolean = !simDrops && (random.nextInt(101) <= 1)
-
-  /*
-    /**
-      * Method to gather the file name from the client.
-      *
-      * @param destAdd  The destination address.
-      * @param destPort The destination port.
-      * @return The file name.
-      */
-    protected final def acquireFileName(destAdd: InetAddress, destPort: Int): String = {
-      var found = false
-      var fileName: Option[String] = None
-      sendAck(Flags.RESEND_NAME.identifier, destAdd, destPort)
-      while (!found) {
-        try {
-          socket.receive(readPacket)
-          val extracted = seqAndPayload(readPacket)
-          val seq = extracted._1
-          seq match {
-            case Flags.INFO_NAME.identifier =>
-              fileName = Some(Constants.bytesToString(extracted._2))
-              found = true
-            case _ => throw new IllegalStateException(s"Expected packet with name info but found Identifier:$seq")
-          }
-        } catch {
-          case s: SocketTimeoutException =>
-            sendAck(Flags.RESEND_NAME.identifier, destAdd, destPort)
-          case t: Throwable => throw t
-        }
-      }
-      fileName.get
-    }*/
 
   /**
     * Method to write a file with the given name using the given binary data.

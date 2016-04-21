@@ -25,7 +25,6 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
     * @return The packet.
     */
   override protected def asPacket(seq: Int, bytes: Array[Byte], destAddress: InetAddress, destPort: Int): DatagramPacket = {
-
     if (bytes.length > Constants.PAYLOAD_SIZE)
       throw new IllegalArgumentException("Size of payload larger than allowed.")
 
@@ -35,7 +34,7 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
     buffer.put(bytes)
 
     val payload = buffer.array()
-    val packet = writePacket
+    val packet = new DatagramPacket(payload, 0, payload.length)
     packet.setData(payload)
     packet.setAddress(destAddress)
     packet.setPort(destPort)
@@ -53,14 +52,40 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
     * @param max         The maximum seq number.
     */
   private def send(packets: Map[Int, Array[Byte]], destAddress: InetAddress, destPort: Int, min: Int, max: Int): Unit = {
+    var counter = min
+    while (counter <= max) {
+      val localMax = Math.min(counter + windowSize, max)
 
+      while (counter <= localMax) {
+        socket.send(asPacket(counter, packets.get(counter).get, destAddress, destPort))
+        counter += 1
+      }
+      val resp = getHighest(destAddress, destPort)
+      println(s"REST:$resp")
+      counter = resp match {
+        case 0 => 1
+        case _ => resp
+      }
+    }
   }
 
   private def getHighest(destAddress: InetAddress, destPort: Int): Int = {
-    var highest:Option[Int] = None
-    while (highest.isEmpty){
-      socket.receive(readPacket)
-      val extracted =
+    var highest: Option[Int] = None
+    while (highest.isEmpty) {
+      try {
+        socket.receive(readPacket)
+        val extracted = Constants.seqAndPayload(readPacket)
+        val seq = extracted._1
+        if (seq >= 0) {
+          highest = Some(seq)
+        } else {
+          throw new IllegalArgumentException
+        }
+      } catch {
+        case s: SocketTimeoutException =>
+          asPacket(Flags.RESEND_HIGHEST.identifier, Constants.intToByteArray(0), destAddress, destPort)
+        case t: Throwable => throw t
+      }
     }
     highest.get
   }
@@ -84,6 +109,7 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
 
     val startPacket = asPacket(-windowSize, fn.getBytes("UTF-8"), inetAddress, destPort)
     socket.send(startPacket)
+
     var acked = false
     while (!acked) {
       try {
@@ -118,10 +144,29 @@ class SlidingWindowClient(localAddress: String, localPort: Int) extends Client(l
             seqNumber += 1
             out
         }
+
       }).filter(_.isDefined).map(_.get).toMap
       val max = seqNumber - 1
 
       send(packets, inetAddress, destPort, min, max)
+    }
+
+    val endOfTransfer = asPacket(Flags.END_OF_TRANSFER.identifier, "".getBytes, inetAddress, destPort)
+    socket.send(endOfTransfer)
+    var ackedEnd = false
+    while (!ackedEnd) {
+      try {
+        socket.receive(readPacket)
+        val extracted = Constants.seqAndPayload(readPacket)
+        val seq = extracted._1
+        seq match {
+          case Flags.END_OF_TRANSFER.identifier => ackedEnd = true
+          case _ => socket.send(endOfTransfer)
+        }
+      } catch {
+        case s: SocketTimeoutException => socket.send(endOfTransfer)
+        case t: Throwable => throw t
+      }
     }
   }
 

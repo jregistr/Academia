@@ -4,6 +4,7 @@ import java.io.FileOutputStream
 import java.nio.file.{Files, Paths}
 import java.util.concurrent.ThreadLocalRandom
 
+import com.jeff.megaupload.client.clients.SlidingWindowClient
 
 object Main {
 
@@ -11,7 +12,9 @@ object Main {
   private val writeChunk = 10000
 
   def main(args: Array[String]) {
-
+   /* val in = getClass.getClassLoader.getResource("TCPThroughClient.scala").getPath
+    new SlidingWindowClient("localhost", 7001).uploadFile(in, "localhost", 7000)*/
+    createFile(400000000)
   }
 
   private def createFile(size: Int): Unit = {

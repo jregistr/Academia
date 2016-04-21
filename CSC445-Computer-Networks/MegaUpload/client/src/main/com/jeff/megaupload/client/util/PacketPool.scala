@@ -21,8 +21,8 @@ object PacketPool {
         case e: Exception =>
         case t: Throwable => throw t
       }
-    }
-    while (packet.isEmpty)
+    } while (packet.isEmpty)
+    packet.get
   }
 
   def takeBack(packet: DatagramPacket): Unit = {
