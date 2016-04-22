@@ -12,7 +12,7 @@ object Constants {
 
   val FLAG_RESEND_HIGHEST = -1
 
-  val PACKET_SIZE = 1008
+  val PACKET_SIZE = 64000
   val PAYLOAD_SIZE = PACKET_SIZE - (INT_BYTES * 2)
 
   /**
