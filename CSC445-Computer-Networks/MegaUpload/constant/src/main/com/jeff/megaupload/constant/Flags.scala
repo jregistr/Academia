@@ -3,18 +3,10 @@ package com.jeff.megaupload.constant
 
 object Flags {
 
-  sealed abstract class Flag(val identifier: Int)
+  sealed abstract class Flag(val id: Int)
 
-  case object NO_PACKET_RECEIVED extends Flag(0)
+  case object INIT extends Flag(-1)
 
-  case object RESEND_HIGHEST extends Flag(-1)
-
-  case object RESEND_NAME extends Flag(-2)
-
-  case object INFO_NAME extends Flag(-3)
-
-  case object END_OF_TRANSFER extends Flag(-4)
-
-  case object SEND_WINDOW_SIZE extends Flag(-5)
+  case object END extends Flag(-2)
 
 }

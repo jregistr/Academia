@@ -14,6 +14,7 @@ allprojects {
         akkaVersion = "2.4.4"
         guavaVersion = "19.0"
         apachePoolVersion = "2.4.2"
+        mustacheVersion = "0.9.1"
     }
 
     dependencies {
@@ -24,7 +25,12 @@ allprojects {
 }
 
 project(":constant") {
-
+    dependencies {
+        compile "com.google.guava:guava:$guavaVersion"
+        compile "com.github.spullara.mustache.java:compiler:$mustacheVersion"
+        testCompile 'junit:junit:4.12'
+        testCompile 'org.hamcrest:hamcrest-library:1.3'
+    }
 }
 
 project(":client") {
