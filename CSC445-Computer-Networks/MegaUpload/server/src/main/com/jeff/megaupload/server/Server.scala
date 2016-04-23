@@ -19,13 +19,13 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
 
   private val random = ThreadLocalRandom.current()
 
-  listen()
-
-  def listen(): Unit = {
+  def listen(): List[Double] = {
     var curCount = 0
-    val dataBuffer = new ListBuffer[(Long, Double)]()
+    var dataBuffer = new ListBuffer[Double]()
+    println("Server Start")
+
     while (curCount < testCount) {
-      println("I am starting")
+      println("TEST LOOP")
       socket.receive(readPacket)
       val destAdd = readPacket.getAddress
       val destPort = readPacket.getPort
@@ -48,15 +48,16 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
           processFileTransfer(scribe, destAdd, destPort, windowSize)
 
           val delta = System.nanoTime() - before
-
-
           println(s"TIME:$delta")
           socket.setSoTimeout(0)
           curCount += 1
+
+          dataBuffer += (delta * Constants.NANO_TO_SECONDS)
         case _ => throw new IllegalArgumentException("Unexpected sequence number")
       }
-
     }
+    socket.close()
+    dataBuffer.toList
   }
 
 

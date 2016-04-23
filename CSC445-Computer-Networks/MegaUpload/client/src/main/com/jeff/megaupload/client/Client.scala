@@ -22,6 +22,7 @@ class Client {
     initTransfer(fileName, windowSize, destAdd, destPort)
     processTransfer(new FileInputStream(path), windowSize, destAdd, destPort)
     end(destAdd, destPort)
+    socket.close()
   }
 
   private def initTransfer(fileName: String, windowSize: Int, destAddress: InetAddress, destPort: Int): Unit = {
