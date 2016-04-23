@@ -41,7 +41,7 @@ object Main {
           }
 
           for (i <- 0 until testCount) {
-            new Client().uploadFile(fileName, getClass.getClassLoader.getResource("data.datafile").getPath,
+            new Client().uploadFile(fileName, filePath,
               windowSize, InetAddress.getByName(serverAdd), serverPort)
             Thread.sleep(1500)
           }
