@@ -15,13 +15,14 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
 
   private val socket = new DatagramSocket(port)
   private val readPacket = new DatagramPacket(new Array[Byte](PACKET_SIZE), 0, PACKET_SIZE)
-  private val chunkSize = 100000000
+  //  private val chunkSize = 100000000
+  private val chunkSize = 25000000
 
   private val random = ThreadLocalRandom.current()
 
-  def listen(): List[Double] = {
+  def listen(): List[Long] = {
     var curCount = 0
-    var dataBuffer = new ListBuffer[Double]()
+    var dataBuffer = new ListBuffer[Long]()
     println("Server Start")
 
     while (curCount < testCount) {
@@ -52,7 +53,7 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
           socket.setSoTimeout(0)
           curCount += 1
 
-          dataBuffer += (delta * Constants.NANO_TO_SECONDS)
+          dataBuffer += delta
         case _ => throw new IllegalArgumentException("Unexpected sequence number")
       }
     }
@@ -75,7 +76,7 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
     var noneReceived = true
     var maxSeq = windowSize
     val window = MutMap[Int, Array[Byte]]()
-    var stream = new ByteArrayOutputStream
+    val stream = new ByteArrayOutputStream
 
     while (!done) {
       var count = 0
@@ -112,7 +113,7 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
                   sendAck(1, destAdd, destPort)
                   checkDone = true
                 } else {
-                  val get = window.get(highestSeq)
+                  val get = window.remove(highestSeq)
                   get match {
                     case None =>
                       checkDone = true
@@ -123,7 +124,7 @@ class Server(port: Int, simDrops: Boolean, val testCount: Int) {
                       stream.write(value)
                       if (stream.size() >= chunkSize) {
                         scribe.write(stream.toByteArray)
-                        stream = new ByteArrayOutputStream()
+                        stream.reset()
                       }
                   }
                 }

@@ -5,8 +5,6 @@ import java.net.InetAddress
 import java.nio.file.{Files, Paths}
 import java.util.concurrent.ThreadLocalRandom
 
-import com.jeff.megaupload.constant.DataCollectState
-
 import scala.io.StdIn._
 
 object Main {
@@ -15,53 +13,39 @@ object Main {
 
   def main(args: Array[String]) {
 
-    readLine("File Transfer?(true) or Create File(false)???:").toBoolean match {
-      case true =>
-        println("Four test suites will be run.")
-        println("The order is as Follows:\n" +
-          "[0]:Sliding Window - No Drops\n" +
-          "[1]:Sliding Window - Drops\n" +
-          "[2]:Stop And Wait  - No Drops\n" +
-          "[3]:Stop And Wait  - Drops")
-        println("Below, Enter the amount of times each test suite will be ran.")
-
-        val testCount = readLine("Test Count:").toInt
-        val serverAdd = readLine("Server Address:")
-        val serverPort = readLine("Server Port:").toInt
-        val fileName = readLine("File Name:")
-        val filePath = readLine("File Path:")
-
-        var current = DataCollectState.SLIDING_NO_DROPS
-
-        var done = false
-        while (!done) {
-          val windowSize = current match {
-            case DataCollectState.SLIDING_NO_DROPS | DataCollectState.SLIDING_WITH_DROPS => 500
-            case _ => 1
-          }
-
-          for (i <- 0 until testCount) {
-            new Client().uploadFile(fileName, filePath,
-              windowSize, InetAddress.getByName(serverAdd), serverPort)
-            Thread.sleep(1500)
-          }
-
-          current = current match {
-            case DataCollectState.SLIDING_NO_DROPS => DataCollectState.SLIDING_WITH_DROPS
-            case DataCollectState.SLIDING_WITH_DROPS => DataCollectState.STOP_START_NO_DROPS
-            case DataCollectState.STOP_START_NO_DROPS => DataCollectState.STOP_START_WITH_DROPS
-            case _ =>
-              done = true
-              DataCollectState.STOP_START_WITH_DROPS
-          }
-        }
-
-      case _ =>
+    readLine("Which path to take? File creation[0] or File Transfer[1]:").toInt match {
+      case 0 =>
+        println("File Creation!!")
         val fileName = readLine("Enter File Name:")
         val size = readLine("Enter File Size In Mega Bytes:").toInt * 1000000
         createFile(size, fileName)
+      case 1 =>
+        println("File Upload!!")
+        println("Enter the necessary info below")
+        val serverAdd = readLine("Server Address:")
+        val serverPort = readLine("Server Port:").toInt
+        val fileName = readLine("File Name(not path):")
+        val filePath = readLine("File Path:")
+        val testCount = readLine("Number of tests to run:").toInt
+        val windowSize = readLine("Choose one of these four test suites.\n" +
+          "[0]Sliding window no drops\n" +
+          "[1]Sliding window with drops\n" +
+          "[2]Stop and wait no drops\n" +
+          "[3]Stop and wait with drops\n" +
+          "What is your choice?:").toInt match {
+          case 0 => 500
+          case 1 => 500
+          case 2 => 1
+          case 3 => 1
+          case _ => throw new IllegalArgumentException("Re run the program and read the choices.")
+        }
+        for (i <- 0 until testCount) {
+          new Client().uploadFile(fileName, filePath,
+            windowSize, InetAddress.getByName(serverAdd), serverPort)
+          Thread.sleep(1500)
+        }
+      case _ => throw new IllegalArgumentException("Re run the program and read the choices.")
     }
-
 
   }
 

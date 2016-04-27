@@ -14,12 +14,16 @@ class Scribe(fileName: String) extends Thread {
   private val stream = new FileOutputStream(fileName)
   private val work = new ConcurrentLinkedQueue[Array[Byte]]()
   private var finished = false
+  private var parked = false
 
   override def run(): Unit = {
 
     while (!finished) {
       doWork()
-      park()
+      parked = true
+      while (parked) {
+        park()
+      }
     }
 
   }
@@ -31,6 +35,7 @@ class Scribe(fileName: String) extends Thread {
     */
   def write(bytes: Array[Byte]): Unit = {
     work.add(bytes)
+    parked = false
     unpark(this)
   }
 
@@ -42,6 +47,7 @@ class Scribe(fileName: String) extends Thread {
     doWork()
     stream.flush()
     stream.close()
+    parked = false
     unpark(this)
   }
 

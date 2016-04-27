@@ -3,9 +3,7 @@ package com.jeff.megaupload.server
 import java.io.FileOutputStream
 
 import com.jeff.megaupload.constant.DataCollectState
-import DataCollectState.DataCollectState
 
-import scala.collection.mutable.{Map => MutMap}
 import scala.io.StdIn._
 
 object Main {
@@ -18,76 +16,34 @@ object Main {
       DataCollectState.STOP_START_WITH_DROPS -> "Stop And Wait Drops"
     )
 
-    println("Four test suites will be run.")
-    println("The order is as Follows:\n" +
-      "[0]:Sliding Window - No Drops\n" +
-      "[1]:Sliding Window - Drops\n" +
-      "[2]:Stop And Wait  - No Drops\n" +
-      "[3]:Stop And Wait  - Drops")
-    println("Below, Enter the amount of times each test suite will be ran.")
-
-    val testCounts = readLine("Enter amount of tests to run:").toInt
     val port = readLine("Enter Port:").toInt
+    val testCounts = readLine("Enter amount of tests to run:").toInt
 
-    val dataMap = MutMap[DataCollectState, List[Double]]()
-    var currentState = DataCollectState.SLIDING_NO_DROPS
-
-
-    var done = false
-
-    while (!done) {
-
-      val drops = currentState match {
-        case DataCollectState.SLIDING_WITH_DROPS | DataCollectState.STOP_START_WITH_DROPS => true
-        case _ => false
-      }
-
-      dataMap += currentState -> new Server(port, drops, testCounts).listen()
-
-      currentState = currentState match {
-        case DataCollectState.SLIDING_NO_DROPS => DataCollectState.SLIDING_WITH_DROPS
-        case DataCollectState.SLIDING_WITH_DROPS => DataCollectState.STOP_START_NO_DROPS
-        case DataCollectState.STOP_START_NO_DROPS => DataCollectState.STOP_START_WITH_DROPS
-        case _ =>
-          done = true
-          DataCollectState.STOP_START_WITH_DROPS
-      }
+    val testInfo = readLine("Choose one of these four test suites.\n" +
+      "[0]Sliding window no drops\n" +
+      "[1]Sliding window with drops\n" +
+      "[2]Stop and wait no drops\n" +
+      "[3]Stop and wait with drops\n" +
+      "What is your choice?:").toInt match {
+      case 0 => (DataCollectState.SLIDING_NO_DROPS, false)
+      case 1 => (DataCollectState.SLIDING_WITH_DROPS, true)
+      case 2 => (DataCollectState.STOP_START_NO_DROPS, false)
+      case 3 => (DataCollectState.STOP_START_WITH_DROPS, true)
+      case _ => throw new IllegalArgumentException("Not a correct choice!")
     }
 
-    val slideNo = dataMap.get(DataCollectState.SLIDING_NO_DROPS).get.iterator
-    val slideDrop = dataMap.get(DataCollectState.SLIDING_WITH_DROPS).get.iterator
-    val stopNo = dataMap.get(DataCollectState.STOP_START_NO_DROPS).get.iterator
-    val stopDrop = dataMap.get(DataCollectState.STOP_START_WITH_DROPS).get.iterator
-
-    val stream = new FileOutputStream("Results.csv")
+    val output = new Server(port, testInfo._2, testCounts).listen()
 
     implicit def nameToBytes(value: String): Array[Byte] = {
       value.getBytes("UTF-8")
     }
 
-    implicit def doubleToBytes(value: Double): Array[Byte] = {
-      nameToBytes(String.valueOf(value))
-    }
+    val name = collectStateNames.get(testInfo._1).get
+    val stream = new FileOutputStream(s"${name.replace(" ", "")}.csv")
 
-    stream.write(collectStateNames.get(DataCollectState.SLIDING_NO_DROPS).get.concat(","))
-    stream.write(collectStateNames.get(DataCollectState.SLIDING_WITH_DROPS).get.concat(","))
-    stream.write(collectStateNames.get(DataCollectState.STOP_START_NO_DROPS).get.concat(","))
-    stream.write(collectStateNames.get(DataCollectState.STOP_START_WITH_DROPS).get.concat("\n"))
-
-    while (slideNo.hasNext) {
-      stream.write(slideNo.next())
-      stream.write(",")
-
-      stream.write(slideDrop.next())
-      stream.write(",")
-
-      stream.write(stopNo.next())
-      stream.write(",")
-
-      stream.write(stopDrop.next())
-      stream.write("\n")
-
-    }
-
+    stream.write(s"$name\n")
+    output.foreach(data => stream.write(s"$data\n"))
+    stream.flush()
+    stream.close()
   }
 }

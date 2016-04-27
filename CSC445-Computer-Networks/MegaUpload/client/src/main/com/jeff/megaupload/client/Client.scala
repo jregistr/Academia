@@ -95,7 +95,6 @@ class Client {
       }
 
       counter = highest
-      println(s"COUNTER:$counter")
     }
   }
 

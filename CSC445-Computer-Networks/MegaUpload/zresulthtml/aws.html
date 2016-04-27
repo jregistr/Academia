@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MegaUpload Stats</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <!--<link rel="stylesheet" href="./stylesheets/application.css">-->
+    <!--<link rel="stylesheet" href="./stylesheets/dashboard.css">-->
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="aws.html">
+                MegaUpload
+                <!-- <span>
+                     <img class="nav-image" src="images/logo.png">
+                 </span>-->
+            </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul id="group-links" class="nav navbar-nav navbar-right">
+                <li><a href="aws.html">AWS Results</a></li>
+                <li><a href="pitorho.html">PI To RHO Results</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row" style="margin-top: 80px">
+
+        <div id="allmovies" class="col-sm-12">
+            <div id="groups" class="row">
+                <div><!-- IV4 Results -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                AWS Results
+                            </div>
+                            <div class="panel-body">
+                                <div id="pc-to-pi-chart-1"
+                                     style="width: 100%; height: 600px; background-color: #FFFFFF;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="javascripts/lib/jquery.min.js"></script>
+<script src="javascripts/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
+<script>
+    const chart = AmCharts.makeChart("pc-to-pi-chart-1",
+            {
+                "type": "serial",
+                "categoryField": "category",
+                "startDuration": 2,
+                "categoryAxis": {
+                    "gridPosition": "start",
+                    "title": "Configurations"
+                },
+                "trendLines": [],
+                "graphs": [
+                    {
+                        "balloonText": "[[title]] of [[category]]:[[value]]",
+                        "fillAlphas": 1,
+                        "id": "AmGraph-1",
+                        "title": "IV4",
+                        "type": "column",
+                        "valueField": "iv-4",
+                        "stdField": "iv-4-std"
+                    }
+                ],
+                "guides": [],
+                "valueAxes": [
+                    {
+                        "id": "ValueAxis-1",
+                        "maximum": 800,
+                        "minMaxMultiplier": 1,
+                        "title": "Speed(KB/s)"
+                    }
+                ],
+                "allLabels": [],
+                "balloon": {
+                    "fontSize": 15
+                },
+                "legend": {
+                    "enabled": true,
+                    "useGraphSettings": true
+                },
+                "titles": [
+                    {
+                        "id": "Title-1",
+                        "size": 15,
+                        "text": "Data Transfer Results"
+                    }
+                ],
+                "dataProvider": [
+                    {
+                        "category": "Sliding",
+                        "iv-4": "753.8943269"
+                    },
+                    {
+                        "category": "Sliding Drops",
+                        "iv-4": "558.9269023"
+                    },
+                    {
+                        "category": "Stop Wait",
+                        "iv-4": "68.82085639"
+                    },
+                    {
+                        "category": "Stop Wait Drops",
+                        "iv-4": "65.54156048"
+                    }
+                ]
+            }
+    );
+</script>
+</body>
+</html>
