@@ -1,0 +1,76 @@
+package com.jeff.megaupload.client
+
+import java.io.FileOutputStream
+import java.net.InetAddress
+import java.nio.file.{Files, Paths}
+import java.util.concurrent.ThreadLocalRandom
+
+import scala.io.StdIn._
+
+object Main {
+
+  private val writeChunk = 10000
+
+  def main(args: Array[String]) {
+
+    readLine("Which path to take? File Transfer[0] or Create File[1]").toInt match {
+      case 0 =>
+        println("File Creation!!")
+        val fileName = readLine("Enter File Name:")
+        val size = readLine("Enter File Size In Mega Bytes:").toInt * 1000000
+        createFile(size, fileName)
+      case 1 =>
+        println("File Upload!!")
+        println("Enter the necessary info below")
+        val serverAdd = readLine("Server Address:")
+        val serverPort = readLine("Server Port:").toInt
+        val fileName = readLine("File Name(not path):")
+        val filePath = readLine("File Path:")
+        val testCount = readLine("Number of tests to run:").toInt
+        val windowSize = readLine("Choose one of these four test suites.\n" +
+          "[0]Sliding window no drops\n" +
+          "[1]Sliding window with drops\n" +
+          "[2]Stop and wait no drops\n" +
+          "[3]Stop and wait with drops\n" +
+          "What is your choice?:").toInt match {
+          case 0 => 500
+          case 1 => 500
+          case 2 => 1
+          case 3 => 1
+          case _ => throw new IllegalArgumentException("Re run the program and read the choices.")
+        }
+        for (i <- 0 until testCount) {
+          new Client().uploadFile(fileName, filePath,
+            windowSize, InetAddress.getByName(serverAdd), serverPort)
+          Thread.sleep(1500)
+        }
+      case _ => throw new IllegalArgumentException("Re run the program and read the choices.")
+    }
+
+  }
+
+  /**
+    * Method to generate a file of a given size filled with random bytes.
+    *
+    * @param size The size of the file.
+    */
+  private def createFile(size: Int, fileName: String): Unit = {
+    Files.deleteIfExists(Paths.get(fileName))
+    val stream = new FileOutputStream(fileName)
+    val random = ThreadLocalRandom.current()
+
+    var remain = size
+
+    while (remain > 0) {
+      val now = if (remain >= writeChunk) writeChunk else remain
+      remain -= now
+      val bytes = new Array[Byte](now)
+      random.nextBytes(bytes)
+      stream.write(bytes)
+    }
+
+    stream.flush()
+    stream.close()
+  }
+
+}
