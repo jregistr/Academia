@@ -1,4 +1,4 @@
-package com.jeff.game.castlesmack.util.constant;
+package com.jeff.game.castlesmack.util.builders;
 
 
 import com.badlogic.gdx.physics.box2d.*;

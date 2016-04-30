@@ -3,7 +3,7 @@ package com.jeff.game.castlesmack.models.items;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
-import com.jeff.game.castlesmack.util.constant.BodyBuilder;
+import com.jeff.game.castlesmack.util.builders.BodyBuilder;
 
 public class Island extends Entity {
 

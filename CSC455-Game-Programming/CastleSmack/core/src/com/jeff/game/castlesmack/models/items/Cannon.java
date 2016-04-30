@@ -5,18 +5,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Cannon extends Entity {
+public class Cannon extends DamageAbleEntity {
 
-    public float currentHP;
-    public float maxHP;
+    public final int playerID;
 
     public float maxForce;
     public float currentForce;
 
-    public Cannon(World world, float x, float y, float width, float height, TextureRegion texture, float maxHP, float maxForce) {
-        super(world, x, y, width, height, texture);
-        this.maxHP = maxHP;
+    public Cannon(World world, float x, float y, float width, float height, TextureRegion texture, float maxHP, float maxForce, int playerID) {
+        super(world, x, y, width, height, texture, maxHP);
         this.maxForce = maxForce;
+        this.playerID = playerID;
     }
 
     @Override

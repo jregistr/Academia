@@ -3,7 +3,9 @@ package com.jeff.game.castlesmack.models.items;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jeff.game.castlesmack.util.builders.BodyBuilder;
 
 public class Projectile extends Entity {
 
@@ -18,6 +20,6 @@ public class Projectile extends Entity {
 
     @Override
     protected Body createBody(World world, float x, float y, float width, float height) {
-        return null;
+        return BodyBuilder.rectangleBody(world, width, height, x, y, BodyDef.BodyType.DynamicBody);
     }
 }

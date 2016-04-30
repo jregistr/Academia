@@ -2,26 +2,29 @@ package com.jeff.game.castlesmack.system;
 
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.jeff.game.castlesmack.models.gameplay.Player;
 import com.jeff.game.castlesmack.models.items.Island;
-import com.jeff.game.castlesmack.util.constant.Constants;
+import com.jeff.game.castlesmack.util.builders.GameBuilder;
 
 public class GameManager implements Disposable {
 
     private final World world;
-    private Array<Island> islands;
+   /* private final Array<Island> islands;
 
-    public GameManager(World world, boolean p1Ai, boolean p2Ai, ObjectMap<String, Texture> objectTextures) {
+    private final Array<Player> players;*/
+
+
+    public GameManager(World world, boolean p1AI, int additionalPlayers, ObjectMap<String, Texture> objectTextures) {
         this.world = world;
 
-        Island p1HouseIsland = new Island(world, 5, 5, Constants.WIDTH_PLAYER_ISLAND, Constants.HEIGHT_PLAYER_ISLAND,
-                new TextureRegion(objectTextures.get(Constants.TexConstants.ISLAND)), true);
-        islands.add(p1HouseIsland);
+       /* islands = GameBuilder.makeIslands(world, objectTextures);
+        players = GameBuilder.makePlayers(world, objectTextures);*/
     }
+
 
     @Override
     public void dispose() {

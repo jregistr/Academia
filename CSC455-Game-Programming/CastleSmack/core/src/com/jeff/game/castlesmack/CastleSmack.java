@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.jeff.game.castlesmack.models.items.Island;
+import com.jeff.game.castlesmack.system.GameManager;
 import com.jeff.game.castlesmack.util.constant.Constants;
 import com.jeff.game.castlesmack.util.constant.Constants.TexConstants;
 
@@ -23,6 +24,7 @@ public class CastleSmack extends ApplicationAdapter {
     private Box2DDebugRenderer renderer;
     private Matrix4 debugMatrix;
     private AssetManager manager;
+    private GameManager gameManager;
 
     @Override
     public void create() {
@@ -47,8 +49,7 @@ public class CastleSmack extends ApplicationAdapter {
         map.put(TexConstants.PIPE, manager.get(TexConstants.PIPE, Texture.class));
         map.put(TexConstants.ROCK, manager.get(TexConstants.ROCK, Texture.class));
 
-        new Island(world, 9, 18, Constants.WIDTH_PLAYER_ISLAND, Constants.HEIGHT_PLAYER_ISLAND,
-                new TextureRegion(map.get(Constants.TexConstants.ISLAND)), true);
+        gameManager = new GameManager(world, true, true, map);
     }
 
     @Override
