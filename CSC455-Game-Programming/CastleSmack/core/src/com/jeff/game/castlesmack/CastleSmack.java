@@ -6,13 +6,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.jeff.game.castlesmack.models.items.Island;
 import com.jeff.game.castlesmack.system.GameManager;
 import com.jeff.game.castlesmack.util.constant.Constants;
 import com.jeff.game.castlesmack.util.constant.Constants.TexConstants;
@@ -49,14 +47,17 @@ public class CastleSmack extends ApplicationAdapter {
         map.put(TexConstants.PIPE, manager.get(TexConstants.PIPE, Texture.class));
         map.put(TexConstants.ROCK, manager.get(TexConstants.ROCK, Texture.class));
 
-        gameManager = new GameManager(world, true, true, map);
+        gameManager = new GameManager(world, false, map);
+
     }
 
     @Override
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        gameManager.preUpdate();
         world.step(1 / 60f, 10, 8);
+        gameManager.postUpdate();
         renderer.render(world, debugMatrix);
     }
 

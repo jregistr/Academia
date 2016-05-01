@@ -3,6 +3,7 @@ package com.jeff.game.castlesmack.util.builders;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -11,70 +12,64 @@ import com.jeff.game.castlesmack.models.items.Cannon;
 import com.jeff.game.castlesmack.models.items.House;
 import com.jeff.game.castlesmack.models.items.Island;
 import com.jeff.game.castlesmack.util.constant.Constants;
+import com.jeff.game.castlesmack.util.data.Pair;
 
 public class GameBuilder {
 
     private final World world;
-    private final ObjectMap<String, Texture> texMap;
 
     private final TextureRegion islandTex;
     private final TextureRegion houseTex;
-    private final TextureRegion rockTex;
     private final TextureRegion cannonTex;
 
     public GameBuilder(World world, ObjectMap<String, Texture> texMap) {
         this.world = world;
-        this.texMap = texMap;
         islandTex = new TextureRegion(texMap.get(Constants.TexConstants.ISLAND));
         houseTex = new TextureRegion(texMap.get(Constants.TexConstants.HOUSE));
-        rockTex = new TextureRegion(texMap.get(Constants.TexConstants.ROCK));
         cannonTex = new TextureRegion(texMap.get(Constants.TexConstants.PIPE));
     }
 
-    public Array<Island> makeIslands() {
+    public Pair<Island, Island> makeHouseGunIslands(Pair<Vector2, Vector2> housePosToGunPos) {
+        Vector2 hp = housePosToGunPos._1;
+        Vector2 ip = housePosToGunPos._2;
 
-        Island p1HouseIsland = new Island(world, 9, 18,
-                Constants.WIDTH_PLAYER_ISLAND, Constants.HEIGHT_PLAYER_ISLAND,
-                islandTex, true);
+        Island houseIsland = makeIsland(hp.x, hp.y,
+                Constants.WIDTH_PLAYER_ISLAND,
+                Constants.HEIGHT_PLAYER_ISLAND, true);
 
-        Island p1GunIsland = new Island(world, 21, 18,
-                Constants.WIDTH_PLAYER_GUN_ISLAND, Constants.HEIGHT_PLAYER_GUN_ISLAND,
-                islandTex, true);
+        Island gunIsland = makeIsland(ip.x, ip.y,
+                Constants.WIDTH_PLAYER_GUN_ISLAND,
+                Constants.HEIGHT_PLAYER_GUN_ISLAND, true);
 
-        Island p2HouseIsland = new Island(world, 91, 18,
-                Constants.WIDTH_PLAYER_ISLAND, Constants.HEIGHT_PLAYER_ISLAND,
-                islandTex, true);
-
-        Island p2GunIsland = new Island(world, 79, 18,
-                Constants.WIDTH_PLAYER_GUN_ISLAND, Constants.HEIGHT_PLAYER_GUN_ISLAND,
-                islandTex, true);
-
-        Island i1 = new Island(world, 39.6f, 18, 8, 2.5f, islandTex, true);
-        Island i2 = new Island(world, 59, 18, 8, 3.5f, islandTex, true);
-
-        Array<Island> islands = new Array<Island>(6);
-
-        islands.addAll(p1HouseIsland, p1GunIsland, p2HouseIsland, p2GunIsland, i1, i2);
-        return islands;
+        return new Pair<Island, Island>(houseIsland, gunIsland);
     }
 
-    public Array<Player> makePlayers(boolean p1AI, int additionalPlayers) {
-        final Array<Player> players = new Array<Player>(1 + additionalPlayers);
+    public Array<Player> makePlayers(Array<Pair<Island, Island>> confs) {
+        if (confs.size < 2) {
+            throw new IllegalArgumentException("Must have at least two players");
+        }
 
-        int pID = 0;
+        final Array<Player> players = new Array<Player>(confs.size);
 
-        final House p1House = makeHouse(9f, 18.1f, pID);
-        final Cannon p1Cannon = makeCannon(21, 18.1f, pID);
+        for (int i = 0; i < confs.size; i++) {
+            Pair<Island, Island> conf = confs.get(i);
+            Island hpI = conf._1;
+            Island ipI = conf._2;
 
-        players.add(new Player(p1House, p1Cannon));
+            Vector2 hp = new Vector2(hpI.x, hpI.y + (Constants.HEIGHT_PLAYER_HOUSE - 0.3f));
+            Vector2 ip = new Vector2(ipI.x, ipI.y  + (Constants.HEIGHT_PLAYER_GUN - 2.0f));
 
-        //remove loop, just hard code 2 players or find way to put houses on proper islands
-        //perhaps use map of id to pairs of house and gun islands? Simply assign the player to one given as param. The rest will be random.
-        for (; pID <= (players.size - 1); pID++) {
+            House house = makeHouse(hp.x, hp.y, i);
+            Cannon cannon = makeCannon(ip.x, ip.y, i);
 
+            players.add(new Player(house, cannon));
         }
 
         return players;
+    }
+
+    public Island makeIsland(float x, float y, float width, float height, boolean moves) {
+        return new Island(world, x, y, width, height, islandTex, moves);
     }
 
     private House makeHouse(float x, float y, int playerID) {
@@ -84,7 +79,7 @@ public class GameBuilder {
                 Constants.PLAYER_HOUSE_MAX_HP_START, playerID);
     }
 
-    private Cannon makeCannon(float x, float y, int playerID){
+    private Cannon makeCannon(float x, float y, int playerID) {
         return new Cannon(world, x, y,
                 Constants.WIDTH_PLAYER_GUN,
                 Constants.HEIGHT_PLAYER_GUN,

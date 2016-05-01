@@ -30,6 +30,9 @@ public abstract class Entity {
         oX = width / 2.0f;
         oY = height / 2.0f;
         body = createBody(world, x, y, width, height);
+        body.setUserData(this);
+        this.x = body.getPosition().x;
+        this.y = body.getPosition().y;
     }
 
     protected abstract Body createBody(World world, float x, float y, float width, float height);

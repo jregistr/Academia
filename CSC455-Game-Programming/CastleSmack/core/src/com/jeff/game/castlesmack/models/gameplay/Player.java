@@ -13,17 +13,4 @@ public class Player {
         this.house = house;
         this.cannon = cannon;
     }
-
-    public void setCannonRotation(float rotation) {
-
-    }
-
-    public void setCannonForce(float force) {
-
-    }
-
-    public void fireCannon() {
-
-    }
-
 }

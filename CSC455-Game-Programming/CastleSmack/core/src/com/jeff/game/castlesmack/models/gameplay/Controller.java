@@ -1,21 +1,26 @@
 package com.jeff.game.castlesmack.models.gameplay;
 
 
+import com.jeff.game.castlesmack.util.data.MoveState;
+import com.jeff.game.castlesmack.util.data.TurnInfo;
+
 public abstract class Controller {
 
-    public final Player player;
+    public boolean shoot;
+    public MoveState moveState;
 
-    public Controller(Player player) {
-        this.player = player;
+    public Controller() {
+
     }
 
-    public void incrRotationPressed(boolean positive) {
+    public final void turnStart(TurnInfo info) {
+        shoot = false;
+        moveState = MoveState.NEUTRAL;
+        processTurn(info);
     }
 
-    public void incrForcePressed(boolean positive) {
-    }
+    protected abstract void processTurn(TurnInfo info);
 
-    public void firePressed(boolean positive) {
-    }
+    public abstract void update();
 
 }
