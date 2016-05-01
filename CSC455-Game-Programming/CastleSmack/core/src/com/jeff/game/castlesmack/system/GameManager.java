@@ -17,7 +17,6 @@ import com.jeff.game.castlesmack.util.data.Pair;
 
 public class GameManager implements Disposable {
 
-
     private enum State {
         INTURN,
         BETWEEN_TURN
@@ -30,6 +29,8 @@ public class GameManager implements Disposable {
     private int turnIndex = 0;
 
     private State state = State.BETWEEN_TURN;
+    private Array<Pair<Island, Float>> targetPositions = new Array<Pair<Island, Float>>(5);
+    private boolean calculatedPositions = false;
 
     //make a map mapping islands to a pair of direction to time. if this map is empty, we just entered the inbetween so make it.
 
@@ -68,11 +69,13 @@ public class GameManager implements Disposable {
 
     }
 
-    public void preUpdate() {
+    public void preUpdate(Array<Pair<Object, Object>> collisions) {
+        for (Pair<Object, Object> collision : collisions) {
 
+        }
     }
 
-    public void postUpdate() {
+    public void postUpdate(float delta) {
 
     }
 
