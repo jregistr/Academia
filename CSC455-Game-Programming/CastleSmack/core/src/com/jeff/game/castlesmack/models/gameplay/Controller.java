@@ -7,7 +7,7 @@ import com.jeff.game.castlesmack.util.data.TurnInfo;
 public abstract class Controller {
 
     public boolean shoot;
-    public MoveState moveState;
+    public MoveState cannonMoveState;
 
     public Controller() {
 
@@ -15,7 +15,7 @@ public abstract class Controller {
 
     public final void turnStart(TurnInfo info) {
         shoot = false;
-        moveState = MoveState.NEUTRAL;
+        cannonMoveState = MoveState.NEUTRAL;
         processTurn(info);
     }
 

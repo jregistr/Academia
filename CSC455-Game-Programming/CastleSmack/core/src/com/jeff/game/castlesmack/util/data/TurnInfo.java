@@ -3,15 +3,16 @@ package com.jeff.game.castlesmack.util.data;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.jeff.game.castlesmack.models.gameplay.Player;
 
 public class TurnInfo {
 
-    public int health;
-    public Vector2 housePos;
-    public Vector2 gunPos;
+    public PlayerInfo yours;
 
     public Array<PlayerInfo> otherPlayers;
 
-    public Array<IslandInfo> otherIslands;
+    public Array<Vector2> otherIslandPos;
+
+//    public Array<IslandInfo> otherIslands;
 
 }

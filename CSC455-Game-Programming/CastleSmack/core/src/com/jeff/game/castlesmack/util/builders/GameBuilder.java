@@ -56,13 +56,13 @@ public class GameBuilder {
             Island hpI = conf._1;
             Island ipI = conf._2;
 
-            Vector2 hp = new Vector2(hpI.x, hpI.y + (Constants.HEIGHT_PLAYER_HOUSE - 0.3f));
-            Vector2 ip = new Vector2(ipI.x, ipI.y  + (Constants.HEIGHT_PLAYER_GUN - 2.0f));
+            Vector2 hp = new Vector2(hpI.body.getPosition().x, hpI.body.getPosition().y + (Constants.HEIGHT_PLAYER_HOUSE - 0.3f));
+            Vector2 ip = new Vector2(ipI.body.getPosition().x, ipI.body.getPosition().y + (Constants.HEIGHT_PLAYER_GUN - 2.0f));
 
             House house = makeHouse(hp.x, hp.y, i);
             Cannon cannon = makeCannon(ip.x, ip.y, i);
 
-            players.add(new Player(house, cannon));
+            players.add(new Player(house, cannon, hpI, ipI, i));
         }
 
         return players;
