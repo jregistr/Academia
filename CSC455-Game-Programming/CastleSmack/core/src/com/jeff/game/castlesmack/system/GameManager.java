@@ -84,7 +84,7 @@ public class GameManager implements Disposable {
 
     }
 
-    public void preUpdate() {
+    public void runCollisions() {
 
         if (collisions.size == 0)
             return;
@@ -111,13 +111,17 @@ public class GameManager implements Disposable {
                 projectile.body.setActive(false);
                 inactiveProjectiles.add(projectile);
 
-                //a house was hit which means a bullet was fire
-                projectileHitHouse(house);
+                if (house.currentHP <= 0) {
+                    playerWinId = house.playerID == players.first().player.id ?
+                            players.get(1).player.id :
+                            players.first().player.id;
+                }
+
             }
         }
     }
 
-    public void postUpdate(float delta) {
+    public void update(float delta) {
         if (state == State.BETWEEN_TURN) {
             if (!calculatedPositions) {
                 for (Island island : otherIslands) {
@@ -152,7 +156,10 @@ public class GameManager implements Disposable {
                 Gamer currentTurnGamer = players.get(turnIndex);
                 Controller controller = currentTurnGamer.controller;
                 Player player = currentTurnGamer.player;
-                if (lastTurnIndex != turnIndex) {//turn start
+
+                if (currentTurnGamer.timesFired > 0) {
+                    incrementTurn();
+                } else if (lastTurnIndex != turnIndex) {//turn start
                     PlayerInfo yours = makePlayerInfo(player);
                     Array<Vector2> oislands = new Array<Vector2>(3);
                     for (Island island : otherIslands) {
@@ -186,7 +193,8 @@ public class GameManager implements Disposable {
                             //TODO same as above except the other way.
                         }
                     }
-                    
+
+
                 }
             }
         }
@@ -202,23 +210,17 @@ public class GameManager implements Disposable {
         return playerInfo;
     }
 
-    private void projectileHitHouse(House house) {
-        for (Gamer gamer : players) {
-            gamer.timesFired = 0;
-            if (house.currentHP <= 0) {
-                if (gamer.player.house != house) {
-                    playerWinId = gamer.player.id;
-                }
-            }
-        }
-        state = State.BETWEEN_TURN;
-    }
-
     private void incrementTurn() {
         turnIndex += 1;
         if (turnIndex == players.size) {
             turnIndex = 0;
         }
+
+        for (Gamer gamer : players) {
+            gamer.timesFired = 0;
+        }
+        calculatedPositions = false;
+        state = State.BETWEEN_TURN;
     }
 
     @Override
